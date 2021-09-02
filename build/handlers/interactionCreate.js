@@ -4,7 +4,7 @@ exports.InteractionCreateHandler = void 0;
 const commands_1 = require("../commands");
 class InteractionCreateHandler {
     constructor() {
-        this.once = true;
+        this.once = false;
         this.EVENT_NAME = "interactionCreate";
         this.onEvent = async (interaction) => {
             if (interaction.isCommand()) {

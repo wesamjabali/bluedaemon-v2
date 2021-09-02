@@ -3,7 +3,7 @@ import { IEventHandler } from "./event-handler.interface";
 import { commands } from "../commands";
 
 export class InteractionCreateHandler implements IEventHandler {
-  public once = true;
+  public once = false;
   public readonly EVENT_NAME: keyof ClientEvents = "interactionCreate";
   public onEvent = async (interaction: Interaction) => {
     if (interaction.isCommand()) {

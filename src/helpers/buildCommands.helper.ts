@@ -5,7 +5,7 @@ import { APIApplicationCommandOption, Routes } from "discord-api-types/v9";
 import { config } from "../services/config.service";
 
 export class BuildCommands {
-  public execute() {
+  public async execute(): Promise<void> {
     const rest = new REST({ version: "9" }).setToken(config.envConfig.token);
 
     const JSONCommands: ICommandData[] = [];
@@ -18,15 +18,16 @@ export class BuildCommands {
           .toJSON()
       );
     });
-    (async () => {
-      try {
+
+    try {
+      console.log(
         await rest.put(Routes.applicationCommands(config.envConfig.clientId), {
           body: JSONCommands,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    })();
+        })
+      );
+    } catch (error) {
+      console.error(error);
+    }
 
     console.log(`Built commands: ${JSONCommands.length}`);
   }
