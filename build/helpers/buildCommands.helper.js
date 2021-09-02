@@ -16,18 +16,13 @@ class BuildCommands {
                 .setDescription(command.description)
                 .toJSON());
         });
-        try {
-            config_service_1.config.envConfig.environment === "production"
-                ? await rest.put(v9_1.Routes.applicationCommands(config_service_1.config.envConfig.clientId), {
-                    body: JSONCommands,
-                })
-                : await rest.put(v9_1.Routes.applicationGuildCommands(config_service_1.config.envConfig.clientId, config_service_1.config.envConfig.devGuildId), {
-                    body: JSONCommands,
-                });
-        }
-        catch (error) {
-            console.error(error);
-        }
+        config_service_1.config.envConfig.environment === "production"
+            ? await rest.put(v9_1.Routes.applicationCommands(config_service_1.config.envConfig.clientId), {
+                body: JSONCommands,
+            })
+            : await rest.put(v9_1.Routes.applicationGuildCommands(config_service_1.config.envConfig.clientId, config_service_1.config.envConfig.devGuildId), {
+                body: JSONCommands,
+            });
         console.log(`Built commands: [${Array.from(JSONCommands, (command) => command.name)}]`);
     }
 }
