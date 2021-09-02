@@ -7,6 +7,7 @@ export class ReadyHandler implements IEventHandler {
   public readonly EVENT_NAME: keyof ClientEvents = "ready";
   public onEvent = async () => {
     await new BuildCommands().execute();
-    console.log("ready");
+
+    console.log(`Ready`);
   };
 }

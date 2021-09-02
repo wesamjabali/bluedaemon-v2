@@ -4,10 +4,12 @@ exports.PingCommand = void 0;
 class PingCommand {
     constructor() {
         this.name = "ping";
-        this.description = "Returns ping time";
+        this.description = "Pong!";
     }
-    execute(interaction) {
-        interaction.channel?.send("Hello!");
+    async execute(interaction) {
+        const replyTime = new Date();
+        await interaction.reply("Pong!");
+        await interaction.editReply(`Pong! ${replyTime.getTime() - interaction.createdTimestamp}ms`);
     }
 }
 exports.PingCommand = PingCommand;

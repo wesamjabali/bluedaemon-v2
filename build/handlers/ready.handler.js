@@ -8,7 +8,7 @@ class ReadyHandler {
         this.EVENT_NAME = "ready";
         this.onEvent = async () => {
             await new buildCommands_helper_1.BuildCommands().execute();
-            console.log("ready");
+            console.log(`Ready`);
         };
     }
 }

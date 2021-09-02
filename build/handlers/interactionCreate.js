@@ -6,12 +6,13 @@ class InteractionCreateHandler {
     constructor() {
         this.once = false;
         this.EVENT_NAME = "interactionCreate";
-        this.onEvent = async (interaction) => {
-            if (interaction.isCommand()) {
-                const command = commands_1.commands.find((c) => c.name === interaction.commandName);
-                command?.execute(interaction);
-            }
-        };
     }
+    async onEvent(interaction) {
+        if (interaction.isCommand()) {
+            const command = commands_1.commands.find((c) => c.name === interaction.commandName);
+            command?.execute(interaction);
+        }
+    }
+    ;
 }
 exports.InteractionCreateHandler = InteractionCreateHandler;

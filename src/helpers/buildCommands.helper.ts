@@ -20,16 +20,29 @@ export class BuildCommands {
     });
 
     try {
-      console.log(
-        await rest.put(Routes.applicationCommands(config.envConfig.clientId), {
-          body: JSONCommands,
-        })
-      );
+      config.envConfig.environment === "production"
+        ? await rest.put(
+            Routes.applicationCommands(config.envConfig.clientId),
+            {
+              body: JSONCommands,
+            }
+          )
+        : await rest.put(
+            Routes.applicationGuildCommands(
+              config.envConfig.clientId,
+              config.envConfig.devGuildId
+            ),
+            {
+              body: JSONCommands,
+            }
+          );
     } catch (error) {
       console.error(error);
     }
 
-    console.log(`Built commands: ${JSONCommands.length}`);
+    console.log(
+      `Built commands: [${Array.from(JSONCommands, (command) => command.name)}]`
+    );
   }
 }
 

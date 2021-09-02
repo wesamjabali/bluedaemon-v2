@@ -17,14 +17,18 @@ class BuildCommands {
                 .toJSON());
         });
         try {
-            console.log(await rest.put(v9_1.Routes.applicationCommands(config_service_1.config.envConfig.clientId), {
-                body: JSONCommands,
-            }));
+            config_service_1.config.envConfig.environment === "production"
+                ? await rest.put(v9_1.Routes.applicationCommands(config_service_1.config.envConfig.clientId), {
+                    body: JSONCommands,
+                })
+                : await rest.put(v9_1.Routes.applicationGuildCommands(config_service_1.config.envConfig.clientId, config_service_1.config.envConfig.devGuildId), {
+                    body: JSONCommands,
+                });
         }
         catch (error) {
             console.error(error);
         }
-        console.log(`Built commands: ${JSONCommands.length}`);
+        console.log(`Built commands: [${Array.from(JSONCommands, (command) => command.name)}]`);
     }
 }
 exports.BuildCommands = BuildCommands;

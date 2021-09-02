@@ -13,6 +13,7 @@ class ConfigService {
     get envConfig() {
         return {
             token: process.env.CLIENT_TOKEN,
+            environment: "development",
             clientId: "820141085014753321",
             devGuildId: "753687465784770630",
         };

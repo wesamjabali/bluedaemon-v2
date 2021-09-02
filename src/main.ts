@@ -6,9 +6,9 @@ const client = new Client(clientOptions);
 
 handlers.forEach((handler) => {
   if (handler.once) {
-    client.once(handler.EVENT_NAME, (...args) => handler.onEvent());
+    client.once(handler.EVENT_NAME, (...args) => handler.onEvent(...args));
   } else {
-    client.on(handler.EVENT_NAME, (...args) => handler.onEvent());
+    client.on(handler.EVENT_NAME, (...args) => handler.onEvent(...args));
   }
 });
 

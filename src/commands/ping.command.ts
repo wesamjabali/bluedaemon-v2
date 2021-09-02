@@ -1,11 +1,15 @@
-import { Interaction } from "discord.js";
+import { CommandInteraction } from "discord.js";
 import { ICommand } from "./command.interface";
 
 export class PingCommand implements ICommand {
   public readonly name = "ping";
-  readonly description = "Returns ping time";
+  readonly description = "Pong!";
 
-  public execute(interaction: Interaction): void {
-    interaction.channel?.send("Hello!");
+  public async execute(interaction: CommandInteraction): Promise<void> {
+    const replyTime = new Date();
+    await interaction.reply("Pong!");
+    await interaction.editReply(
+      `Pong! ${replyTime.getTime() - interaction.createdTimestamp}ms`
+    );
   }
 }
