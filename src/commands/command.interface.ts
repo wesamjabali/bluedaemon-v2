@@ -17,4 +17,9 @@ export type CommandOptions = {
   required?: boolean;
   choices?: [name: string, value: string | number][];
   subCommands?: ICommand[];
+  subCommandGroups?: {
+    name: string;
+    description: string;
+    subCommands: ICommand[];
+  }[];
 };

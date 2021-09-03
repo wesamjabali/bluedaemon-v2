@@ -26,10 +26,7 @@ export class BuildCommands {
     }
 
     commands.forEach((command) => {
-      const newCommand = getCommandBuilder(
-        command,
-        false
-      ) as SlashCommandBuilder;
+      let newCommand = getCommandBuilder(command, false) as SlashCommandBuilder;
 
       JSONCommands.push(newCommand.toJSON());
     });
@@ -60,7 +57,9 @@ export function getCommandBuilder(
   command: ICommand,
   subCommand: boolean
 ): SlashCommandSubcommandBuilder | SlashCommandBuilder {
-  var newCommand: SlashCommandBuilder | SlashCommandSubcommandBuilder;
+  let newCommand: SlashCommandBuilder | SlashCommandSubcommandBuilder;
+
+  // True if the command being passed in is a subcommand, and can therefore not accept subcommands or subcommandgroups.
 
   if (subCommand) {
     newCommand = new SlashCommandSubcommandBuilder();
@@ -72,6 +71,42 @@ export function getCommandBuilder(
   newCommand.setDescription(command.description);
 
   for (const currentOption of command.options) {
+    if (!subCommand) {
+      if (currentOption.type === ApplicationCommandOptionType.Subcommand) {
+        for (const currentSubCommand of currentOption.subCommands || []) {
+          newCommand = newCommand as SlashCommandBuilder;
+          newCommand.addSubcommand(
+            <SlashCommandSubcommandBuilder>(
+              getCommandBuilder(currentSubCommand, true)
+            )
+          );
+        }
+      }
+    }
+
+    if (currentOption.type === ApplicationCommandOptionType.SubcommandGroup) {
+      for (const currentSubCommandGroup of currentOption.subCommandGroups ??
+        []) {
+        const newCommandGroup: SlashCommandSubcommandGroupBuilder =
+          new SlashCommandSubcommandGroupBuilder();
+
+        newCommandGroup
+          .setName(currentSubCommandGroup.name)
+          .setDescription(currentSubCommandGroup.description);
+
+        for (const currentSubCommand of currentSubCommandGroup.subCommands) {
+          newCommandGroup.addSubcommand(
+            getCommandBuilder(
+              currentSubCommand,
+              true
+            ) as SlashCommandSubcommandBuilder
+          );
+        }
+
+        (newCommand as SlashCommandBuilder).addSubcommandGroup(newCommandGroup);
+      }
+    }
+
     if (currentOption.type === ApplicationCommandOptionType.String) {
       newCommand.addStringOption((option) =>
         option
@@ -151,19 +186,6 @@ export function getCommandBuilder(
           .setDescription(currentOption.description ?? "Missing Description")
           .setRequired(currentOption.required ?? false)
       );
-    }
-
-    if (!subCommand) {
-      if (currentOption.type === ApplicationCommandOptionType.Subcommand) {
-        for (const currentSubCommand of currentOption.subCommands || []) {
-          newCommand = newCommand as SlashCommandBuilder;
-          newCommand.addSubcommand(
-            <SlashCommandSubcommandBuilder>(
-              getCommandBuilder(currentSubCommand, true)
-            )
-          );
-        }
-      }
     }
   }
 
