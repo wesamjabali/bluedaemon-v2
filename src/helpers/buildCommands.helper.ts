@@ -9,8 +9,7 @@ import {
   Routes,
 } from "discord-api-types/v9";
 import { config } from "../services/config.service";
-import { CommandOptions, ICommand } from "../commands/command.interface";
-import { SlashCommandOptionBase } from "@discordjs/builders/dist/interactions/slashCommands/mixins/CommandOptionBase";
+import { ICommand } from "../commands/command.interface";
 
 export class BuildCommands {
   public async execute(commandSet?: ICommand[]): Promise<void> {

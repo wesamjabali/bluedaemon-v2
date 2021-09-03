@@ -1,4 +1,3 @@
-import { SlashCommandSubcommandBuilder } from "@discordjs/builders";
 import { ApplicationCommandOptionType } from "discord-api-types";
 import { CommandInteraction } from "discord.js";
 
