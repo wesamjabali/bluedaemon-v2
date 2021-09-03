@@ -13,3 +13,5 @@ handlers.forEach((handler) => {
 });
 
 client.login(config.envConfig.token);
+
+export { client };

@@ -1,45 +1,31 @@
-import { ApplicationCommandOptionType } from "discord-api-types";
 import { CommandInteraction } from "discord.js";
-import { CommandOptions, ICommand } from "./command.interface";
 import { PingCommand, SayCommand } from ".";
+import { CommandOption, CommandPermission, ICommand } from "./command.interface";
 
 export class TestCommand implements ICommand {
   name = "test";
   description = "A test command";
   default_permission = true;
-  options: CommandOptions[] = [
+  permissions: CommandPermission[] = [{id: "539910274698969088", type: "USER", permission: false}];
+  options: CommandOption[] = [
     {
-      type: ApplicationCommandOptionType.SubcommandGroup,
+      type: "SubcommandGroup",
       subCommandGroups: [
         { name: "main", description: "main", subCommands: [new PingCommand()] },
-        {
-          name: "second",
-          description: "secondary group",
-          subCommands: [new SayCommand()],
-        },
+        { name: "second", description: "secondary group", subCommands: [new SayCommand()] },
       ],
     },
   ];
 
   public async execute(interaction: CommandInteraction): Promise<void> {
-    /* Main subgroup */
-    if (interaction.options.getSubcommandGroup() === "main") {
-      await interaction.channel?.send(
-        "You ran a command under the main subgroup!"
-      );
-      if (interaction.options.getSubcommand() === "ping") {
-        await new PingCommand().execute(interaction);
-      }
+    const route = `${interaction.options.getSubcommandGroup()}/${interaction.options.getSubcommand()}`;
+
+    if (route === "main/ping") {
+      await new PingCommand().execute(interaction);
     }
 
-    /* Second subgroup */
-    if (interaction.options.getSubcommandGroup() === "second") {
-      await interaction.channel?.send(
-        "You ran a command under the second subgroup!"
-      );
-      if (interaction.options.getSubcommand() === "say") {
-        await new SayCommand().execute(interaction);
-      }
+    if (route === "second/say") {
+      await new SayCommand().execute(interaction);
     }
   }
 }

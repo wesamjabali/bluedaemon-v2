@@ -1,17 +1,27 @@
 import { ApplicationCommandOptionType } from "discord-api-types";
-import { CommandInteraction } from "discord.js";
+import {
+  ApplicationCommandPermissionData,
+  CommandInteraction,
+} from "discord.js";
 
 export interface ICommand {
   readonly name: string;
   readonly description: string;
-  readonly options: CommandOptions[];
-  readonly default_permission: boolean | undefined;
+  readonly options?: CommandOption[];
+  readonly default_permission: boolean;
+  readonly permissions?: ApplicationCommandPermissionData[];
 
   execute(interaction: CommandInteraction): void;
 }
 
-export type CommandOptions = {
-  type: ApplicationCommandOptionType;
+export type CommandPermission = {
+  id: string;
+  type: "USER" | "ROLE";
+  permission: boolean;
+};
+
+export type CommandOption = {
+  type: CommandOptionTypeString;
   name?: string;
   description?: string;
   required?: boolean;
@@ -23,3 +33,5 @@ export type CommandOptions = {
     subCommands: ICommand[];
   }[];
 };
+
+export type CommandOptionTypeString = keyof typeof ApplicationCommandOptionType;

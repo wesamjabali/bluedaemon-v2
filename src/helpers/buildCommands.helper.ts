@@ -1,42 +1,41 @@
+import { client } from "../main";
+import { REST } from "@discordjs/rest";
+import { config } from "../services/config.service";
+import { CommandOption, ICommand } from "../commands/command.interface";
+import { commands } from "../commands";
+import { ApplicationCommand } from "discord.js";
+import { APIApplicationCommandOption, Routes } from "discord-api-types/v9";
 import {
   SlashCommandBuilder,
   SlashCommandSubcommandBuilder,
   SlashCommandSubcommandGroupBuilder,
 } from "@discordjs/builders";
-import { REST } from "@discordjs/rest";
-import {
-  APIApplicationCommandOption,
-  ApplicationCommandOptionType,
-  Routes,
-} from "discord-api-types/v9";
-import { config } from "../services/config.service";
-import { ICommand } from "../commands/command.interface";
 
 export class BuildCommands {
-  public async execute(commandSet?: ICommand[]): Promise<void> {
-    let commands: ICommand[] = [];
+  public async execute(): Promise<void> {
     const rest = new REST({ version: "9" }).setToken(config.envConfig.token);
 
     const JSONCommands: ICommandData[] = [];
 
-    if (commandSet) {
-      commands = commandSet;
-    } else {
-      commands = (await import("../commands")).commands;
-    }
-
+    // Build the command
     commands.forEach((command) => {
-      let newCommand = getCommandBuilder(command, false) as SlashCommandBuilder;
-
-      JSONCommands.push(newCommand.toJSON());
+      JSONCommands.push(
+        (getCommandBuilder(command, false) as SlashCommandBuilder).toJSON()
+      );
     });
 
+    let allSentApplicationCommands: ApplicationCommand[] = [];
+
+    // Attach to application or guild
     if (config.envConfig.environment === "production") {
-      await rest.put(Routes.applicationCommands(config.envConfig.clientId), {
-        body: JSONCommands,
-      });
+      allSentApplicationCommands = (await rest.put(
+        Routes.applicationCommands(config.envConfig.clientId),
+        {
+          body: JSONCommands,
+        }
+      )) as ApplicationCommand[];
     } else {
-      await rest.put(
+      allSentApplicationCommands = (await rest.put(
         Routes.applicationGuildCommands(
           config.envConfig.clientId,
           config.envConfig.devGuildId
@@ -44,8 +43,38 @@ export class BuildCommands {
         {
           body: JSONCommands,
         }
-      );
+      )) as ApplicationCommand[];
     }
+
+    // Add permission overrides
+    allSentApplicationCommands.forEach(async (command) => {
+      const permissions = commands.find(
+        (c) => c.name === command.name
+      )?.permissions;
+
+      if (permissions) {
+        /* Attach globally if in prod */
+        if (config.envConfig.environment === "production") {
+          const fetchedCommand = await client.application?.commands.fetch(
+            command.id
+          );
+
+          fetchedCommand?.permissions.add({
+            guild: fetchedCommand.guild ?? config.envConfig.devGuildId,
+            permissions,
+          });
+        } else {
+          /* Attach to dev server otherwise */
+          const fetchedCommand = await client.guilds.cache
+            .get(config.envConfig.devGuildId)
+            ?.commands.fetch(command.id);
+
+          fetchedCommand?.permissions.add({
+            permissions,
+          });
+        }
+      }
+    });
 
     console.log(
       `Built commands: [${Array.from(JSONCommands, (command) => command.name)}]`
@@ -53,140 +82,25 @@ export class BuildCommands {
   }
 }
 
-export function getCommandBuilder(
+function getCommandBuilder(
   command: ICommand,
-  subCommand: boolean
+  isSubCommand: boolean // True if the command being passed in is a subcommand, and can therefore not accept subcommands or subcommandgroups.
 ): SlashCommandSubcommandBuilder | SlashCommandBuilder {
   let newCommand: SlashCommandBuilder | SlashCommandSubcommandBuilder;
 
-  // True if the command being passed in is a subcommand, and can therefore not accept subcommands or subcommandgroups.
-
-  if (subCommand) {
+  if (isSubCommand) {
     newCommand = new SlashCommandSubcommandBuilder();
   } else {
     newCommand = new SlashCommandBuilder();
+    newCommand.setDefaultPermission(command.default_permission ?? true);
   }
 
   newCommand.setName(command.name);
   newCommand.setDescription(command.description);
 
-  for (const currentOption of command.options) {
-    if (!subCommand) {
-      if (currentOption.type === ApplicationCommandOptionType.Subcommand) {
-        for (const currentSubCommand of currentOption.subCommands || []) {
-          newCommand = newCommand as SlashCommandBuilder;
-          newCommand.addSubcommand(
-            <SlashCommandSubcommandBuilder>(
-              getCommandBuilder(currentSubCommand, true)
-            )
-          );
-        }
-      }
-    }
-
-    if (currentOption.type === ApplicationCommandOptionType.SubcommandGroup) {
-      for (const currentSubCommandGroup of currentOption.subCommandGroups ??
-        []) {
-        const newCommandGroup: SlashCommandSubcommandGroupBuilder =
-          new SlashCommandSubcommandGroupBuilder();
-
-        newCommandGroup
-          .setName(currentSubCommandGroup.name)
-          .setDescription(currentSubCommandGroup.description);
-
-        for (const currentSubCommand of currentSubCommandGroup.subCommands) {
-          newCommandGroup.addSubcommand(
-            getCommandBuilder(
-              currentSubCommand,
-              true
-            ) as SlashCommandSubcommandBuilder
-          );
-        }
-
-        (newCommand as SlashCommandBuilder).addSubcommandGroup(newCommandGroup);
-      }
-    }
-
-    if (currentOption.type === ApplicationCommandOptionType.String) {
-      newCommand.addStringOption((option) =>
-        option
-          .setName(currentOption.name ?? "Missing Name")
-          .setDescription(currentOption.description ?? "Missing Description")
-          .setRequired(currentOption.required ?? false)
-          .addChoices(
-            (currentOption.choices as [name: string, value: string][]) || []
-          )
-      );
-    }
-
-    if (currentOption.type === ApplicationCommandOptionType.Integer) {
-      newCommand.addIntegerOption((option) =>
-        option
-          .setName(currentOption.name ?? "Missing Name")
-          .setDescription(currentOption.description ?? "Missing Description")
-          .setRequired(currentOption.required ?? false)
-          .addChoices(
-            (currentOption.choices as [name: string, value: number][]) || []
-          )
-      );
-    }
-
-    if (currentOption.type === ApplicationCommandOptionType.Number) {
-      newCommand.addNumberOption((option) =>
-        option
-          .setName(currentOption.name ?? "Missing Name")
-          .setDescription(currentOption.description ?? "Missing Description")
-          .setRequired(currentOption.required ?? false)
-          .addChoices(
-            (currentOption.choices as [name: string, value: number][]) || []
-          )
-      );
-    }
-
-    if (currentOption.type === ApplicationCommandOptionType.Boolean) {
-      newCommand.addBooleanOption((option) =>
-        option
-          .setName(currentOption.name ?? "Missing Name")
-          .setDescription(currentOption.description ?? "Missing Description")
-          .setRequired(currentOption.required ?? false)
-      );
-    }
-
-    if (currentOption.type === ApplicationCommandOptionType.User) {
-      newCommand.addUserOption((option) =>
-        option
-          .setName(currentOption.name ?? "Missing Name")
-          .setDescription(currentOption.description ?? "Missing Description")
-          .setRequired(currentOption.required ?? false)
-      );
-    }
-
-    if (currentOption.type === ApplicationCommandOptionType.Channel) {
-      newCommand.addChannelOption((option) =>
-        option
-          .setName(currentOption.name ?? "Missing Name")
-          .setDescription(currentOption.description ?? "Missing Description")
-          .setRequired(currentOption.required ?? false)
-      );
-    }
-
-    if (currentOption.type === ApplicationCommandOptionType.Mentionable) {
-      newCommand.addMentionableOption((option) =>
-        option
-          .setName(currentOption.name ?? "Missing Name")
-          .setDescription(currentOption.description ?? "Missing Description")
-          .setRequired(currentOption.required ?? false)
-      );
-    }
-
-    if (currentOption.type === ApplicationCommandOptionType.Role) {
-      newCommand.addRoleOption((option) =>
-        option
-          .setName(currentOption.name ?? "Missing Name")
-          .setDescription(currentOption.description ?? "Missing Description")
-          .setRequired(currentOption.required ?? false)
-      );
-    }
+  for (const currentOption of command.options ?? []) {
+    // Add generic options
+    addGenericCommandOption(newCommand, currentOption, isSubCommand);
   }
 
   return newCommand;
@@ -197,4 +111,110 @@ export interface ICommandData {
   description: string;
   options: APIApplicationCommandOption[];
   default_permission: boolean | undefined;
+}
+
+function getGenericCommandOption(
+  option: any,
+  currentOption: CommandOption
+): any {
+  option
+    .setName(currentOption.name ?? "Missing Name")
+    .setDescription(currentOption.description ?? "Missing Description")
+    .setRequired(currentOption.required ?? false);
+
+  if (currentOption.choices) {
+    option.addChoices(currentOption.choices || []);
+  }
+
+  return option;
+}
+
+function addGenericCommandOption(
+  newCommand: SlashCommandBuilder | SlashCommandSubcommandBuilder,
+  currentOption: CommandOption,
+  isSubCommand: boolean
+) {
+  // Add subcommand, but not to other subcommands.
+  if (!isSubCommand) {
+    if (currentOption.type === "Subcommand") {
+      for (const currentSubCommand of currentOption.subCommands || []) {
+        newCommand = newCommand as SlashCommandBuilder;
+        newCommand.addSubcommand(
+          <SlashCommandSubcommandBuilder>(
+            getCommandBuilder(currentSubCommand, false)
+          )
+        );
+      }
+    }
+  }
+  // Add subcommand groups
+  if (currentOption.type === "SubcommandGroup") {
+    for (const currentSubCommandGroup of currentOption.subCommandGroups ?? []) {
+      const newCommandGroup: SlashCommandSubcommandGroupBuilder =
+        new SlashCommandSubcommandGroupBuilder();
+
+      newCommandGroup
+        .setName(currentSubCommandGroup.name)
+        .setDescription(currentSubCommandGroup.description);
+
+      for (const currentSubCommand of currentSubCommandGroup.subCommands) {
+        newCommandGroup.addSubcommand(
+          getCommandBuilder(
+            currentSubCommand,
+            true
+          ) as SlashCommandSubcommandBuilder
+        );
+      }
+
+      (newCommand as SlashCommandBuilder).addSubcommandGroup(newCommandGroup);
+    }
+  }
+
+  if (currentOption.type === "String") {
+    newCommand.addStringOption((option) =>
+      getGenericCommandOption(option, currentOption)
+    );
+  }
+
+  if (currentOption.type === "Integer") {
+    newCommand.addIntegerOption((option) =>
+      getGenericCommandOption(option, currentOption)
+    );
+  }
+
+  if (currentOption.type === "Number") {
+    newCommand.addNumberOption((option) =>
+      getGenericCommandOption(option, currentOption)
+    );
+  }
+
+  if (currentOption.type === "Boolean") {
+    newCommand.addBooleanOption((option) =>
+      getGenericCommandOption(option, currentOption)
+    );
+  }
+
+  if (currentOption.type === "User") {
+    newCommand.addUserOption((option) =>
+      getGenericCommandOption(option, currentOption)
+    );
+  }
+
+  if (currentOption.type === "Channel") {
+    newCommand.addChannelOption((option) =>
+      getGenericCommandOption(option, currentOption)
+    );
+  }
+
+  if (currentOption.type === "Mentionable") {
+    newCommand.addMentionableOption((option) =>
+      getGenericCommandOption(option, currentOption)
+    );
+  }
+
+  if (currentOption.type === "Role") {
+    newCommand.addRoleOption((option) =>
+      getGenericCommandOption(option, currentOption)
+    );
+  }
 }
