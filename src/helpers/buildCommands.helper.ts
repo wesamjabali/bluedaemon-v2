@@ -1,6 +1,7 @@
 import {
   SlashCommandBuilder,
   SlashCommandSubcommandBuilder,
+  SlashCommandSubcommandGroupBuilder,
 } from "@discordjs/builders";
 import { REST } from "@discordjs/rest";
 import {

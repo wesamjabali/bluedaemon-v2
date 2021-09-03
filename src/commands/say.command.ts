@@ -5,18 +5,18 @@ import { PingCommand } from ".";
 
 export class SayCommand implements ICommand {
   name = "say";
-  description = "Have me repear what you say";
+  description = "Have me repeat what you say";
   default_permission = true;
   options: CommandOptions[] = [
     {
-      type: ApplicationCommandOptionType.Subcommand,
-      subCommands: [new PingCommand()],
+      type: ApplicationCommandOptionType.String,
+      name: "repeat",
+      description: "The message you'd like me to repeat",
+      required: true,
     },
   ];
 
   public async execute(interaction: CommandInteraction): Promise<void> {
-    if (interaction.options.getSubcommand() === "ping") {
-      await new PingCommand().execute(interaction);
-    }
+    await interaction.reply(interaction.options.getString("repeat", true));
   }
 }
