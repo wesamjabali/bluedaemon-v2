@@ -2,11 +2,11 @@ import { CommandInteraction } from "discord.js";
 import { PingCommand, SayCommand } from ".";
 import { CommandOption, CommandPermission, ICommand } from "./command.interface";
 
-export class TestCommand implements ICommand {
-  name = "test";
-  description = "A test command";
-  default_permission = true;
-  permissions: CommandPermission[] = [{id: "539910274698969088", type: "USER", permission: false}];
+export class SudoCommand implements ICommand {
+  name = "sudo";
+  description = "Run admin commands.";
+  default_permission = false;
+  permissions: CommandPermission[] = [{id: "539910274698969088", type: "USER", permission: true}];
   options: CommandOption[] = [
     {
       type: "SubcommandGroup",
