@@ -1,4 +1,4 @@
-import { IEventHandler } from "./event-handler.interface";
+import { IEventHandler } from "./eventHandler";
 import { InteractionCreateHandler } from "./interactionCreate";
 import { ReadyHandler } from "./ready.handler";
 

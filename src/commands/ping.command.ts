@@ -1,15 +1,38 @@
 import { CommandInteraction } from "discord.js";
-import { ICommand } from "./command.interface";
+import { CommandOptions, ICommand } from "./command.interface";
 
 export class PingCommand implements ICommand {
-  public readonly name = "ping";
-  readonly description = "Pong!";
+  name = "ping";
+  description = "Pong!";
+  default_permission = true;
+  options: CommandOptions = {
+    stringOptions: [
+      {
+        name: "name",
+        description: "Enter your name.",
+        required: true,
+        choices: [["Pong", "ping"]],
+      },
+      { name: "boop", description: "beep", required: false, choices: [] },
+    ],
+    integerOptions: [
+      {
+        name: "numping",
+        description: "Cheat your ping!",
+        required: false,
+        choices: [],
+      },
+    ],
+  };
 
   public async execute(interaction: CommandInteraction): Promise<void> {
-    const replyTime = new Date();
     await interaction.reply("Pong!");
+    const replyTime = new Date();
     await interaction.editReply(
-      `Pong! ${replyTime.getTime() - interaction.createdTimestamp}ms`
+      `${interaction.options.getString("name")} ${
+        interaction.options.getInteger("numping") ||
+        replyTime.getTime() - interaction.createdTimestamp
+      }ms`
     );
   }
 }

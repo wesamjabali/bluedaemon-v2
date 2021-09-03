@@ -1,5 +1,5 @@
 import { ClientEvents, Interaction } from "discord.js";
-import { IEventHandler } from "./event-handler.interface";
+import { IEventHandler } from "./eventHandler";
 import { commands } from "../commands";
 
 export class InteractionCreateHandler implements IEventHandler {

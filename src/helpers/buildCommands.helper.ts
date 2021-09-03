@@ -3,6 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { REST } from "@discordjs/rest";
 import { APIApplicationCommandOption, Routes } from "discord-api-types/v9";
 import { config } from "../services/config.service";
+import { StringOption } from "@/commands/command.interface";
 
 export class BuildCommands {
   public async execute(): Promise<void> {
@@ -11,12 +12,32 @@ export class BuildCommands {
     const JSONCommands: ICommandData[] = [];
 
     commands.forEach((command) => {
-      JSONCommands.push(
-        new SlashCommandBuilder()
-          .setName(command.name)
-          .setDescription(command.description)
-          .toJSON()
-      );
+      const newCommand = new SlashCommandBuilder();
+      newCommand.setName(command.name);
+      newCommand.setDescription(command.description);
+
+      /* Attach string options */
+      for (const stringOption of command.options.stringOptions) {
+        newCommand.addStringOption((option) =>
+          option
+            .setName(stringOption.name)
+            .setDescription(stringOption.description)
+            .setRequired(stringOption.required)
+            .addChoices(stringOption.choices)
+        );
+      }
+      /* Attach integer options */
+      for (const integerOption of command.options.integerOptions) {
+        newCommand.addIntegerOption((option) =>
+          option
+            .setName(integerOption.name)
+            .setDescription(integerOption.description)
+            .setRequired(integerOption.required)
+            .addChoices(integerOption.choices)
+        );
+      }
+
+      JSONCommands.push(newCommand.toJSON());
     });
 
     config.envConfig.environment === "production"

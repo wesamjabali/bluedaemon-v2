@@ -1,6 +1,6 @@
 import { BuildCommands } from "../helpers/buildCommands.helper";
 import { ClientEvents } from "discord.js";
-import { IEventHandler } from "./event-handler.interface";
+import { IEventHandler } from "./eventHandler";
 import { config } from "../services/config.service";
 
 export class ReadyHandler implements IEventHandler {
