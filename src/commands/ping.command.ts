@@ -12,16 +12,15 @@ export class PingCommand implements ICommand {
   name = "ping";
   description = "Pong!";
   default_permission = true;
-  selectMenuActions: SelectMenuAction[] = [
-    {
-      customId: "pingmenu",
-      execute: async (i) => {
-        await i.reply(
-          `${i.user} clicked the option with value: **${i.values[0]}**`
-        );
-      },
+  selectMenuAction: SelectMenuAction = {
+    customId: "pingmenu",
+    execute: async (i) => {
+      await i.reply(
+        `${i.user} clicked the option with value: **${i.values[0]}**`
+      );
     },
-  ];
+  };
+
   buttonActions: ButtonAction[] = [
     {
       customId: "button1",
@@ -42,21 +41,7 @@ export class PingCommand implements ICommand {
       components: [
         new MessageActionRow().addComponents([
           new MessageSelectMenu()
-            .setCustomId(this.selectMenuActions[0].customId)
-            .addOptions([
-              {
-                label: "First Option",
-                description: "Hello world",
-                value: "myValue1",
-              },
-              {
-                label: "Second Option",
-                description: "Hello world 2!!",
-                value: "myValue2",
-              },
-            ]),
-          new MessageSelectMenu()
-            .setCustomId(this.selectMenuActions[1]?.customId ?? "secondone")
+            .setCustomId(this.selectMenuAction.customId)
             .addOptions([
               {
                 label: "First Option",

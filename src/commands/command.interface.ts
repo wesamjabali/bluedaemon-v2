@@ -13,7 +13,7 @@ export interface ICommand {
   readonly default_permission: boolean;
   readonly permissions?: ApplicationCommandPermissionData[];
   readonly buttonActions?: ButtonAction[];
-  readonly selectMenuActions?: SelectMenuAction[];
+  readonly selectMenuAction?: SelectMenuAction;
 
   execute(interaction: CommandInteraction): void;
 }
