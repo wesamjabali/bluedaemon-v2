@@ -8,7 +8,9 @@ export class SayCommand implements ICommand {
   name = "say";
   description = "Have me repeat what you say";
   default_permission = false;
-  permissions: ApplicationCommandPermissionData[] = [{ type: "ROLE", id: "883426092927569930", permission: true }];
+  permissions: ApplicationCommandPermissionData[] = [
+    { type: "ROLE", id: "883426092927569930", permission: true },
+  ];
 
   options: CommandOption[] = [
     {
@@ -20,8 +22,6 @@ export class SayCommand implements ICommand {
   ];
 
   public async execute(interaction: CommandInteraction): Promise<void> {
-    await interaction.reply(
-      `${interaction.options.getString("repeat", true)}`
-    );
+    await interaction.reply(`${interaction.options.getString("repeat", true)}`);
   }
 }

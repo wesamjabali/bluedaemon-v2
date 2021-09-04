@@ -1,3 +1,5 @@
+import { ButtonAction } from "../buttons/ButtonAction.service";
+import { SelectMenuAction } from "../selectMenus/SelectMenu.service";
 import { ApplicationCommandOptionType } from "discord-api-types";
 import {
   ApplicationCommandPermissionData,
@@ -10,6 +12,8 @@ export interface ICommand {
   readonly options?: CommandOption[];
   readonly default_permission: boolean;
   readonly permissions?: ApplicationCommandPermissionData[];
+  readonly buttonActions?: ButtonAction[];
+  readonly selectMenuActions?: SelectMenuAction[];
 
   execute(interaction: CommandInteraction): void;
 }
