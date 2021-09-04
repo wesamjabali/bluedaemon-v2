@@ -22,7 +22,7 @@ export class InteractionCreateHandler implements IEventHandler {
       if (button && interaction.channel) {
         button.execute(interaction);
       } else {
-        interaction.update(
+        interaction.reply(
           `Button with customId \`${interaction.customId}\` not implemented.`
         );
       }

@@ -1,4 +1,4 @@
-import { CommandOption, ICommand } from "./command.interface";
+import { CommandOption, ICommand } from "../command.interface";
 import {
   ApplicationCommandPermissionData,
   CommandInteraction,

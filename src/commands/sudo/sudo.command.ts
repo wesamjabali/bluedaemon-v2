@@ -1,10 +1,10 @@
 import { CommandInteraction } from "discord.js";
-import { PingCommand, SayCommand } from ".";
+import { PingCommand, SayCommand } from "..";
 import {
   CommandOption,
   CommandPermission,
   ICommand,
-} from "./command.interface";
+} from "../command.interface";
 
 export class SudoCommand implements ICommand {
   name = "sudo";
