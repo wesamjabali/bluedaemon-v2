@@ -1,5 +1,5 @@
-import { ButtonAction } from "../buttons/buttonAction.service";
-import { SelectMenuAction } from "../selectMenus/selectMenuAction.service";
+import { ButtonAction } from "../buttons/buttonAction";
+import { SelectMenuAction } from "../selectMenus/selectMenuAction";
 import { ApplicationCommandOptionType } from "discord-api-types";
 import {
   ApplicationCommandPermissionData,

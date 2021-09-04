@@ -1,5 +1,5 @@
-import { ButtonAction } from "../../buttons/buttonAction.service";
-import { SelectMenuAction } from "../../selectMenus/selectMenuAction.service";
+import { ButtonAction } from "../../buttons/buttonAction";
+import { SelectMenuAction } from "../../selectMenus/selectMenuAction";
 import { CommandInteraction } from "discord.js";
 import { ICommand } from "../command.interface";
 import {

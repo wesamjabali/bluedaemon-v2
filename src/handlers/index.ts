@@ -1,5 +1,5 @@
 import { IEventHandler } from "./eventHandler";
-import { InteractionCreateHandler } from "./interactionCreate";
+import { InteractionCreateHandler } from "./interactionCreate.handler";
 import { ReadyHandler } from "./ready.handler";
 
 const handlers: IEventHandler[] = [
