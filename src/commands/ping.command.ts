@@ -1,4 +1,4 @@
-import { ButtonAction } from "../buttons/ButtonAction.service";
+import { ButtonAction } from "../buttons/buttonAction.service";
 import {
   CommandInteraction,
   MessageActionRow,
@@ -6,7 +6,7 @@ import {
   MessageSelectMenu,
 } from "discord.js";
 import { ICommand } from "./command.interface";
-import { SelectMenuAction } from "../selectMenus/SelectMenu.service";
+import { SelectMenuAction } from "../selectMenus/selectMenuAction.service";
 
 export class PingCommand implements ICommand {
   name = "ping";

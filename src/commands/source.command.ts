@@ -1,4 +1,4 @@
-import { ButtonAction } from "@/buttons/ButtonAction.service";
+import { ButtonAction } from "@/buttons/buttonAction.service";
 import {
   CommandInteraction,
   Formatters,
