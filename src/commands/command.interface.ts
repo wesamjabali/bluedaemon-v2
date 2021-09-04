@@ -9,11 +9,14 @@ import {
 export interface ICommand {
   readonly name: string;
   readonly description: string;
-  readonly options?: CommandOption[];
   readonly default_permission: boolean;
+  mainInteraction?: CommandInteraction;
+
+  readonly options?: CommandOption[];
   readonly permissions?: ApplicationCommandPermissionData[];
+
   readonly buttonActions?: ButtonAction[];
-  readonly selectMenuAction?: SelectMenuAction;
+  readonly selectMenuActions?: SelectMenuAction[];
 
   execute(interaction: CommandInteraction): void;
 }
@@ -29,13 +32,15 @@ export type CommandOption = {
   name?: string;
   description?: string;
   required?: boolean;
-  choices?: [name: string, value: string | number][];
+  choices?: CommandOptionChoice[];
   subCommands?: ICommand[];
-  subCommandGroups?: {
-    name: string;
-    description: string;
-    subCommands: ICommand[];
-  }[];
+  subCommandGroups?: SubCommandGroup[];
 };
 
 export type CommandOptionTypeString = keyof typeof ApplicationCommandOptionType;
+export type CommandOptionChoice = [name: string, value: string | number];
+export type SubCommandGroup = {
+  name: string;
+  description: string;
+  subCommands: ICommand[];
+};

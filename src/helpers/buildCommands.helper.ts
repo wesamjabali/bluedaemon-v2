@@ -11,7 +11,7 @@ import {
   SlashCommandSubcommandGroupBuilder,
 } from "@discordjs/builders";
 import { registerButtons } from "../buttons";
-import { registerSelectMenu } from "../selectMenus";
+import { registerSelectMenus } from "../selectMenus";
 
 export class BuildCommands {
   public async execute(): Promise<void> {
@@ -26,7 +26,7 @@ export class BuildCommands {
       );
 
       registerButtons(command.buttonActions ?? []);
-      registerSelectMenu(command.selectMenuAction);
+      registerSelectMenus(command.selectMenuActions ?? []);
     });
 
     let allSentApplicationCommands: ApplicationCommand[] = [];

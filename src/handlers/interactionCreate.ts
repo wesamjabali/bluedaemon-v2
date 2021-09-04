@@ -10,13 +10,17 @@ export class InteractionCreateHandler implements IEventHandler {
   public async onEvent(interaction: Interaction) {
     if (interaction.isCommand()) {
       const command = commands.find((c) => c.name === interaction.commandName);
-      command?.execute(interaction);
+      if (command) {
+        command.execute(interaction);
+      } else {
+        console.error("ERROR: Unknown command called.");
+      }
     }
 
     if (interaction.isButton()) {
       const button = buttons.find((b) => b.customId === interaction.customId);
-      if (button) {
-        button?.execute(interaction);
+      if (button && interaction.channel) {
+        button.execute(interaction);
       } else {
         interaction.update(
           `Button with customId \`${interaction.customId}\` not implemented.`
