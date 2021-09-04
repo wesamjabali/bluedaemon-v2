@@ -1,4 +1,11 @@
-import { ClientEvents, Interaction } from "discord.js";
+import {
+  ClientEvents,
+  Interaction,
+  Message,
+  MessageActionRow,
+  MessageButton,
+  MessageSelectMenu,
+} from "discord.js";
 import { IEventHandler } from "./eventHandler";
 import { commands } from "../commands";
 import { buttons } from "../buttons";
@@ -22,8 +29,24 @@ export class InteractionCreateHandler implements IEventHandler {
       if (button && interaction.channel) {
         button.execute(interaction);
       } else {
+        const rowComponent = (interaction.message as Message).components.find(
+          (row) =>
+            row.components.find((c) => c.customId === interaction.customId)
+        );
+
+        const buttonComponent = rowComponent?.components.find(
+          (c) => c.customId === interaction.customId
+        );
+
+        if (buttonComponent) {
+          (buttonComponent as MessageButton).setDisabled(true);
+          (interaction.message as Message).edit({
+            components: interaction.message.components as MessageActionRow[],
+          });
+        }
+
         interaction.reply(
-          `Button with customId \`${interaction.customId}\` not implemented.`
+          `Button with customId \`${interaction.customId}\` not implemented, ${interaction.user}.`
         );
       }
     }
@@ -36,8 +59,24 @@ export class InteractionCreateHandler implements IEventHandler {
       if (selectMenu) {
         selectMenu.execute(interaction);
       } else {
-        interaction.update(
-          `Select Menu with customId \`${interaction.customId}\` not implemented.`
+        const rowComponent = (interaction.message as Message).components.find(
+          (row) =>
+            row.components.find((c) => c.customId === interaction.customId)
+        );
+
+        const selectMenuComponent = rowComponent?.components.find(
+          (c) => c.customId === interaction.customId
+        );
+
+        if (selectMenuComponent) {
+          (selectMenuComponent as MessageSelectMenu).setDisabled(true);
+          (interaction.message as Message).edit({
+            components: interaction.message.components as MessageActionRow[],
+          });
+        }
+
+        interaction.reply(
+          `Select Menu with customId \`${interaction.customId}\` not implemented, ${interaction.user}.`
         );
       }
     }
