@@ -22,7 +22,7 @@ export class InteractionCreateHandler implements IEventHandler {
       } else {
         console.error(
           `ERROR: Unknown command called: "/${interaction.commandName}"\
-\            If this is a subcommand/group, make sure to execute the correct subcommand!`
+If this is a subcommand/group, make sure to execute the correct subcommand!`
         );
       }
     }

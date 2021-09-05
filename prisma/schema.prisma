@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -11,28 +8,39 @@ generator client {
 }
 
 model Guild {
-  id                      Int     @id @default(autoincrement())
-  guildId                 String  @unique
-  currentQuarter          String?
+  id                      Int      @id @default(autoincrement())
+  guildId                 String   @unique
+  currentQuarter          Quarter? @relation("GuildCurrentQuarter", fields: [currentQuarterName], references: [name])
+  currentQuarterName      String?
   countingChannelId       String?
   courseRequestsChannelId String?
   loggingChannelId        String?
 
-  Course Course[]
+  Course Course[] @relation("CourseGuild")
 }
 
 model Course {
+  id                Int          @id @default(autoincrement())
+  guild             Guild        @relation("CourseGuild", fields: [guildId], references: [guildId])
+  guildId           String
+  courseCodePrefix  String
+  courseCodeNumber  String
+  courseCodeSection String?
+  description       String?
+  quarter           Quarter      @relation("CourseQuarter", fields: [quarterName], references: [name])
+  quarterName       String
+  roleId            String       @unique
+  channelId         String
+  category          Boolean      @default(false)
+  owner             String?
+  password          String?
+  aliases String[] 
+}
+
+model Quarter {
   id                        Int      @id @default(autoincrement())
-  guild                     Guild    @relation(fields: [guildId], references: [guildId])
-  guildId                   String
-  courseCodePrefix          String
-  courseCodeNumber          String
-  courseCodeSection         String?
-  description               String
+  name                      String   @unique
   quarterCategoryChannelIds String[]
-  roleId                    String
-  channelId                 String
-  category                  Boolean  @default(false)
-  categoryOwner             String?
-  password                  String?
+  Course                    Course[] @relation("CourseQuarter")
+  Guild                     Guild[]  @relation("GuildCurrentQuarter")
 }
