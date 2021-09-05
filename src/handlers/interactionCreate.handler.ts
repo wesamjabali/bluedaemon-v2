@@ -17,10 +17,13 @@ export class InteractionCreateHandler implements IEventHandler {
   public async onEvent(interaction: Interaction) {
     if (interaction.isCommand()) {
       const command = commands.find((c) => c.name === interaction.commandName);
-      if (command) {
+      if (command?.execute) {
         command.execute(interaction);
       } else {
-        console.error("ERROR: Unknown command called.");
+        console.error(
+          `ERROR: Unknown command called: "/${interaction.commandName}"\
+\            If this is a subcommand/group, make sure to execute the correct subcommand!`
+        );
       }
     }
 

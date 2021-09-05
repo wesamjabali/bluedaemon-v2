@@ -11,7 +11,7 @@ export class ConfigService {
       token: <string>process.env.CLIENT_TOKEN,
       environment: "development",
       clientId: "820141085014753321",
-      devGuildId: "753687465784770630",
+      devGuildId: "875779544521523250",
     };
   }
 }

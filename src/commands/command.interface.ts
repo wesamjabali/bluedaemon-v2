@@ -10,10 +10,9 @@ export interface ICommand {
   readonly name: string;
   readonly description: string;
   readonly default_permission: boolean;
-  mainInteraction?: CommandInteraction;
 
   readonly options?: CommandOption[];
-  readonly permissions?: ApplicationCommandPermissionData[];
+  readonly permissions?: CommandOptionPermission[];
 
   readonly buttonActions?: ButtonAction[];
   readonly selectMenuActions?: SelectMenuAction[];
@@ -39,6 +38,7 @@ export type CommandOption = {
 
 export type CommandOptionTypeString = keyof typeof ApplicationCommandOptionType;
 export type CommandOptionChoice = [name: string, value: string | number];
+export type CommandOptionPermission = ApplicationCommandPermissionData;
 export type SubCommandGroup = {
   name: string;
   description: string;

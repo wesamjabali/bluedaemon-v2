@@ -40,6 +40,12 @@ export const defaultComponents: MessageActionRow[] = [
       },
     ]),
   ]),
+  new MessageActionRow().addComponents([
+    new MessageButton()
+      .setCustomId("test3")
+      .setStyle("DANGER")
+      .setLabel("Another Unimplemented Button"),
+  ]),
 ];
 
 export async function testButton(interaction: ButtonInteraction) {

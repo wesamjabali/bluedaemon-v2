@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Guild {
+  id                      Int     @id @default(autoincrement())
+  guildId                 String  @unique
+  currentQuarter          String?
+  countingChannelId       String?
+  courseRequestsChannelId String?
+  loggingChannelId        String?
+
+  Course Course[]
+}
+
+model Course {
+  id                        Int      @id @default(autoincrement())
+  guild                     Guild    @relation(fields: [guildId], references: [guildId])
+  guildId                   String
+  courseCodePrefix          String
+  courseCodeNumber          String
+  courseCodeSection         String?
+  description               String
+  quarterCategoryChannelIds String[]
+  roleId                    String
+  channelId                 String
+  category                  Boolean  @default(false)
+  categoryOwner             String?
+  password                  String?
+}

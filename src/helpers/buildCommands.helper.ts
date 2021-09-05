@@ -95,6 +95,8 @@ function getCommandBuilder(
 
   if (isSubCommand) {
     newCommand = new SlashCommandSubcommandBuilder();
+    registerButtons(command.buttonActions ?? []);
+    registerSelectMenus(command.selectMenuActions ?? []);
   } else {
     newCommand = new SlashCommandBuilder();
     newCommand.setDefaultPermission(command.default_permission ?? true);
@@ -146,7 +148,7 @@ function addGenericCommandOption(
         newCommand = newCommand as SlashCommandBuilder;
         newCommand.addSubcommand(
           <SlashCommandSubcommandBuilder>(
-            getCommandBuilder(currentSubCommand, false)
+            getCommandBuilder(currentSubCommand, true)
           )
         );
       }
