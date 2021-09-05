@@ -185,9 +185,10 @@ export class CreateCourseCommand implements ICommand {
       await i.reply(`${courseChannel} created!`);
     }
     //
-    /* Create course category */
-    //
 
+    /* Create course category */
+
+    //
     if (courseCategoryOption) {
       courseChannel = await i.guild?.channels.create(courseName, {
         type: "GUILD_CATEGORY",

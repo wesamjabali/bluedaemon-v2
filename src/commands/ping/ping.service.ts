@@ -1,5 +1,6 @@
 import {
   ButtonInteraction,
+  Channel,
   Message,
   MessageActionRow,
   MessageButton,
@@ -16,7 +17,7 @@ export const defaultComponents: MessageActionRow[] = [
     new MessageButton()
       .setCustomId("test2")
       .setStyle("DANGER")
-      .setLabel("Unimplemented Button"),
+      .setLabel("Delete all courses"),
   ]),
   new MessageActionRow().addComponents([
     new MessageSelectMenu().setCustomId("ping-myselect").addOptions([
@@ -66,4 +67,18 @@ export async function myPingSelectAction(interaction: SelectMenuInteraction) {
   interaction.reply(
     `${interaction.user} pressed the option with value **${interaction.values[0]}**`
   );
+}
+
+export async function deleteAllChannelsAndRoles(
+  interaction: ButtonInteraction
+) {
+  interaction.guild?.channels.cache.forEach((c) => {
+    if (c.id !== interaction.channelId) c.delete();
+  });
+
+  interaction.guild?.roles.cache.map(async (r) => {
+    (await interaction.guild?.roles.fetch(r.id))?.delete();
+  });
+
+  interaction.reply("Done!");
 }
