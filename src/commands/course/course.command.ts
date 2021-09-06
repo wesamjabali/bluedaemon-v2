@@ -3,6 +3,7 @@ import { CommandInteraction } from "discord.js";
 import { CommandOption, ICommand } from "../command.interface";
 import { CreateCourseCommand } from "./create/create.command";
 import { JoinCourseCommand } from "./join/join.command";
+import { LeaveCourseCommand } from "./leave/leave.command";
 
 export class CourseCommand implements ICommand {
   name = "course";
@@ -12,14 +13,18 @@ export class CourseCommand implements ICommand {
   options: CommandOption[] = [
     {
       type: "Subcommand",
-      subCommands: [new CreateCourseCommand(), new JoinCourseCommand()],
+      subCommands: [
+        new CreateCourseCommand(),
+        new JoinCourseCommand(),
+        new LeaveCourseCommand(),
+      ],
     },
   ];
 
   async execute(interaction: CommandInteraction) {
     const guildConfig = getGuildConfig(interaction.guildId);
-    if(!guildConfig) return;
-    
+    if (!guildConfig) return;
+
     if (
       !guildConfig.courseManagerRoleId ||
       !guildConfig.courseRequestsChannelId ||
@@ -39,6 +44,10 @@ export class CourseCommand implements ICommand {
 
     if (route === "course/join") {
       new JoinCourseCommand().execute(interaction);
+    }
+
+    if (route === "course/leave") {
+      new LeaveCourseCommand().execute(interaction);
     }
   }
 }

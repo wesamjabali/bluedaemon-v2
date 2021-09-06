@@ -37,7 +37,7 @@ export class SetupCommand implements ICommand {
     if (courseRequestsChannel.type !== "GUILD_TEXT") {
       errorResponse = `${errorResponse}\nCourse requests channel must be text channel.`;
     }
-    if (countingChannel?.type !== "GUILD_TEXT") {
+    if (countingChannel && countingChannel.type !== "GUILD_TEXT") {
       errorResponse = `${errorResponse}\nCounting channel must be text channel.`;
     }
 

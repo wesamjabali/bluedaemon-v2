@@ -11,6 +11,7 @@ import { normalizeCourseCode } from "../../../helpers/normalizeCourseCode.helper
 import { Course } from "@prisma/client";
 import { joinCommandOptions } from "./join.options";
 import { getRoleFromCourseName } from "../../../helpers/getRoleFromCourseName.helper";
+import { getGuildConfig } from "../../../config/guilds.config";
 
 export class JoinCourseCommand implements ICommand {
   name = "join";
@@ -20,6 +21,8 @@ export class JoinCourseCommand implements ICommand {
   options: CommandOption[] = joinCommandOptions;
 
   async execute(i: CommandInteraction) {
+    const guildConfig = getGuildConfig(i.guildId);
+    if (!guildConfig) return;
     const possibleAlias = normalizeCourseCode(
       i.options.getString("course", true)
     ).courseName;
@@ -42,6 +45,7 @@ export class JoinCourseCommand implements ICommand {
 
     const courseRole = await getRoleFromCourseName(
       possibleAlias,
+      guildConfig.currentQuarterName as string,
       i.guildId as string
     );
 
