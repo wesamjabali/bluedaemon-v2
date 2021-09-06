@@ -1,3 +1,4 @@
+import { getGuildConfig } from "../../config/guilds.config";
 import { CommandInteraction } from "discord.js";
 import { CommandOption, ICommand } from "../command.interface";
 import { CreateCourseCommand } from "./create/create.command";
@@ -16,6 +17,18 @@ export class CourseCommand implements ICommand {
   ];
 
   async execute(interaction: CommandInteraction) {
+    const guildConfig = getGuildConfig(interaction.guildId);
+    if (
+      !guildConfig?.courseManagerRoleId ||
+      !guildConfig.courseRequestsChannelId ||
+      !guildConfig.moderatorRoleId ||
+      !guildConfig.currentQuarterName ||
+      !guildConfig.loggingChannelId
+    ) {
+      interaction.reply("Setup your server with `/sudo setup`");
+      return;
+    }
+
     const route = `course/${interaction.options.getSubcommand()}`;
 
     if (route === "course/create") {
