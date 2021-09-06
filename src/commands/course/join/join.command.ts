@@ -22,21 +22,21 @@ export class JoinCourseCommand implements ICommand {
 
   async execute(i: CommandInteraction) {
     const guildConfig = getGuildConfig(i.guildId);
-    if (!guildConfig) return;
+    if (!guildConfig?.currentQuarterId || !i.guildId) return;
     const possibleAlias = normalizeCourseCode(
       i.options.getString("course", true)
     ).courseName;
     const password = i.options.getString("password", false);
 
     let dbCourse = await prisma.course.findFirst({
-      where: { aliases: { has: possibleAlias } },
+      where: {
+        AND: {
+          aliases: { has: possibleAlias },
+          guildId: i.guildId,
+          quarterId: guildConfig.currentQuarterId,
+        },
+      },
     });
-
-    if (!dbCourse) {
-      dbCourse = await prisma.course.findFirst({
-        where: { aliases: { has: possibleAlias } },
-      });
-    }
 
     if (!dbCourse) {
       i.reply(`${possibleAlias} doesn't exist this quarter.`);
@@ -44,7 +44,7 @@ export class JoinCourseCommand implements ICommand {
     }
 
     const dbQuarter = await prisma.quarter.findFirst({
-      where: { id: guildConfig.currentQuarterId! },
+      where: { id: guildConfig.currentQuarterId },
     });
 
     if (!dbQuarter) return;
@@ -52,7 +52,7 @@ export class JoinCourseCommand implements ICommand {
     const courseRole = await getRoleFromCourseName(
       possibleAlias,
       dbQuarter,
-      i.guildId as string
+      i.guildId
     );
 
     if (!courseRole) {

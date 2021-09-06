@@ -25,6 +25,7 @@ export class LeaveCourseCommand implements ICommand {
     const guildConfig = getGuildConfig(i.guildId);
     if (!guildConfig || !i.guildId) return;
     const quarter = i.options.getString("quarter");
+    if(!guildConfig.currentQuarterId) return;
 
     const dbQuarter = quarter
       ? ((await prisma.quarter.findFirst({
@@ -33,8 +34,7 @@ export class LeaveCourseCommand implements ICommand {
       : ((await prisma.quarter.findFirst({
           where: {
             AND: {
-              id: guildConfig.currentQuarterId as number,
-              Guild: { guildId: i.guildId },
+              id: guildConfig.currentQuarterId,
             },
           },
         })) as Quarter);
