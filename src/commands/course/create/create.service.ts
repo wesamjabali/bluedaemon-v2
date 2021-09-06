@@ -24,10 +24,24 @@ export async function createCourse(
   if (!guildConfig?.currentQuarterName || !guild.id) {
     return "Cache failed to load.";
   }
+  let aliasRemoved = false;
+
   const { courseCodePrefix, courseCodeNumber, courseCodeSection, courseName } =
     normalizeCourseCode(courseCode);
   if (!courseCodePrefix || !courseCodeNumber) {
     return `Invalid course name, please use this template: **CSC300-401**`;
+  }
+
+  if (linkedNameOption) {
+    const {
+      courseCodePrefix: aliasCourseCodePrefix,
+      courseCodeNumber: aliasCourseCodeNumber,
+    } = normalizeCourseCode(linkedNameOption);
+
+    if (!aliasCourseCodePrefix || !aliasCourseCodeNumber) {
+      aliasRemoved = true;
+      linkedNameOption = null;
+    }
   }
 
   const courseAliases = linkedNameOption
@@ -241,5 +255,12 @@ export async function createCourse(
   });
   //
 
-  return doneString;
+  return (
+    doneString +
+    `${
+      aliasRemoved
+        ? `\n\`WARNING: Invalid linked course name. Created course without linked name.\``
+        : ``
+    }`
+  );
 }

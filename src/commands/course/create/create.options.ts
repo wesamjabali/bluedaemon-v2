@@ -1,4 +1,4 @@
-import { CommandOption } from "@/commands/command.interface";
+import { CommandOption } from "../../../commands/command.interface";
 
 export const createCommandOptions: CommandOption[] = [
   {

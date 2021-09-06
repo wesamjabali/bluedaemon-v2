@@ -9,26 +9,15 @@ import {
 import { CommandOption, ICommand } from "../../command.interface";
 import { normalizeCourseCode } from "../../../helpers/normalizeCourseCode.helper";
 import { Course } from "@prisma/client";
+import { joinCommandOptions } from "./join.options";
+import { getRoleFromCourseName } from "../../../helpers/getRoleFromCourseName.helper";
 
 export class JoinCourseCommand implements ICommand {
   name = "join";
   description = "Join a course";
   default_permission = true;
 
-  options: CommandOption[] = [
-    {
-      type: "String",
-      name: "course",
-      description: "ex: CSC300-401 - Name of the course you'd like to join.",
-      required: true,
-    },
-    {
-      type: "String",
-      name: "password",
-      description: "Password given to you by your professor.",
-      required: false,
-    },
-  ];
+  options: CommandOption[] = joinCommandOptions;
 
   async execute(i: CommandInteraction) {
     const possibleAlias = normalizeCourseCode(
@@ -51,8 +40,9 @@ export class JoinCourseCommand implements ICommand {
       return;
     }
 
-    const courseRole = i.guild?.roles.cache.find(
-      (role) => role.id === dbCourse!.roleId
+    const courseRole = await getRoleFromCourseName(
+      possibleAlias,
+      i.guildId as string
     );
 
     if (!courseRole) {

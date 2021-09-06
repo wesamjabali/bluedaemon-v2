@@ -18,8 +18,10 @@ export class CourseCommand implements ICommand {
 
   async execute(interaction: CommandInteraction) {
     const guildConfig = getGuildConfig(interaction.guildId);
+    if(!guildConfig) return;
+    
     if (
-      !guildConfig?.courseManagerRoleId ||
+      !guildConfig.courseManagerRoleId ||
       !guildConfig.courseRequestsChannelId ||
       !guildConfig.moderatorRoleId ||
       !guildConfig.currentQuarterName ||

@@ -9,22 +9,6 @@ export class ReadyHandler implements IEventHandler {
   public once = true;
   public readonly EVENT_NAME: keyof ClientEvents = "ready";
   public onEvent = async () => {
-    try {
-      await prisma.quarter.create({
-        data: { name: "autumn21", quarterCategoryChannelIds: [] },
-      });
-    } catch {}
-    try {
-      await prisma.guild.create({
-        data: {
-          guildId: "875779544521523250",
-          currentQuarterName: "autumn21",
-          courseManagerRoleId: "883939947516682281",
-          moderatorRoleId: "883939947516682281",
-        },
-      });
-    } catch {}
-
     /* Create Guildconfig Cache */
     guildConfigsCache.push(...(await prisma.guild.findMany()));
 

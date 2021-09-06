@@ -1,10 +1,11 @@
 import { CommandInteraction } from "discord.js";
-import { PingCommand, SayCommand } from "..";
+import { PingCommand, SayCommand } from "../index";
 import {
   CommandOption,
   CommandPermission,
   ICommand,
 } from "../command.interface";
+import { SetupCommand } from "../setup/setup.command";
 
 export class SudoCommand implements ICommand {
   name = "sudo";
@@ -20,7 +21,7 @@ export class SudoCommand implements ICommand {
         {
           name: "meta",
           description: "Meta Commands",
-          subCommands: [new PingCommand()],
+          subCommands: [new PingCommand(), new SetupCommand()],
         },
         {
           name: "course",
@@ -40,6 +41,10 @@ export class SudoCommand implements ICommand {
 
     if (route === "course/say") {
       await new SayCommand().execute(interaction);
+    }
+
+    if (route === "meta/setup") {
+      await new SetupCommand().execute(interaction);
     }
   }
 }
