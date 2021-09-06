@@ -1,6 +1,7 @@
 import { CommandInteraction } from "discord.js";
 import { CommandOption, ICommand } from "../command.interface";
 import { CreateCourseCommand } from "./create/create.command";
+import { JoinCourseCommand } from "./join/join.command";
 
 export class CourseCommand implements ICommand {
   name = "course";
@@ -8,7 +9,10 @@ export class CourseCommand implements ICommand {
   default_permission = true;
 
   options: CommandOption[] = [
-    { type: "Subcommand", subCommands: [new CreateCourseCommand()] },
+    {
+      type: "Subcommand",
+      subCommands: [new CreateCourseCommand(), new JoinCourseCommand()],
+    },
   ];
 
   async execute(interaction: CommandInteraction) {
@@ -16,6 +20,10 @@ export class CourseCommand implements ICommand {
 
     if (route === "course/create") {
       new CreateCourseCommand().execute(interaction);
+    }
+
+    if (route === "course/join") {
+      new JoinCourseCommand().execute(interaction);
     }
   }
 }

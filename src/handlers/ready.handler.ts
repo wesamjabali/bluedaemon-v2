@@ -16,7 +16,12 @@ export class ReadyHandler implements IEventHandler {
     } catch {}
     try {
       await prisma.guild.create({
-        data: { guildId: "875779544521523250", currentQuarterName: "autumn21" },
+        data: {
+          guildId: "875779544521523250",
+          currentQuarterName: "autumn21",
+          courseManagerRoleId: "883939947516682281",
+          moderatorRoleId: "883939947516682281",
+        },
       });
     } catch {}
 
