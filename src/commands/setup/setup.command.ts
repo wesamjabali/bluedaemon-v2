@@ -46,14 +46,24 @@ export class SetupCommand implements ICommand {
       return;
     }
 
+    let existingDbQuarter = await prisma.quarter.findFirst({
+      where: { AND: { name: currentQuarter, Guild: { guildId: i.guildId } } },
+    });
+
+    if (!existingDbQuarter) {
+      existingDbQuarter = await prisma.quarter.create({
+        data: {
+          name: currentQuarter,
+          Guild: { connect: { guildId: i.guildId } },
+        },
+      });
+    }
+
     await prisma.guild.update({
       where: { guildId: i.guildId },
       data: {
         currentQuarter: {
-          connectOrCreate: {
-            where: { name: currentQuarter },
-            create: { name: currentQuarter, quarterCategoryChannelIds: [] },
-          },
+          connect: { id: existingDbQuarter.id },
         },
         courseRequestsChannelId: courseRequestsChannel.id,
         loggingChannelId: loggingChannel.id,
@@ -70,8 +80,7 @@ export class SetupCommand implements ICommand {
     }
 
     await resetCacheForGuild(i.guildId).catch((e) => {
-      i.reply(e);
-      return;
+      console.log(e);
     });
 
     await i.reply("Successfully set up server!");

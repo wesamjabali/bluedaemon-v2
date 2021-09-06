@@ -8,6 +8,7 @@ import {
   User,
 } from "discord.js";
 import { getGuildConfig } from "../../../config/guilds.config";
+import { Quarter } from ".prisma/client";
 
 export async function createCourse(
   guild: Guild | null,
@@ -21,7 +22,7 @@ export async function createCourse(
 ): Promise<string> {
   if (!guild) return "Guild not found";
   const guildConfig = getGuildConfig(guild.id);
-  if (!guildConfig?.currentQuarterName || !guild.id) {
+  if (!guildConfig?.currentQuarterId || !guild.id) {
     return "Cache failed to load.";
   }
   let aliasRemoved = false;
@@ -49,16 +50,25 @@ export async function createCourse(
     : [courseName];
   let courseChannel;
   let doneString: string = "";
-  quarter = quarter
-    ? quarter.toLowerCase()
-    : guildConfig.currentQuarterName.toLowerCase();
+  const dbQuarter = quarter
+    ? ((await prisma.quarter.findFirst({
+        where: { AND: { name: quarter, Guild: { guildId: guild.id } } },
+      })) as Quarter)
+    : ((await prisma.quarter.findFirst({
+        where: {
+          AND: {
+            id: guildConfig.currentQuarterId,
+            Guild: { guildId: guild.id },
+          },
+        },
+      })) as Quarter);
 
   if (
     !!(await prisma.course.findFirst({
       where: {
         aliases: { hasSome: courseAliases },
         guildId: guild.id,
-        quarterName: quarter,
+        quarterId: dbQuarter.id,
       },
     }))
   ) {
@@ -66,14 +76,11 @@ export async function createCourse(
   }
 
   //
-  let dbQuarter = await prisma.quarter.findFirst({
-    where: { name: quarter, Guild: { every: { guildId: guild.id } } },
-  });
 
   if (!dbQuarter) {
     return `That quarter doesn't exist in the database. Available quarters are: \`\`\`${(
       await prisma.quarter.findMany({
-        where: { Guild: { every: { guildId: guild.id } } },
+        where: { Guild: { guildId: guild.id } },
         select: { name: true },
       })
     )
@@ -84,7 +91,7 @@ export async function createCourse(
 
   //
   const courseRole = await guild.roles.create({
-    name: `${quarter}-${courseName}`,
+    name: `${dbQuarter.name}-${courseName}`,
     mentionable: false,
     reason: "Created by BlueDaemon as a course role.",
   });
@@ -109,7 +116,7 @@ export async function createCourse(
     }
 
     if (!category) {
-      category = await guild.channels.create(quarter, {
+      category = await guild.channels.create(dbQuarter.name, {
         reason: "Created by BlueDaemon as a quarter category.",
         type: "GUILD_CATEGORY",
       });
@@ -119,7 +126,7 @@ export async function createCourse(
       }
 
       await prisma.quarter.update({
-        where: { name: quarter },
+        where: { id: dbQuarter.id },
         data: {
           quarterCategoryChannelIds: dbQuarter.quarterCategoryChannelIds.concat(
             [category?.id]
@@ -181,7 +188,7 @@ export async function createCourse(
 
   //
   if (courseCategoryOption) {
-    courseChannel = await guild.channels.create(`${quarter}-${courseName}`, {
+    courseChannel = await guild.channels.create(`${dbQuarter.name}-${courseName}`, {
       type: "GUILD_CATEGORY",
       permissionOverwrites: [
         { id: guild.id, deny: ["VIEW_CHANNEL"] },
@@ -243,7 +250,7 @@ export async function createCourse(
       channelId: courseChannel?.id as string,
       description: courseDescription,
       quarter: {
-        connect: { name: quarter },
+        connect: { id: dbQuarter.id },
       },
       category: courseCategoryOption ?? false,
       owner: courseOwner?.id,

@@ -23,16 +23,16 @@ export class CourseCommand implements ICommand {
 
   async execute(interaction: CommandInteraction) {
     const guildConfig = getGuildConfig(interaction.guildId);
-    if (!guildConfig) return;
 
     if (
+      !guildConfig ||
       !guildConfig.courseManagerRoleId ||
       !guildConfig.courseRequestsChannelId ||
       !guildConfig.moderatorRoleId ||
-      !guildConfig.currentQuarterName ||
+      !guildConfig.currentQuarterId ||
       !guildConfig.loggingChannelId
     ) {
-      interaction.reply("Setup your server with `/sudo setup`");
+      interaction.reply("Setup your server with `/sudo meta setup`");
       return;
     }
 

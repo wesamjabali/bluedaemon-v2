@@ -5,6 +5,7 @@ import { CommandOption, ICommand } from "../../command.interface";
 import { getRoleFromCourseName } from "../../../helpers/getRoleFromCourseName.helper";
 import { getGuildConfig } from "../../../config/guilds.config";
 import { normalizeCourseCode } from "../../../helpers/normalizeCourseCode.helper";
+import { Quarter } from ".prisma/client";
 
 export class LeaveCourseCommand implements ICommand {
   name = "leave";
@@ -21,41 +22,47 @@ export class LeaveCourseCommand implements ICommand {
   ];
 
   async execute(i: CommandInteraction) {
-    const quarter =
-      i.options.getString("quarter") ??
-      getGuildConfig(i.guildId)?.currentQuarterName;
+    const guildConfig = getGuildConfig(i.guildId);
+    if (!guildConfig || !i.guildId) return;
+    const quarter = i.options.getString("quarter");
 
-    if (!quarter || !i.guildId) return;
+    const dbQuarter = quarter
+      ? ((await prisma.quarter.findFirst({
+          where: { AND: { name: quarter, Guild: { guildId: i.guildId } } },
+        })) as Quarter)
+      : ((await prisma.quarter.findFirst({
+          where: {
+            AND: {
+              id: guildConfig.currentQuarterId as number,
+              Guild: { guildId: i.guildId },
+            },
+          },
+        })) as Quarter);
 
-    const validQuarter = !!(await prisma.quarter.findFirst({
-      where: { name: quarter, Guild: { every: { guildId: i.guildId } } },
-    }));
+    if (!i.guildId) return;
 
-    if (!validQuarter) {
+    if (!dbQuarter) {
       await i.reply(`${quarter} is not a valid quarter.`);
       return;
     }
     const courseName = normalizeCourseCode(i.options.getString("course", true));
     const courseRole = await getRoleFromCourseName(
       courseName.courseName,
-      quarter,
+      dbQuarter,
       i.guildId
-    ).catch((e) => {
-      i.reply(e);
-      return;
-    });
-    if (!courseRole) return;
+    );
+    if (!courseRole) return i.reply("courseRole not found");
 
     if (
       !(i.member?.roles as GuildMemberRoleManager).cache.find(
         (r) => r.id === courseRole.id
       )
     ) {
-      i.reply(`You're not in ${courseName.courseName} for quarter ${quarter}`);
+      i.reply(`You're not in ${courseName.courseName} for quarter ${dbQuarter.name}`);
       return;
     }
 
     await (i.member?.roles as GuildMemberRoleManager).remove(courseRole);
-    await i.reply(`You've left ${courseName} for quarter ${quarter}`);
+    await i.reply(`You've left ${courseName.courseName} for quarter ${dbQuarter.name}`);
   }
 }

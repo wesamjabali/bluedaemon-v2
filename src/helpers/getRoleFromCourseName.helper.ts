@@ -2,9 +2,10 @@ import { prisma } from "../prisma/prisma.service";
 import { Role } from "discord.js";
 import { client } from "../main";
 import { normalizeCourseCode } from "./normalizeCourseCode.helper";
+import { Quarter } from ".prisma/client";
 export async function getRoleFromCourseName(
   possibleAlias: string,
-  quarter: string,
+  dbQuarter: Quarter,
   guildId: string
 ): Promise<Role> {
   const guild = client.guilds.cache.find((g) => g.id === guildId);
@@ -16,7 +17,7 @@ export async function getRoleFromCourseName(
     where: {
       aliases: { has: possibleAlias },
       guildId: guildId,
-      quarterName: quarter,
+      quarterId: dbQuarter.id,
     },
   });
 
@@ -25,14 +26,14 @@ export async function getRoleFromCourseName(
       where: {
         aliases: { has: possibleAlias },
         guildId: guildId,
-        quarterName: quarter,
+        quarterId: dbQuarter.id,
       },
     });
   }
 
   if (!dbCourse) {
     return Promise.reject(
-      `${possibleAlias} doesn't exist for quarter ${quarter}.`
+      `${possibleAlias} doesn't exist for quarter ${dbQuarter.name}.`
     );
   }
 

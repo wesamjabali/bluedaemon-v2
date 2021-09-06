@@ -43,9 +43,15 @@ export class JoinCourseCommand implements ICommand {
       return;
     }
 
+    const dbQuarter = await prisma.quarter.findFirst({
+      where: { id: guildConfig.currentQuarterId! },
+    });
+
+    if (!dbQuarter) return;
+
     const courseRole = await getRoleFromCourseName(
       possibleAlias,
-      guildConfig.currentQuarterName as string,
+      dbQuarter,
       i.guildId as string
     );
 

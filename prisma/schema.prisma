@@ -10,8 +10,9 @@ generator client {
 model Guild {
   id                      Int      @id @default(autoincrement())
   guildId                 String   @unique
-  currentQuarter          Quarter? @relation("GuildCurrentQuarter", fields: [currentQuarterName], references: [name])
-  currentQuarterName      String?
+  guildOwnerId String
+  currentQuarter          Quarter? @relation("GuildCurrentQuarter", fields: [currentQuarterId], references: [id])
+  currentQuarterId      Int?
   countingChannelId       String?
   courseRequestsChannelId String?
   loggingChannelId        String?
@@ -30,8 +31,8 @@ model Course {
   courseCodeNumber  String
   courseCodeSection String?
   description       String?
-  quarter           Quarter      @relation("CourseQuarter", fields: [quarterName], references: [name])
-  quarterName       String
+  quarter           Quarter      @relation("CourseQuarter", fields: [quarterId], references: [id])
+  quarterId Int
   roleId            String       @unique
   channelId         String
   category          Boolean      @default(false)
@@ -42,8 +43,8 @@ model Course {
 
 model Quarter {
   id                        Int      @id @default(autoincrement())
-  name                      String   @unique
+  name                      String   
   quarterCategoryChannelIds String[]
   Course                    Course[] @relation("CourseQuarter")
-  Guild                     Guild[]  @relation("GuildCurrentQuarter")
+  Guild                     Guild?  @relation("GuildCurrentQuarter")
 }

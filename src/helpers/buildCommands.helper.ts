@@ -40,6 +40,12 @@ export class BuildCommands {
         }
       )) as ApplicationCommand[];
     } else {
+      if (
+        !client.guilds.cache.find((g) => g.id === config.envConfig.devGuildId)
+      ) {
+        console.log("Commands not built - bot is not in dev guild.");
+        return;
+      }
       allSentApplicationCommands = (await rest.put(
         Routes.applicationGuildCommands(
           config.envConfig.clientId,

@@ -10,10 +10,8 @@ import { SetupCommand } from "../setup/setup.command";
 export class SudoCommand implements ICommand {
   name = "sudo";
   description = "Run admin commands.";
-  default_permission = false;
-  permissions: CommandPermission[] = [
-    { id: "539910274698969088", type: "USER", permission: true },
-  ];
+  default_permission = true;
+
   options: CommandOption[] = [
     {
       type: "SubcommandGroup",
@@ -21,27 +19,22 @@ export class SudoCommand implements ICommand {
         {
           name: "meta",
           description: "Meta Commands",
-          subCommands: [new PingCommand(), new SetupCommand()],
-        },
-        {
-          name: "course",
-          description: "Course Commands",
-          subCommands: [new SayCommand()],
+          subCommands: [new SetupCommand()],
         },
       ],
     },
   ];
 
   public async execute(interaction: CommandInteraction): Promise<void> {
+    if (interaction.user.id !== interaction.guild?.ownerId) {
+      interaction.reply({
+        content: "Only the owner of the server can use sudo commands.",
+        ephemeral: true,
+      });
+      return;
+    }
+    
     const route = `${interaction.options.getSubcommandGroup()}/${interaction.options.getSubcommand()}`;
-
-    if (route === "meta/ping") {
-      await new PingCommand().execute(interaction);
-    }
-
-    if (route === "course/say") {
-      await new SayCommand().execute(interaction);
-    }
 
     if (route === "meta/setup") {
       await new SetupCommand().execute(interaction);
