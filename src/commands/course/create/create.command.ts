@@ -4,7 +4,6 @@ import {
   CommandOptionPermission,
   ICommand,
 } from "../../command.interface";
-import { getGuildConfig } from "../../../config/guilds.config";
 import { createCommandOptions } from "./create.options";
 import { createCourse } from "./create.service";
 

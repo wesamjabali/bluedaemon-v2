@@ -47,14 +47,14 @@ export class SetupCommand implements ICommand {
     }
 
     let existingDbQuarter = await prisma.quarter.findFirst({
-      where: { AND: { name: currentQuarter, Guild: { guildId: i.guildId } } },
+      where: { AND: { name: currentQuarter, guild: { guildId: i.guildId } } },
     });
 
     if (!existingDbQuarter) {
       existingDbQuarter = await prisma.quarter.create({
         data: {
           name: currentQuarter,
-          Guild: { connect: { guildId: i.guildId } },
+          guild: { connect: { guildId: i.guildId } },
         },
       });
     }

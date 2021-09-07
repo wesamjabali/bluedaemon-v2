@@ -10,41 +10,45 @@ generator client {
 model Guild {
   id                      Int      @id @default(autoincrement())
   guildId                 String   @unique
-  guildOwnerId String
+  guildOwnerId            String
   currentQuarter          Quarter? @relation("GuildCurrentQuarter", fields: [currentQuarterId], references: [id])
-  currentQuarterId      Int?
+  currentQuarterId        Int?
   countingChannelId       String?
   courseRequestsChannelId String?
   loggingChannelId        String?
-  moderatorRoleId String?
-  courseManagerRoleId String?
-  
+  moderatorRoleId         String?
+  courseManagerRoleId     String?
 
-  Course Course[] @relation("CourseGuild")
+
+  Course  Course[]  @relation("CourseGuild")
+  Quarter Quarter[] @relation("QuarterGuild")
 }
 
 model Course {
-  id                Int          @id @default(autoincrement())
-  guild             Guild        @relation("CourseGuild", fields: [guildId], references: [guildId])
+  id                Int      @id @default(autoincrement())
+  guild             Guild    @relation("CourseGuild", fields: [guildId], references: [guildId])
   guildId           String
   courseCodePrefix  String
   courseCodeNumber  String
   courseCodeSection String?
   description       String?
-  quarter           Quarter      @relation("CourseQuarter", fields: [quarterId], references: [id])
-  quarterId Int
-  roleId            String       @unique
+  quarter           Quarter  @relation("CourseQuarter", fields: [quarterId], references: [id])
+  quarterId         Int
+  roleId            String   @unique
   channelId         String
-  category          Boolean      @default(false)
+  category          Boolean  @default(false)
   owner             String?
   password          String?
-  aliases String[] 
+  aliases           String[]
 }
 
 model Quarter {
   id                        Int      @id @default(autoincrement())
-  name                      String   
+  name                      String
   quarterCategoryChannelIds String[]
-  Course                    Course[] @relation("CourseQuarter")
-  Guild                     Guild?  @relation("GuildCurrentQuarter")
+  guilId                    String
+  guild                     Guild    @relation("QuarterGuild", fields: [guilId], references: [guildId])
+
+  Course Course[] @relation("CourseQuarter")
+  Guild  Guild[]  @relation("GuildCurrentQuarter")
 }

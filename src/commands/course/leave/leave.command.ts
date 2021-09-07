@@ -29,7 +29,7 @@ export class LeaveCourseCommand implements ICommand {
 
     const dbQuarter = quarter
       ? ((await prisma.quarter.findFirst({
-          where: { AND: { name: quarter, Guild: { guildId: i.guildId } } },
+          where: { AND: { name: quarter, guild: { guildId: i.guildId } } },
         })) as Quarter)
       : ((await prisma.quarter.findFirst({
           where: {

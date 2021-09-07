@@ -8,7 +8,6 @@ import {
   User,
 } from "discord.js";
 import { getGuildConfig } from "../../../config/guilds.config";
-import { Quarter } from ".prisma/client";
 
 export async function createCourse(
   guild: Guild | null,
@@ -51,28 +50,28 @@ export async function createCourse(
   let courseChannel;
   let doneString: string = "";
   const dbQuarter = quarter
-    ? ((await prisma.quarter.findFirst({
-        where: { AND: { name: quarter, Guild: { guildId: guild.id } } },
-      })) as Quarter)
-    : ((await prisma.quarter.findFirst({
+    ? await prisma.quarter.findFirst({
+        where: { name: quarter, guild: { guildId: guild.id } },
+      })
+    : await prisma.quarter.findFirst({
         where: {
           AND: {
             id: guildConfig.currentQuarterId,
-            Guild: { guildId: guild.id },
           },
         },
-      })) as Quarter);
+      });
 
-  if (
-    !!(await prisma.course.findFirst({
-      where: {
-        aliases: { hasSome: courseAliases },
-        guildId: guild.id,
-        quarterId: dbQuarter.id,
-      },
-    }))
-  ) {
-    return `${courseName} already exists!`;
+  if (!dbQuarter) return `"${quarter}"" not a valid quarter`;
+
+  const existingCourse = await prisma.course.findFirst({
+    where: {
+      aliases: { hasSome: courseAliases },
+      guildId: guild.id,
+      quarterId: dbQuarter.id,
+    },
+  });
+  if (!!existingCourse) {
+    return `\`${existingCourse.aliases.join("/")}\` already exists!`;
   }
 
   //
@@ -80,7 +79,7 @@ export async function createCourse(
   if (!dbQuarter) {
     return `That quarter doesn't exist in the database. Available quarters are: \`\`\`${(
       await prisma.quarter.findMany({
-        where: { Guild: { guildId: guild.id } },
+        where: { guild: { guildId: guild.id } },
         select: { name: true },
       })
     )
@@ -180,7 +179,9 @@ export async function createCourse(
       return "Failed to create channel.";
     }
 
-    doneString = `${courseChannel} created!`;
+    doneString = `${courseAliases.join(
+      "/"
+    )} created! View it here: ${courseChannel}`;
   }
   //
 
@@ -188,34 +189,37 @@ export async function createCourse(
 
   //
   if (courseCategoryOption) {
-    courseChannel = await guild.channels.create(`${dbQuarter.name}-${courseName}`, {
-      type: "GUILD_CATEGORY",
-      permissionOverwrites: [
-        { id: guild.id, deny: ["VIEW_CHANNEL"] },
-        { id: courseRole.id, allow: ["VIEW_CHANNEL"] },
-        {
-          id: guildConfig.courseManagerRoleId as string,
-          allow: [
-            "VIEW_CHANNEL",
-            "MANAGE_CHANNELS",
-            "MANAGE_ROLES",
-            "MANAGE_THREADS",
-            "USE_PUBLIC_THREADS",
-          ],
-        },
-        {
-          id: guildConfig.moderatorRoleId as string,
-          allow: [
-            "VIEW_CHANNEL",
-            "MANAGE_CHANNELS",
-            "PRIORITY_SPEAKER",
-            "MANAGE_EMOJIS_AND_STICKERS",
-            "USE_PRIVATE_THREADS",
-            "USE_PUBLIC_THREADS",
-          ],
-        },
-      ],
-    });
+    courseChannel = await guild.channels.create(
+      `${dbQuarter.name}-${courseName}`,
+      {
+        type: "GUILD_CATEGORY",
+        permissionOverwrites: [
+          { id: guild.id, deny: ["VIEW_CHANNEL"] },
+          { id: courseRole.id, allow: ["VIEW_CHANNEL"] },
+          {
+            id: guildConfig.courseManagerRoleId as string,
+            allow: [
+              "VIEW_CHANNEL",
+              "MANAGE_CHANNELS",
+              "MANAGE_ROLES",
+              "MANAGE_THREADS",
+              "USE_PUBLIC_THREADS",
+            ],
+          },
+          {
+            id: guildConfig.moderatorRoleId as string,
+            allow: [
+              "VIEW_CHANNEL",
+              "MANAGE_CHANNELS",
+              "PRIORITY_SPEAKER",
+              "MANAGE_EMOJIS_AND_STICKERS",
+              "USE_PRIVATE_THREADS",
+              "USE_PUBLIC_THREADS",
+            ],
+          },
+        ],
+      }
+    );
 
     const courseGeneralChannel = await guild.channels.create("general", {
       parent: courseChannel as CategoryChannelResolvable,
@@ -239,7 +243,9 @@ export async function createCourse(
       return "Failed to create channel.";
     }
 
-    doneString = `${courseName} category created! View it here: ${courseGeneralChannel}`;
+    doneString = `${courseAliases.join(
+      "/"
+    )} category created! View it here: ${courseGeneralChannel}`;
   }
 
   await prisma.course.create({
