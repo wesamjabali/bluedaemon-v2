@@ -20,13 +20,13 @@ export interface ICommand {
   execute(interaction: CommandInteraction): void;
 }
 
-export const dynamicPermissionUserOrRole = {
-  USER: "USER",
-  ROLE: "ROLE",
-  CourseManager: "ROLE",
-  Moderator: "ROLE",
-  GuildOwner: "USER",
-};
+export enum dynamicPermissionUserOrRole {
+  USER = "USER",
+  ROLE = "ROLE",
+  CourseManager = "ROLE",
+  Moderator = "ROLE",
+  GuildOwner = "USER",
+}
 
 export type CommandPermission = {
   id: string;
@@ -47,7 +47,7 @@ export type CommandOption = {
 export type CommandOptionTypeString = keyof typeof ApplicationCommandOptionType;
 export type CommandOptionChoice = [name: string, value: string | number];
 export type CommandOptionPermission = {
-  type: PermissionTypes
+  type: PermissionTypes;
   id?: Snowflake;
   permission: boolean;
 };
