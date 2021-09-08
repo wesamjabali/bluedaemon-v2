@@ -15,8 +15,10 @@ import {
 export class PingCommand implements ICommand {
   name = "ping";
   description = "Pong!";
-  default_permission = true;
-
+  default_permission = false;
+  permissions: CommandOptionPermission[] = [
+    { type: "CourseManager", permission: true },
+  ];
 
   buttonActions: ButtonAction[] = [
     {

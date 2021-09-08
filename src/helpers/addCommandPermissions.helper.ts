@@ -70,7 +70,7 @@ export async function updateCommandPermissions(
   /* Add permissions on top of existing ones or reset permissions to the parameters */
   if (setOrAdd === "ADD") {
     if (config.envConfig.environment === "production") {
-      guild?.commands.permissions.add({
+      await guild?.commands.permissions.add({
         command: applicationCommand,
         permissions: permissions as ApplicationCommandPermissionData[],
       });
@@ -81,7 +81,7 @@ export async function updateCommandPermissions(
     }
   } else {
     if (config.envConfig.environment === "production") {
-      guild?.commands.permissions.set({
+      await guild?.commands.permissions.set({
         command: applicationCommand,
         permissions: permissions as ApplicationCommandPermissionData[],
       });

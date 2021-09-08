@@ -92,7 +92,7 @@ export class SetupCommand implements ICommand {
       });
     }
 
-    /* Send roles and their ids */
+    /* Send commands and their permissions */
     for (const c of commands) {
       await updateCommandPermissions(
         "SET",
