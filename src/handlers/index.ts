@@ -1,5 +1,5 @@
-import { IEventHandler } from "./eventHandler";
-import { GuildCreateHandler } from "./guildJoin.handler";
+import { IEventHandler } from "./eventHandler.interface";
+import { GuildCreateHandler } from "./guildCreate.handler";
 import { InteractionCreateHandler } from "./interactionCreate.handler";
 import { ReadyHandler } from "./ready.handler";
 

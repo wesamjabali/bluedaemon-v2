@@ -1,6 +1,6 @@
 import { BuildCommands } from "@/helpers/buildCommands.helper";
 import { ClientEvents } from "discord.js";
-import { IEventHandler } from "./eventHandler";
+import { IEventHandler } from "./eventHandler.interface";
 import { config } from "@/services/config.service";
 import { prisma } from "@/prisma/prisma.service";
 import { guildConfigsCache } from "@/config/guilds.config";

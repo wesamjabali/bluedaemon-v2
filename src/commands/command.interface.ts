@@ -30,7 +30,7 @@ export const dynamicPermissionUserOrRole = {
 
 export type CommandPermission = {
   id: string;
-  type: "USER" | "ROLE";
+  type: UserOrRole;
   permission: boolean;
 };
 

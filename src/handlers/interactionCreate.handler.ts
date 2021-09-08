@@ -6,7 +6,7 @@ import {
   MessageButton,
   MessageSelectMenu,
 } from "discord.js";
-import { IEventHandler } from "./eventHandler";
+import { IEventHandler } from "./eventHandler.interface";
 import { commands } from "@/commands";
 import { buttons } from "@/buttons";
 import { selectMenus } from "@/selectMenus";
