@@ -1,6 +1,5 @@
 import { Client } from "discord.js";
 import { handlers } from "./handlers";
-import { prisma } from "./prisma/prisma.service";
 import { clientOptions, config } from "./services/config.service";
 
 const client = new Client(clientOptions);

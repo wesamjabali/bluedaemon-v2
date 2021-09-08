@@ -9,9 +9,9 @@ export class ConfigService {
   get envConfig(): EnvironmentConfig {
     return {
       token: <string>process.env.CLIENT_TOKEN,
-      environment: "development",
-      clientId: "820141085014753321",
-      devGuildId: "875779544521523250",
+      environment: <string>process.env.NODE_ENV,
+      clientId: <string>process.env.CLIENT_ID,
+      devGuildId: <string>process.env.DEV_GUILD_ID,
     };
   }
 }

@@ -7,7 +7,7 @@ import { rest } from "./rest.service";
 export class AllApplicationCommands {
   async getAll() {
     let commands: ApplicationCommand[] = [];
-    if (config.envConfig.environment === "production") {
+    if (config.envConfig.environment === "prod") {
       commands = (await rest.get(
         Routes.applicationCommands(config.envConfig.clientId)
       )) as ApplicationCommand[];

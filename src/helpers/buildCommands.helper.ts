@@ -29,7 +29,7 @@ export class BuildCommands {
     });
 
     // Attach to application or guild
-    if (config.envConfig.environment === "production") {
+    if (config.envConfig.environment === "prod") {
       await rest.put(Routes.applicationCommands(config.envConfig.clientId), {
         body: JSONCommands,
       });
