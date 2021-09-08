@@ -5,6 +5,7 @@ import {
   UserOrRole,
 } from "@/commands/command.interface";
 import { client } from "@/main";
+import { AllApplicationCommands } from "@/services/applicationCommands.service";
 import { config } from "@/services/config.service";
 
 import {
@@ -14,22 +15,33 @@ import {
 } from "discord.js";
 
 export async function addCommandPermissions(
-  applicationCommand: ApplicationCommand<{}>,
+  applicationCommandName: string,
   permissions: CommandOptionPermission[],
   dynamicPermissionRoles?: PermissionRoles[],
   guild?: Guild
 ) {
   if (permissions.length === 0) return;
 
+  let applicationCommandId = (
+    await new AllApplicationCommands().getAll()
+  )?.find((c) => c.name === applicationCommandName)?.id;
+
+  if (!applicationCommandId) {
+    return Promise.reject(
+      `"${applicationCommandName}" not a root command defined in @/commands/index.ts`
+    );
+  }
+
+  let applicationCommand;
   /* Get command from discord server */
   if (config.envConfig.environment === "production") {
     applicationCommand = (await client.application?.commands.fetch(
-      applicationCommand.id
+      applicationCommandId
     )) as ApplicationCommand;
   } else {
     applicationCommand = (await client.guilds.cache
       .get(config.envConfig.devGuildId)
-      ?.commands.fetch(applicationCommand.id)) as ApplicationCommand;
+      ?.commands.fetch(applicationCommandId)) as ApplicationCommand;
   }
   /* Loop through all dynamic permissions and turn them into users and roles given from the permissionRoles parameter. */
   permissions = permissions.map((currentPerm) => {

@@ -23,7 +23,7 @@ export class SetupCommand implements ICommand {
 
   async execute(i: CommandInteraction) {
     i.deferReply();
-    if (!i.guildId) return;
+
     const currentQuarter = i.options.getString("current_quarter", true);
     const countingChannel = i.options.getChannel("counting_channel", false);
     const courseRequestsChannel = i.options.getChannel(
@@ -33,7 +33,7 @@ export class SetupCommand implements ICommand {
     const loggingChannel = i.options.getChannel("logging_channel", true);
     const modRole = i.options.getRole("moderator_role", true);
     const courseManagerRole = i.options.getRole("course_manager_role", true);
-    if (!i.guildId || !i.guild?.ownerId) return;
+    if (!i.guildId || !i.guild || !i.guild?.ownerId) return;
 
     /* Create guild if it doesn't exist. */
     await prisma.guild
@@ -93,14 +93,10 @@ export class SetupCommand implements ICommand {
     }
 
     /* Send roles and their ids */
-    const allSentApplicationCommands =
-      (await new AllApplicationCommands().getAll()) ?? [];
-    for (const applicationCommand of allSentApplicationCommands) {
-      const command = commands.find((c) => applicationCommand.name === c.name);
-
+    for (const c of commands) {
       await addCommandPermissions(
-        applicationCommand,
-        command?.permissions ?? [],
+        c.name,
+        c.permissions ?? [],
         [
           { roleType: "CourseManager", id: courseManagerRole.id },
           { roleType: "Moderator", id: modRole.id },

@@ -14,7 +14,6 @@ import {
   SlashCommandSubcommandGroupBuilder,
 } from "@discordjs/builders";
 
-let allSentApplicationCommands: ApplicationCommand[] = [];
 export class BuildCommands {
   public async execute(): Promise<void> {
     const JSONCommands: ICommandData[] = [];
@@ -31,15 +30,11 @@ export class BuildCommands {
 
     // Attach to application or guild
     if (config.envConfig.environment === "production") {
-      allSentApplicationCommands = (await rest.put(
-        Routes.applicationCommands(config.envConfig.clientId),
-        {
-          body: JSONCommands,
-        }
-      )) as ApplicationCommand[];
+      await rest.put(Routes.applicationCommands(config.envConfig.clientId), {
+        body: JSONCommands,
+      });
     } else {
-     
-      allSentApplicationCommands = (await rest.put(
+      await rest.put(
         Routes.applicationGuildCommands(
           config.envConfig.clientId,
           config.envConfig.devGuildId
@@ -47,31 +42,12 @@ export class BuildCommands {
         {
           body: JSONCommands,
         }
-      )) as ApplicationCommand[];
+      );
     }
 
     // Add permission overrides
-    allSentApplicationCommands.forEach(async (applicationCommand) => {
-      let permissions = commands.find(
-        (c) => c.name === applicationCommand.name
-      )?.permissions;
-      let fetchedCommand: ApplicationCommand;
-
-      if (permissions) {
-        /* Attach globally if in prod */
-        if (config.envConfig.environment === "production") {
-          fetchedCommand = (await client.application?.commands.fetch(
-            applicationCommand.id
-          )) as ApplicationCommand;
-        } else {
-          /* Attach to dev server otherwise */
-          fetchedCommand = (await client.guilds.cache
-            .get(config.envConfig.devGuildId)
-            ?.commands.fetch(applicationCommand.id)) as ApplicationCommand;
-        }
-
-        await addCommandPermissions(fetchedCommand, permissions);
-      }
+    commands.forEach(async (c) => {
+      await addCommandPermissions(c.name, c.permissions ?? []);
     });
 
     console.log(
@@ -218,4 +194,3 @@ function addGenericCommandOption(
     );
   }
 }
-

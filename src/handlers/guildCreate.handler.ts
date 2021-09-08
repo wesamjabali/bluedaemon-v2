@@ -3,7 +3,6 @@ import { IEventHandler } from "./eventHandler.interface";
 import { prisma } from "@/prisma/prisma.service";
 import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
 import { addCommandPermissions } from "@/helpers/addCommandPermissions.helper";
-import { AllApplicationCommands } from "@/services/applicationCommands.service";
 import { SudoCommand } from "@/commands";
 
 export class GuildCreateHandler implements IEventHandler {
@@ -20,14 +19,8 @@ export class GuildCreateHandler implements IEventHandler {
     await resetCacheForGuild(guild.id);
 
     /* Give owner access to sudo commands */
-    const sudoCommand = (await new AllApplicationCommands().getAll())?.find(
-      (c) => c.name === "sudo"
-    );
-
-    if (!sudoCommand) return;
-
     await addCommandPermissions(
-      sudoCommand,
+      "sudo",
       new SudoCommand().permissions,
       [{ roleType: "GuildOwner", id: guild.ownerId }],
       guild
