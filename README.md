@@ -14,10 +14,11 @@ CLIENT_ID=
 DEV_GUILD_ID=
 ```
 
-`npm i`
-`npm install prisma -g`
-`prisma migrate dev`
+Then:
+```npm i
+npm install prisma -g
+prisma migrate dev
 
-`npm run dev`
+npm run dev
 OR
-`npm run start`
+npm run start```
