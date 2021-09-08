@@ -2,7 +2,7 @@ import { ClientEvents, Guild } from "discord.js";
 import { IEventHandler } from "./eventHandler.interface";
 import { prisma } from "@/prisma/prisma.service";
 import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
-import { addCommandPermissions } from "@/helpers/addCommandPermissions.helper";
+import { updateCommandPermissions } from "@/helpers/addCommandPermissions.helper";
 import { SudoCommand } from "@/commands";
 
 export class GuildCreateHandler implements IEventHandler {
@@ -19,7 +19,8 @@ export class GuildCreateHandler implements IEventHandler {
     await resetCacheForGuild(guild.id);
 
     /* Give owner access to sudo commands */
-    await addCommandPermissions(
+    await updateCommandPermissions(
+      "SET",
       "sudo",
       new SudoCommand().permissions,
       [{ roleType: "GuildOwner", id: guild.ownerId }],

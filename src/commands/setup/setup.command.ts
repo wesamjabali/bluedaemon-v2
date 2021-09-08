@@ -4,7 +4,7 @@ import { prisma } from "@/prisma/prisma.service";
 
 import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
 import { commands } from "..";
-import { addCommandPermissions } from "@/helpers/addCommandPermissions.helper";
+import { updateCommandPermissions } from "@/helpers/addCommandPermissions.helper";
 import { AllApplicationCommands } from "@/services/applicationCommands.service";
 
 export class SetupCommand implements ICommand {
@@ -94,7 +94,8 @@ export class SetupCommand implements ICommand {
 
     /* Send roles and their ids */
     for (const c of commands) {
-      await addCommandPermissions(
+      await updateCommandPermissions(
+        "SET",
         c.name,
         c.permissions ?? [],
         [

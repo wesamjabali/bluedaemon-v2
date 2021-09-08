@@ -14,7 +14,8 @@ import {
   Guild,
 } from "discord.js";
 
-export async function addCommandPermissions(
+export async function updateCommandPermissions(
+  setOrAdd: "SET" | "ADD",
   applicationCommandName: string,
   permissions: CommandOptionPermission[],
   dynamicPermissionRoles?: PermissionRoles[],
@@ -66,14 +67,28 @@ export async function addCommandPermissions(
     }
   });
 
-  if (config.envConfig.environment === "production") {
-    guild?.commands.permissions.add({
-      command: applicationCommand,
-      permissions: permissions as ApplicationCommandPermissionData[],
-    });
+  /* Add permissions on top of existing ones or reset permissions to the parameters */
+  if (setOrAdd === "ADD") {
+    if (config.envConfig.environment === "production") {
+      guild?.commands.permissions.add({
+        command: applicationCommand,
+        permissions: permissions as ApplicationCommandPermissionData[],
+      });
+    } else {
+      await applicationCommand.permissions.add({
+        permissions: permissions as ApplicationCommandPermissionData[],
+      });
+    }
   } else {
-    await applicationCommand.permissions.add({
-      permissions: permissions as ApplicationCommandPermissionData[],
-    });
+    if (config.envConfig.environment === "production") {
+      guild?.commands.permissions.set({
+        command: applicationCommand,
+        permissions: permissions as ApplicationCommandPermissionData[],
+      });
+    } else {
+      await applicationCommand.permissions.set({
+        permissions: permissions as ApplicationCommandPermissionData[],
+      });
+    }
   }
 }

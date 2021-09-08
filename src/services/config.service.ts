@@ -9,7 +9,7 @@ export class ConfigService {
   get envConfig(): EnvironmentConfig {
     return {
       token: <string>process.env.CLIENT_TOKEN,
-      environment: "production",
+      environment: "development",
       clientId: "820141085014753321",
       devGuildId: "875779544521523250",
     };

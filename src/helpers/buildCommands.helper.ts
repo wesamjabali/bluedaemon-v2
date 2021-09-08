@@ -7,7 +7,7 @@ import { ApplicationCommand } from "discord.js";
 import { APIApplicationCommandOption, Routes } from "discord-api-types/v9";
 import { registerButtons } from "@/buttons";
 import { registerSelectMenus } from "@/selectMenus";
-import { addCommandPermissions } from "./addCommandPermissions.helper";
+import { updateCommandPermissions } from "./addCommandPermissions.helper";
 import {
   SlashCommandBuilder,
   SlashCommandSubcommandBuilder,
@@ -47,7 +47,7 @@ export class BuildCommands {
 
     // Add permission overrides
     commands.forEach(async (c) => {
-      await addCommandPermissions(c.name, c.permissions ?? []);
+      await updateCommandPermissions("ADD", c.name, c.permissions ?? []);
     });
 
     console.log(
