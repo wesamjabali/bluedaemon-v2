@@ -104,8 +104,9 @@ export class SetupCommand implements ICommand {
         [
           { roleType: "CourseManager", id: courseManagerRole.id },
           { roleType: "Moderator", id: modRole.id },
-          { roleType: "GuildOwner", id: i.guild?.ownerId as string },
-        ]
+          { roleType: "GuildOwner", id: i.guild.ownerId },
+        ],
+        i.guild
       );
     }
 

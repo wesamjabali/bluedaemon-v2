@@ -10,19 +10,16 @@ import { config } from "@/services/config.service";
 import {
   ApplicationCommand,
   ApplicationCommandPermissionData,
+  Guild,
 } from "discord.js";
 
 export async function addCommandPermissions(
   applicationCommand: ApplicationCommand<{}>,
   permissions: CommandOptionPermission[],
-  dynamicPermissionRoles?: PermissionRoles[]
+  dynamicPermissionRoles?: PermissionRoles[],
+  guild?: Guild
 ) {
-  if (
-    permissions.length === 0 ||
-    !dynamicPermissionRoles ||
-    dynamicPermissionRoles.length === 0
-  )
-    return;
+  if (permissions.length === 0) return;
 
   /* Get command from discord server */
   if (config.envConfig.environment === "production") {
@@ -39,7 +36,7 @@ export async function addCommandPermissions(
     const type = dynamicPermissionUserOrRole[currentPerm.type] as UserOrRole;
 
     const roleId =
-      dynamicPermissionRoles.find((rI) => rI.roleType === currentPerm.type)
+      dynamicPermissionRoles?.find((rI) => rI.roleType === currentPerm.type)
         ?.id ?? currentPerm.id;
 
     currentPerm = {
@@ -52,12 +49,19 @@ export async function addCommandPermissions(
   });
 
   permissions.forEach((p) => {
-    if (p.type !== "ROLE" && p.type !== "USER") {
+    if ((p.type !== "ROLE" && p.type !== "USER") || !p.id) {
       permissions.splice(permissions.indexOf(p), 1);
     }
   });
 
-  await applicationCommand.permissions.add({
-    permissions: permissions as ApplicationCommandPermissionData[],
-  });
+  if (config.envConfig.environment === "production") {
+    guild?.commands.permissions.add({
+      command: applicationCommand,
+      permissions: permissions as ApplicationCommandPermissionData[],
+    });
+  } else {
+    await applicationCommand.permissions.add({
+      permissions: permissions as ApplicationCommandPermissionData[],
+    });
+  }
 }
