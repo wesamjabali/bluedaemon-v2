@@ -1,15 +1,18 @@
-import { CommandOption, ICommand } from "../command.interface";
 import {
-  ApplicationCommandPermissionData,
-  CommandInteraction,
-} from "discord.js";
+  CommandOption,
+  CommandOptionPermission,
+  ICommand,
+} from "@/commands/command.interface";
+import { CommandInteraction } from "discord.js";
 
 export class SayCommand implements ICommand {
   name = "say";
   description = "Have me repeat what you say";
   default_permission = false;
-  permissions: ApplicationCommandPermissionData[] = [
-    { type: "ROLE", id: "883426092927569930", permission: true },
+  permissions: CommandOptionPermission[] = [
+    { type: "CourseManager", permission: true },
+    { type: "Moderator", permission: true },
+    { type: "GuildOwner", permission: true },
   ];
 
   options: CommandOption[] = [

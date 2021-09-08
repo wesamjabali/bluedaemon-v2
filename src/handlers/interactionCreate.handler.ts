@@ -7,9 +7,9 @@ import {
   MessageSelectMenu,
 } from "discord.js";
 import { IEventHandler } from "./eventHandler";
-import { commands } from "../commands";
-import { buttons } from "../buttons";
-import { selectMenus } from "../selectMenus";
+import { commands } from "@/commands";
+import { buttons } from "@/buttons";
+import { selectMenus } from "@/selectMenus";
 
 export class InteractionCreateHandler implements IEventHandler {
   public once = false;

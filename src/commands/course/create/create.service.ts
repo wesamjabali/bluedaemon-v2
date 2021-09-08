@@ -1,5 +1,5 @@
-import { prisma } from "../../../prisma/prisma.service";
-import { normalizeCourseCode } from "../../../helpers/normalizeCourseCode.helper";
+import { prisma } from "@/prisma/prisma.service";
+import { normalizeCourseCode } from "@/helpers/normalizeCourseCode.helper";
 import {
   CategoryChannel,
   CategoryChannelResolvable,
@@ -7,7 +7,7 @@ import {
   Guild,
   User,
 } from "discord.js";
-import { getGuildConfig } from "../../../config/guilds.config";
+import { getGuildConfig } from "@/config/guilds.config";
 
 export async function createCourse(
   guild: Guild | null,
@@ -61,7 +61,15 @@ export async function createCourse(
         },
       });
 
-  if (!dbQuarter) return `"${quarter}"" not a valid quarter`;
+  if (!dbQuarter)
+    return `${quarter} is not a valid quarter. Available quarters are: \`\`\`${(
+      await prisma.quarter.findMany({
+        where: { guild: { guildId: guild.id as string } },
+        select: { name: true },
+      })
+    )
+      .flatMap((c) => c.name)
+      .join(", ")}\`\`\``;
 
   const existingCourse = await prisma.course.findFirst({
     where: {

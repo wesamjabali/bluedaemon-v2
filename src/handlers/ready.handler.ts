@@ -1,9 +1,9 @@
-import { BuildCommands } from "../helpers/buildCommands.helper";
+import { BuildCommands } from "@/helpers/buildCommands.helper";
 import { ClientEvents } from "discord.js";
 import { IEventHandler } from "./eventHandler";
-import { config } from "../services/config.service";
-import { prisma } from "../prisma/prisma.service";
-import { guildConfigsCache } from "../config/guilds.config";
+import { config } from "@/services/config.service";
+import { prisma } from "@/prisma/prisma.service";
+import { guildConfigsCache } from "@/config/guilds.config";
 
 export class ReadyHandler implements IEventHandler {
   public once = true;

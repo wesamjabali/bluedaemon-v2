@@ -4,8 +4,10 @@
   "description": "Course automations for Discord",
   "main": "src/main.ts",
   "scripts": {
-    "start": "node ./build/main.js",
-    "dev": "tsc-watch --onSuccess 'node ./build/main.js'",
+    "start": "ts-node -r tsconfig-paths/register src/main.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register --respawn  src/main.ts",
+
+    
     "test": ""
   },
   "author": "Wesam Jabali",

@@ -1,6 +1,6 @@
-import { ButtonAction } from "../buttons/buttonAction";
-import { SelectMenuAction } from "../selectMenus/selectMenuAction";
-import { ApplicationCommandOptionType } from "discord-api-types";
+import { ButtonAction } from "@/buttons/buttonAction";
+import { SelectMenuAction } from "@/selectMenus/selectMenuAction";
+import { ApplicationCommandOptionType, Snowflake } from "discord-api-types";
 import {
   ApplicationCommandPermissionData,
   CommandInteraction,
@@ -20,6 +20,14 @@ export interface ICommand {
   execute(interaction: CommandInteraction): void;
 }
 
+export const dynamicPermissionUserOrRole = {
+  USER: "USER",
+  ROLE: "ROLE",
+  CourseManager: "ROLE",
+  Moderator: "ROLE",
+  GuildOwner: "USER",
+};
+
 export type CommandPermission = {
   id: string;
   type: "USER" | "ROLE";
@@ -38,9 +46,22 @@ export type CommandOption = {
 
 export type CommandOptionTypeString = keyof typeof ApplicationCommandOptionType;
 export type CommandOptionChoice = [name: string, value: string | number];
-export type CommandOptionPermission = ApplicationCommandPermissionData;
+export type CommandOptionPermission = {
+  type: PermissionTypes
+  id?: Snowflake;
+  permission: boolean;
+};
 export type SubCommandGroup = {
   name: string;
   description: string;
   subCommands: ICommand[];
+};
+export type UserOrRole = "USER" | "ROLE";
+
+export type DynamicPermissionTypes = keyof typeof dynamicPermissionUserOrRole;
+export type PermissionTypes = UserOrRole | DynamicPermissionTypes;
+
+export type PermissionRoles = {
+  roleType: DynamicPermissionTypes;
+  id: string;
 };

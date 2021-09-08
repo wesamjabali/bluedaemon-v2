@@ -1,19 +1,19 @@
-import { prisma } from "../../../prisma/prisma.service";
-import { normalizeCourseCode } from "../../../helpers/normalizeCourseCode.helper";
+import { prisma } from "@/prisma/prisma.service";
+import { normalizeCourseCode } from "@/helpers/normalizeCourseCode.helper";
 import { CommandInteraction } from "discord.js";
 import {
   CommandOption,
   CommandOptionPermission,
   ICommand,
-} from "../../command.interface";
-import { createCourse } from "../create/create.service";
+} from "@/commands/command.interface";
+import { createCourse } from "@/commands/course/create/create.service";
 
 export class BulkCreateCourseCommand implements ICommand {
   name = "bulkcreate";
   description = "Create a set of courses";
   default_permission = false;
   permissions: CommandOptionPermission[] = [
-    { id: "796214872479498241", type: "ROLE", permission: true },
+    { type: "CourseManager", permission: true },
   ];
 
   options: CommandOption[] = [
@@ -44,7 +44,16 @@ export class BulkCreateCourseCommand implements ICommand {
     });
 
     if (!dbQuarter) {
-      i.reply(`"${quarter}"" not a valid quarter`);
+      await i.followUp(
+        `${quarter} is not a valid quarter. Available quarters are: \`\`\`${(
+          await prisma.quarter.findMany({
+            where: { guild: { guildId: i.guildId as string } },
+            select: { name: true },
+          })
+        )
+          .flatMap((c) => c.name)
+          .join(", ")}\`\`\``
+      );
       return;
     }
 

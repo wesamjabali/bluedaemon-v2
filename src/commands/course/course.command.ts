@@ -1,6 +1,10 @@
-import { getGuildConfig } from "../../config/guilds.config";
+import { getGuildConfig } from "@/config/guilds.config";
 import { CommandInteraction } from "discord.js";
-import { CommandOption, ICommand } from "../command.interface";
+import {
+  CommandOption,
+  CommandOptionPermission,
+  ICommand,
+} from "@/commands/command.interface";
 import { CreateCourseCommand } from "./create/create.command";
 import { JoinCourseCommand } from "./join/join.command";
 import { LeaveCourseCommand } from "./leave/leave.command";
@@ -11,6 +15,7 @@ export class CourseCommand implements ICommand {
   name = "course";
   description = "All commands pertaining to courses.";
   default_permission = true;
+
 
   options: CommandOption[] = [
     {

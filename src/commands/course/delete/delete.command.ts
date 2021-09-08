@@ -3,7 +3,7 @@ import {
   CommandOption,
   CommandOptionPermission,
   ICommand,
-} from "../../command.interface";
+} from "@/commands/command.interface";
 
 import { deleteCourse } from "./delete.service";
 

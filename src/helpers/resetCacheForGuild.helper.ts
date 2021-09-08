@@ -1,5 +1,5 @@
-import { prisma } from "../prisma/prisma.service";
-import { guildConfigsCache } from "../config/guilds.config";
+import { prisma } from "@/prisma/prisma.service";
+import { guildConfigsCache } from "@/config/guilds.config";
 
 export async function resetCacheForGuild(guildId: string) {
   guildConfigsCache.splice(

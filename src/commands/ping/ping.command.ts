@@ -1,7 +1,10 @@
-import { ButtonAction } from "../../buttons/buttonAction";
-import { SelectMenuAction } from "../../selectMenus/selectMenuAction";
+import { ButtonAction } from "@/buttons/buttonAction";
+import { SelectMenuAction } from "@/selectMenus/selectMenuAction";
 import { CommandInteraction } from "discord.js";
-import { CommandOptionPermission, ICommand } from "../command.interface";
+import {
+  CommandOptionPermission,
+  ICommand,
+} from "@/commands/command.interface";
 import {
   defaultComponents,
   deleteAllChannelsAndRoles,
@@ -12,10 +15,8 @@ import {
 export class PingCommand implements ICommand {
   name = "ping";
   description = "Pong!";
-  default_permission = false;
-  permissions: CommandOptionPermission[] = [
-    { id: "539910274698969088", type: "USER", permission: true },
-  ];
+  default_permission = true;
+
 
   buttonActions: ButtonAction[] = [
     {

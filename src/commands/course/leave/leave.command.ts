@@ -1,10 +1,10 @@
-import { prisma } from "../../../prisma/prisma.service";
+import { prisma } from "@/prisma/prisma.service";
 import { CommandInteraction, GuildMemberRoleManager } from "discord.js";
-import { CommandOption, ICommand } from "../../command.interface";
+import { CommandOption, ICommand } from "@/commands/command.interface";
 
-import { getRoleFromCourseName } from "../../../helpers/getRoleFromCourseName.helper";
-import { getGuildConfig } from "../../../config/guilds.config";
-import { normalizeCourseCode } from "../../../helpers/normalizeCourseCode.helper";
+import { getRoleFromCourseName } from "@/helpers/getRoleFromCourseName.helper";
+import { getGuildConfig } from "@/config/guilds.config";
+import { normalizeCourseCode } from "@/helpers/normalizeCourseCode.helper";
 import { Quarter } from ".prisma/client";
 
 export class LeaveCourseCommand implements ICommand {
@@ -25,7 +25,7 @@ export class LeaveCourseCommand implements ICommand {
     const guildConfig = getGuildConfig(i.guildId);
     if (!guildConfig || !i.guildId) return;
     const quarter = i.options.getString("quarter");
-    if(!guildConfig.currentQuarterId) return;
+    if (!guildConfig.currentQuarterId) return;
 
     const dbQuarter = quarter
       ? ((await prisma.quarter.findFirst({
@@ -42,7 +42,16 @@ export class LeaveCourseCommand implements ICommand {
     if (!i.guildId) return;
 
     if (!dbQuarter) {
-      await i.reply(`${quarter} is not a valid quarter.`);
+      await i.reply(
+        `${quarter} is not a valid quarter. Available quarters are: \`\`\`${(
+          await prisma.quarter.findMany({
+            where: { guild: { guildId: i.guildId as string } },
+            select: { name: true },
+          })
+        )
+          .flatMap((c) => c.name)
+          .join(", ")}\`\`\``
+      );
       return;
     }
     const courseName = normalizeCourseCode(i.options.getString("course", true));
@@ -58,11 +67,15 @@ export class LeaveCourseCommand implements ICommand {
         (r) => r.id === courseRole.id
       )
     ) {
-      i.reply(`You're not in ${courseName.courseName} for quarter ${dbQuarter.name}`);
+      i.reply(
+        `You're not in ${courseName.courseName} for quarter ${dbQuarter.name}`
+      );
       return;
     }
 
     await (i.member?.roles as GuildMemberRoleManager).remove(courseRole);
-    await i.reply(`You've left ${courseName.courseName} for quarter ${dbQuarter.name}`);
+    await i.reply(
+      `You've left ${courseName.courseName} for quarter ${dbQuarter.name}`
+    );
   }
 }

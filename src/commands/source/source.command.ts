@@ -4,7 +4,7 @@ import {
   MessageButton,
   MessageEmbed,
 } from "discord.js";
-import { ICommand } from "../command.interface";
+import { ICommand } from "@/commands/command.interface";
 
 export class SourceCommand implements ICommand {
   name = "source";

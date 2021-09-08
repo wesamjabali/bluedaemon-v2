@@ -1,22 +1,22 @@
-import { client } from "../main";
-import { REST } from "@discordjs/rest";
-import { config } from "../services/config.service";
-import { CommandOption, ICommand } from "../commands/command.interface";
-import { commands } from "../commands";
+import { client } from "@/main";
+import { rest } from "@/services/rest.service";
+import { config } from "@/services/config.service";
+import { CommandOption, ICommand } from "@/commands/command.interface";
+import { commands } from "@/commands";
 import { ApplicationCommand } from "discord.js";
 import { APIApplicationCommandOption, Routes } from "discord-api-types/v9";
+import { registerButtons } from "@/buttons";
+import { registerSelectMenus } from "@/selectMenus";
+import { addCommandPermissions } from "./addCommandPermissions.helper";
 import {
   SlashCommandBuilder,
   SlashCommandSubcommandBuilder,
   SlashCommandSubcommandGroupBuilder,
 } from "@discordjs/builders";
-import { registerButtons } from "../buttons";
-import { registerSelectMenus } from "../selectMenus";
 
+let allSentApplicationCommands: ApplicationCommand[] = [];
 export class BuildCommands {
   public async execute(): Promise<void> {
-    const rest = new REST({ version: "9" }).setToken(config.envConfig.token);
-
     const JSONCommands: ICommandData[] = [];
 
     // Build the command
@@ -29,8 +29,6 @@ export class BuildCommands {
       registerSelectMenus(command.selectMenuActions ?? []);
     });
 
-    let allSentApplicationCommands: ApplicationCommand[] = [];
-
     // Attach to application or guild
     if (config.envConfig.environment === "production") {
       allSentApplicationCommands = (await rest.put(
@@ -40,12 +38,7 @@ export class BuildCommands {
         }
       )) as ApplicationCommand[];
     } else {
-      if (
-        !client.guilds.cache.find((g) => g.id === config.envConfig.devGuildId)
-      ) {
-        console.log("Commands not built - bot is not in dev guild.");
-        return;
-      }
+     
       allSentApplicationCommands = (await rest.put(
         Routes.applicationGuildCommands(
           config.envConfig.clientId,
@@ -58,32 +51,26 @@ export class BuildCommands {
     }
 
     // Add permission overrides
-    allSentApplicationCommands.forEach(async (command) => {
-      const permissions = commands.find(
-        (c) => c.name === command.name
+    allSentApplicationCommands.forEach(async (applicationCommand) => {
+      let permissions = commands.find(
+        (c) => c.name === applicationCommand.name
       )?.permissions;
+      let fetchedCommand: ApplicationCommand;
 
       if (permissions) {
         /* Attach globally if in prod */
         if (config.envConfig.environment === "production") {
-          const fetchedCommand = await client.application?.commands.fetch(
-            command.id
-          );
-
-          fetchedCommand?.permissions.add({
-            guild: fetchedCommand.guild ?? config.envConfig.devGuildId,
-            permissions,
-          });
+          fetchedCommand = (await client.application?.commands.fetch(
+            applicationCommand.id
+          )) as ApplicationCommand;
         } else {
           /* Attach to dev server otherwise */
-          const fetchedCommand = await client.guilds.cache
+          fetchedCommand = (await client.guilds.cache
             .get(config.envConfig.devGuildId)
-            ?.commands.fetch(command.id);
-
-          fetchedCommand?.permissions.add({
-            permissions,
-          });
+            ?.commands.fetch(applicationCommand.id)) as ApplicationCommand;
         }
+
+        await addCommandPermissions(fetchedCommand, permissions);
       }
     });
 
@@ -231,3 +218,4 @@ function addGenericCommandOption(
     );
   }
 }
+

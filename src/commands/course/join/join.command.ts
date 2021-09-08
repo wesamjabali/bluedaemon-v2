@@ -1,4 +1,4 @@
-import { prisma } from "../../../prisma/prisma.service";
+import { prisma } from "@/prisma/prisma.service";
 import {
   CategoryChannel,
   CommandInteraction,
@@ -6,12 +6,12 @@ import {
   Role,
   TextChannel,
 } from "discord.js";
-import { CommandOption, ICommand } from "../../command.interface";
-import { normalizeCourseCode } from "../../../helpers/normalizeCourseCode.helper";
+import { CommandOption, ICommand } from "@/commands/command.interface";
+import { normalizeCourseCode } from "@/helpers/normalizeCourseCode.helper";
 import { Course } from "@prisma/client";
 import { joinCommandOptions } from "./join.options";
-import { getRoleFromCourseName } from "../../../helpers/getRoleFromCourseName.helper";
-import { getGuildConfig } from "../../../config/guilds.config";
+import { getRoleFromCourseName } from "@/helpers/getRoleFromCourseName.helper";
+import { getGuildConfig } from "@/config/guilds.config";
 
 export class JoinCourseCommand implements ICommand {
   name = "join";

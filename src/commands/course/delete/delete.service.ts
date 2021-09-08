@@ -1,8 +1,8 @@
-import { prisma } from "../../../prisma/prisma.service";
+import { prisma } from "@/prisma/prisma.service";
 import { CategoryChannel } from "discord.js";
-import { normalizeCourseCode } from "../../../helpers/normalizeCourseCode.helper";
-import { getGuildConfig } from "../../../config/guilds.config";
-import { client } from "../../../main";
+import { normalizeCourseCode } from "@/helpers/normalizeCourseCode.helper";
+import { getGuildConfig } from "@/config/guilds.config";
+import { client } from "@/main";
 import { Quarter } from ".prisma/client";
 
 export async function deleteCourse(
