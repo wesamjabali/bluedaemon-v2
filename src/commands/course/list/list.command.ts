@@ -98,6 +98,7 @@ export class ListCoursesCommand implements ICommand {
           content: "You're not allowed to do that. Make your own search.",
           ephemeral: true,
         });
+        return;
       }
       await b.reply({ content: "​" });
       await b.deleteReply();
