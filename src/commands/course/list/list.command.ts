@@ -66,16 +66,25 @@ export class ListCoursesCommand implements ICommand {
         new MessageButton()
           .setCustomId("list-back")
           .setStyle("PRIMARY")
-          .setEmoji("⬅️"),
+          .setEmoji("⬅️")
+          .setDisabled(true),
         new MessageButton()
           .setCustomId("list-forward")
           .setStyle("PRIMARY")
           .setEmoji("➡️"),
       ]),
     ];
+    const initialEmbed = getCourseListEmbedPage(
+      filteredCourses,
+      pageNumber,
+      searchTerm
+    );
 
+    if (initialEmbed[0].fields.length !== 24) {
+      buttons[0].components[1].setDisabled(true);
+    }
     const sentReplyMessage = (await interaction.followUp({
-      embeds: getCourseListEmbedPage(filteredCourses, pageNumber, searchTerm),
+      embeds: initialEmbed,
       components: buttons,
     })) as Message;
 
@@ -83,7 +92,6 @@ export class ListCoursesCommand implements ICommand {
       componentType: "BUTTON",
       time: 15000,
     });
-
     collector.on("collect", async (b) => {
       if (b.user.id !== interaction.user.id) {
         await b.reply({
@@ -91,28 +99,37 @@ export class ListCoursesCommand implements ICommand {
           ephemeral: true,
         });
       }
-
+      await b.reply({ content: "​" });
+      await b.deleteReply();
       if (b.customId === "list-back") {
+        buttons[0].components[1].setDisabled(false);
+        if (pageNumber - 1 === 0) {
+          buttons[0].components[0].setDisabled(true);
+        }
         interaction.editReply({
           embeds: getCourseListEmbedPage(
             filteredCourses,
             --pageNumber,
             searchTerm
           ),
+          components: buttons,
         });
       }
       if (b.customId === "list-forward") {
+        const embed = getCourseListEmbedPage(
+          filteredCourses,
+          ++pageNumber,
+          searchTerm
+        );
+        buttons[0].components[0].setDisabled(false);
+        if (embed[0].fields.length !== 24) {
+          buttons[0].components[1].setDisabled(true);
+        }
         interaction.editReply({
-          embeds: getCourseListEmbedPage(
-            filteredCourses,
-            ++pageNumber,
-            searchTerm
-          ),
+          embeds: embed,
+          components: buttons,
         });
       }
-
-      await b.reply(" ");
-      await b.deleteReply();
     });
   }
 }
@@ -124,10 +141,7 @@ function getCourseListEmbedPage(
 ): MessageEmbed[] {
   let filteredCourses = courseList.slice(24 * pageNumber, 24);
   if (filteredCourses.length === 0) {
-    filteredCourses = courseList.slice(
-      24 * pageNumber,
-      24 - (courseList.length % pageNumber) * 24
-    );
+    filteredCourses = courseList.slice(24 * pageNumber);
   }
 
   let currentEmbed = new MessageEmbed();
