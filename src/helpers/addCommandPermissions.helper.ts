@@ -67,6 +67,7 @@ export async function updateCommandPermissions(
     }
   });
 
+  if (permissions.length === 0) return;
   /* Add permissions on top of existing ones or reset permissions to the parameters */
   if (setOrAdd === "ADD") {
     if (config.envConfig.environment === "prod") {

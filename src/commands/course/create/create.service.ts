@@ -43,7 +43,6 @@ export async function createCourse(
       linkedNameOption = null;
     }
   }
-
   const courseAliases = linkedNameOption
     ? [courseName, normalizeCourseCode(linkedNameOption).courseName]
     : [courseName];
@@ -83,7 +82,6 @@ export async function createCourse(
   }
 
   //
-
   if (!dbQuarter) {
     return `That quarter doesn't exist in the database. Available quarters are: \`\`\`${(
       await prisma.quarter.findMany({

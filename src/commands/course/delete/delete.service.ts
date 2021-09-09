@@ -22,7 +22,6 @@ export async function deleteCourse(
     dbQuarter = (await prisma.quarter.findFirst({
       where: { AND: { name: quarter, guild: { guildId: guildId } } },
     })) as Quarter;
-    console.log(dbQuarter?.name);
   } else {
     dbQuarter = (await prisma.quarter.findFirst({
       where: { id: guildConfig.currentQuarterId },

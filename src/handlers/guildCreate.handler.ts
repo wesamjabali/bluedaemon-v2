@@ -11,11 +11,10 @@ export class GuildCreateHandler implements IEventHandler {
   public onEvent = async (guild: Guild) => {
     console.log(`Joined guild ${guild.name}`);
     /* Create Guildconfig Cache */
-    await prisma.guild
-      .create({
-        data: { guildId: guild.id, guildOwnerId: guild.ownerId },
-      })
-      .catch(() => {});
+    await prisma.guild.create({
+      data: { guildId: guild.id, guildOwnerId: guild.ownerId },
+    });
+
     await resetCacheForGuild(guild.id);
 
     /* Give owner access to sudo commands */

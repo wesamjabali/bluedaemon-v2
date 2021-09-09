@@ -80,6 +80,8 @@ export class BulkCreateCourseCommand implements ICommand {
       response = `${response}${courseCode}: ${newResponse}\n`;
     }
 
-    await i.followUp(`\`\`\`${response}\`\`\``);
+    await i
+      .followUp(`\`\`\`${response}\`\`\``)
+      .catch(() => i.followUp("Done!"));
   }
 }

@@ -11,6 +11,7 @@ import { LeaveCourseCommand } from "./leave/leave.command";
 import { DeleteCourseCommand } from "./delete/delete.command";
 import { BulkCreateCourseCommand } from "./bulkCreate/bulkCreate.command";
 import { BulkDeleteCourseCommand } from "./bulkDelete/bulkDelete.command";
+import { ListCoursesCommand } from "./list/list.command";
 
 export class CourseCommand implements ICommand {
   name = "course";
@@ -31,6 +32,7 @@ export class CourseCommand implements ICommand {
         new DeleteCourseCommand(),
         new BulkCreateCourseCommand(),
         new BulkDeleteCourseCommand(),
+        new ListCoursesCommand(),
       ],
     },
   ];
@@ -48,7 +50,9 @@ export class CourseCommand implements ICommand {
     if (route === "course/create") {
       new CreateCourseCommand().execute(interaction);
     }
-
+    if (route === "course/list") {
+      new ListCoursesCommand().execute(interaction);
+    }
     if (route === "course/delete") {
       new DeleteCourseCommand().execute(interaction);
     }

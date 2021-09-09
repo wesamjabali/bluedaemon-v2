@@ -1,9 +1,7 @@
-import { client } from "@/main";
 import { rest } from "@/services/rest.service";
 import { config } from "@/services/config.service";
 import { CommandOption, ICommand } from "@/commands/command.interface";
 import { commands } from "@/commands";
-import { ApplicationCommand } from "discord.js";
 import { APIApplicationCommandOption, Routes } from "discord-api-types/v9";
 import { registerButtons } from "@/buttons";
 import { registerSelectMenus } from "@/selectMenus";

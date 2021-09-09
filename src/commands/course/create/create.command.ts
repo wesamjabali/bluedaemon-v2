@@ -25,8 +25,8 @@ export class CreateCourseCommand implements ICommand {
     const password = i.options.getString("password", false);
     const courseCategoryOption = i.options.getBoolean("category", false);
     const courseOwner = i.options.getUser("owner", false);
-
-    await i.reply(
+    i.deferReply();
+    await i.followUp(
       await createCourse(
         i.guild,
         courseCode,

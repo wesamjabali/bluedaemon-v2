@@ -97,23 +97,26 @@ export class BulkDeleteCourseCommand implements ICommand {
         return;
       }
       if (j.customId === "bulkdelete-confirm") {
-        await i.editReply({
-          content: `\`\`\`${await bulkDeleteCourses(
-            coursesArray,
-            i.guildId as string,
-            quarter
-          )}\`\`\``,
-          components: [],
-        });
+        await i
+          .editReply({
+            content: `\`\`\`${await bulkDeleteCourses(
+              coursesArray,
+              i.guildId as string,
+              quarter
+            )}\`\`\``,
+            components: [],
+          })
+          .catch(async () => {
+            await i.editReply({ content: "Done!", components: [] });
+          });
       } else {
         await i.editReply({
           content: `Bulkdelete operation canceled.`,
           components: [],
         });
       }
-
-      await j.reply(".");
-      j.deleteReply();
+      await j.reply("​") // zero-width character (​)
+      await j.deleteReply();
     });
   }
 }
