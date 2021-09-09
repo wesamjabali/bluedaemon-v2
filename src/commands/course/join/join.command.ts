@@ -66,16 +66,19 @@ export class JoinCourseCommand implements ICommand {
 
     if (dbCourse.password) {
       if (!password) {
-        i.reply(
-          `This course is protected by a password! Please make sure you join using the password.`
-        );
+        i.reply({
+          content: `This course is protected by a password! Please make sure you join using the password option. You have to click the "Password" option, a space is not sufficient.`,
+          ephemeral: true,
+        });
         return;
       }
 
       if (password !== dbCourse.password) {
-        i.channel?.send(
-          `Wrong password for ${possibleAlias}. Please try again, ${i.user}`
-        );
+        i.reply({
+          content: `Wrong password for ${possibleAlias}. Please try again.`,
+          ephemeral: true,
+        });
+        return;
       } else {
         if (await addRole(i, courseRole, possibleAlias)) {
           const courseChannel = await sendWelcomeMessage(
@@ -84,30 +87,27 @@ export class JoinCourseCommand implements ICommand {
             courseRole
           );
           if (dbCourse.category) {
-            i.channel?.send(
-              `${possibleAlias} added, ${i.user}! You can view it here: ${courseChannel}`
-            );
+            i.reply({
+              content: `${possibleAlias} added! You can view it here: ${courseChannel}`,
+              ephemeral: true,
+            });
           } else {
-            i.channel?.send(`${courseChannel} added, ${i.user}!`);
+            i.reply({
+              content: `${courseChannel} added!`,
+              ephemeral: true,
+            });
           }
-        } else {
-          return;
         }
       }
+    } else {
+      /* If no password */
+      if (!(await addRole(i, courseRole, possibleAlias))) {
+        return;
+      }
+      const courseChannel = await sendWelcomeMessage(i, dbCourse, courseRole);
 
-      await i.reply("​"); // Zero widthspace character (​)
-      await i.deleteReply();
-
-      return;
+      await i.reply(`${courseChannel} added!`);
     }
-
-    if (!(await addRole(i, courseRole, possibleAlias))) {
-      return;
-    }
-
-    const courseChannel = await sendWelcomeMessage(i, dbCourse, courseRole);
-
-    await i.reply(`${courseChannel} added!`);
   }
 }
 

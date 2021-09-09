@@ -17,7 +17,6 @@ export async function deleteCourse(
   possibleAlias = normalizeCourseCode(possibleAlias).courseName;
   let dbQuarter;
 
-  //   console.log(quarter);
   let builtReply = "";
   if (quarter) {
     dbQuarter = (await prisma.quarter.findFirst({
@@ -30,7 +29,7 @@ export async function deleteCourse(
     })) as Quarter;
   }
   if (!dbQuarter) {
-    return `${quarter} is not a valid quarter.`;
+    return `\`${quarter}\` is not a valid quarter.`;
   }
 
   let dbCourse = await prisma.course.findFirst({
@@ -42,7 +41,7 @@ export async function deleteCourse(
   });
 
   if (!dbCourse) {
-    return `${possibleAlias} is not a valid course.`;
+    return `\`${possibleAlias}\` is not a valid course.`;
   }
 
   const courseRole = guild.roles.cache.find((r) => r.id === dbCourse?.roleId);
@@ -51,17 +50,16 @@ export async function deleteCourse(
   );
 
   if (!courseRole) {
-    builtReply += "`Course role not found. Was it deleted?`\n";
+    builtReply += `Role for \`${possibleAlias}\` not found. Was it deleted?\n`;
   }
 
   if (!courseChannel) {
-    builtReply += "`Course channel not found. Was it deleted?`\n";
+    builtReply += `Channel for \`${possibleAlias}\` not found. Was it deleted?\n`;
   }
 
   if (dbCourse.category) {
-    (courseChannel as CategoryChannel).children.forEach(
-      async (c) => await c.delete()
-    );
+    for (const c of (courseChannel as CategoryChannel).children.values())
+      await c.delete();
   }
 
   await courseChannel?.delete();

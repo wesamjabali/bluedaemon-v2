@@ -20,9 +20,7 @@ export const clientOptions: ClientOptions = {
   intents: [Intents.FLAGS.GUILDS],
   presence: {
     status: "online",
-    activities: [
-      { name: "BlueDaemon", type: "PLAYING", url: "https://wesamjabali.com" },
-    ],
+    activities: [{ name: "Lo-fi hip hop beats", type: "PLAYING" }],
   },
 };
 

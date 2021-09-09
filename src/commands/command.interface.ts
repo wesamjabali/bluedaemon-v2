@@ -23,6 +23,7 @@ export interface ICommand {
 export enum dynamicPermissionUserOrRole {
   USER = "USER",
   ROLE = "ROLE",
+  Everyone = "ROLE",
   CourseManager = "ROLE",
   Moderator = "ROLE",
   GuildOwner = "USER",
