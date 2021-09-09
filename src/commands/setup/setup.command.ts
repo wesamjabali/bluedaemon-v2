@@ -36,11 +36,10 @@ export class SetupCommand implements ICommand {
     if (!i.guildId || !i.guild || !i.guild?.ownerId) return;
 
     /* Create guild if it doesn't exist. */
-    await prisma.guild
-      .create({
-        data: { guildId: i.guildId, guildOwnerId: i.guild.ownerId },
-      })
-      .catch(() => {});
+    await prisma.guild.create({
+      data: { guildId: i.guildId, guildOwnerId: i.guild.ownerId },
+    });
+
     await resetCacheForGuild(i.guildId);
 
     let errorResponse = "";
@@ -102,7 +101,7 @@ export class SetupCommand implements ICommand {
           { roleType: "CourseManager", id: courseManagerRole.id },
           { roleType: "Moderator", id: modRole.id },
           { roleType: "GuildOwner", id: i.guild.ownerId },
-          { roleType: "Everyone", id: i.guild.roles.everyone.id}
+          { roleType: "Everyone", id: i.guild.roles.everyone.id },
         ],
         i.guild
       );
