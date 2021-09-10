@@ -1,24 +1,20 @@
 import { prisma } from "@/prisma/prisma.service";
 import {
-  ApplicationCommand,
-  ButtonInteraction,
   CommandInteraction,
   Message,
   MessageActionRow,
   MessageButton,
-  MessageInteraction,
 } from "discord.js";
 import {
   CommandOption,
   CommandOptionPermission,
   ICommand,
 } from "@/commands/command.interface";
-import { bulkDeleteCourses } from "./bulkDelete.service";
-import { client } from "@/main";
+import { bulkDeleteCourses } from "./bulk-delete-courses.service";
 import { ButtonAction } from "@/buttons/buttonAction";
 
-export class BulkDeleteCourseCommand implements ICommand {
-  name = "bulkdelete";
+export class BulkDeleteCoursesCommand implements ICommand {
+  name = "bulk-delete-courses";
   description = "Delete a set of courses";
   default_permission = false;
   permissions: CommandOptionPermission[] = [
@@ -115,7 +111,7 @@ export class BulkDeleteCourseCommand implements ICommand {
           components: [],
         });
       }
-      await j.reply("​") // zero-width character (​)
+      await j.reply("​"); // zero-width character (​)
       await j.deleteReply();
     });
   }

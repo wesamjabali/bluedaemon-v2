@@ -6,17 +6,24 @@ import {
   Role,
   TextChannel,
 } from "discord.js";
-import { CommandOption, ICommand } from "@/commands/command.interface";
+import {
+  CommandOption,
+  CommandOptionPermission,
+  ICommand,
+} from "@/commands/command.interface";
 import { normalizeCourseCode } from "@/helpers/normalizeCourseCode.helper";
 import { Course } from "@prisma/client";
-import { joinCommandOptions } from "./join.options";
+import { joinCommandOptions } from "./join-course.options";
 import { getRoleFromCourseName } from "@/helpers/getRoleFromCourseName.helper";
 import { getGuildConfig } from "@/config/guilds.config";
 
 export class JoinCourseCommand implements ICommand {
-  name = "join";
+  name = "join-course";
   description = "Join a course";
-  default_permission = true;
+  default_permission = false;
+  permissions: CommandOptionPermission[] = [
+    { type: "Everyone", permission: true },
+  ];
 
   options: CommandOption[] = joinCommandOptions;
 

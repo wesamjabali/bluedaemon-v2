@@ -4,15 +4,15 @@ import {
   CommandOptionPermission,
   ICommand,
 } from "@/commands/command.interface";
-import { createCommandOptions } from "./create.options";
-import { createCourse } from "./create.service";
+import { createCommandOptions } from "./create-course.options";
+import { createCourse } from "./create-course.service";
 
 export class CreateCourseCommand implements ICommand {
-  name = "create";
+  name = "create-course";
   description = "Create a course";
   default_permission = false;
   permissions: CommandOptionPermission[] = [
-    { id: "796214872479498241", type: "ROLE", permission: true },
+    { type: "CourseManager", permission: true },
   ];
 
   options: CommandOption[] = createCommandOptions;

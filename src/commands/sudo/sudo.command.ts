@@ -5,7 +5,7 @@ import {
   CommandOptionPermission,
   ICommand,
 } from "@/commands/command.interface";
-import { SetupCommand } from "@/commands/setup/setup.command";
+import { SetupCommand } from "./meta/setup/setup.command";
 
 export class SudoCommand implements ICommand {
   name = "sudo";

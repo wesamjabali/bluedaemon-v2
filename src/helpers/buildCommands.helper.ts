@@ -11,9 +11,22 @@ import {
   SlashCommandSubcommandBuilder,
   SlashCommandSubcommandGroupBuilder,
 } from "@discordjs/builders";
+import { AllApplicationCommands } from "@/services/applicationCommands.service";
+import { client } from "@/main";
 
 export class BuildCommands {
   public async execute(): Promise<void> {
+    const allAppCommands = await new AllApplicationCommands().getAll();
+    if (config.envConfig.environment === "prod") {
+      const devGuild = client.guilds.cache.find(
+        (g) => g.id === config.envConfig.devGuildId
+      );
+      if (!devGuild) return;
+      devGuild.commands.set([]);
+    }
+    if (allAppCommands?.length === commands.length) return;
+
+    console.log("Rebuilding commands.");
     const JSONCommands: ICommandData[] = [];
 
     // Build the command
@@ -45,7 +58,8 @@ export class BuildCommands {
 
     // Add permission overrides
     commands.forEach(async (c) => {
-      await updateCommandPermissions("ADD", c.name, c.permissions ?? []);
+      if (c.permissions)
+        await updateCommandPermissions("ADD", c.name, c.permissions);
     });
 
     console.log(

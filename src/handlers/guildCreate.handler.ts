@@ -11,9 +11,13 @@ export class GuildCreateHandler implements IEventHandler {
   public onEvent = async (guild: Guild) => {
     console.log(`Joined guild ${guild.name}`);
     /* Create Guildconfig Cache */
-    await prisma.guild.create({
-      data: { guildId: guild.id, guildOwnerId: guild.ownerId },
-    });
+    await prisma.guild
+      .create({
+        data: { guildId: guild.id, guildOwnerId: guild.ownerId },
+      })
+      .catch(() => {
+        console.log(guild.name + " already exists in the db.");
+      });
 
     await resetCacheForGuild(guild.id);
 

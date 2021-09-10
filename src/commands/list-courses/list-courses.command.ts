@@ -5,7 +5,6 @@ import {
 } from "@/commands/command.interface";
 import { getGuildConfig } from "@/config/guilds.config";
 import { prisma } from "@/prisma/prisma.service";
-import { Embed } from "@discordjs/builders";
 import {
   CommandInteraction,
   Message,
@@ -13,10 +12,9 @@ import {
   MessageButton,
   MessageEmbed,
 } from "discord.js";
-import { join } from "path/posix";
 
 export class ListCoursesCommand implements ICommand {
-  name = "list";
+  name = "list-courses";
   description = "Search courses, or display all";
   default_permission = false;
   permissions: CommandOptionPermission[] = [

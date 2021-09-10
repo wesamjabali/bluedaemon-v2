@@ -3,9 +3,8 @@ import { CommandOption, ICommand } from "@/commands/command.interface";
 import { prisma } from "@/prisma/prisma.service";
 
 import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
-import { commands } from "..";
+import { commands } from "@/commands";
 import { updateCommandPermissions } from "@/helpers/addCommandPermissions.helper";
-import { AllApplicationCommands } from "@/services/applicationCommands.service";
 
 export class SetupCommand implements ICommand {
   name = "setup";
@@ -36,9 +35,13 @@ export class SetupCommand implements ICommand {
     if (!i.guildId || !i.guild || !i.guild?.ownerId) return;
 
     /* Create guild if it doesn't exist. */
-    await prisma.guild.create({
-      data: { guildId: i.guildId, guildOwnerId: i.guild.ownerId },
-    });
+    await prisma.guild
+      .create({
+        data: { guildId: i.guildId, guildOwnerId: i.guild.ownerId },
+      })
+      .catch(() => {
+        console.log(i.guild?.name + " already exists in the db.");
+      });
 
     await resetCacheForGuild(i.guildId);
 

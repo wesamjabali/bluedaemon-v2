@@ -5,14 +5,14 @@ import {
   ICommand,
 } from "@/commands/command.interface";
 
-import { deleteCourse } from "./delete.service";
+import { deleteCourse } from "./delete-course.service";
 
 export class DeleteCourseCommand implements ICommand {
-  name = "delete";
+  name = "delete-course";
   description = "Delete a course";
   default_permission = false;
   permissions: CommandOptionPermission[] = [
-    { id: "796214872479498241", type: "ROLE", permission: true },
+    { type: "CourseManager", permission: true },
   ];
 
   options: CommandOption[] = [

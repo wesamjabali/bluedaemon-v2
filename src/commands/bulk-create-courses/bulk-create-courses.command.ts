@@ -6,10 +6,10 @@ import {
   CommandOptionPermission,
   ICommand,
 } from "@/commands/command.interface";
-import { createCourse } from "@/commands/course/create/create.service";
+import { createCourse } from "@/commands/create-course/create-course.service";
 
-export class BulkCreateCourseCommand implements ICommand {
-  name = "bulkcreate";
+export class BulkCreateCoursesCommand implements ICommand {
+  name = "bulk-create-courses";
   description = "Create a set of courses";
   default_permission = false;
   permissions: CommandOptionPermission[] = [

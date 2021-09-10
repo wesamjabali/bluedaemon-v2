@@ -6,8 +6,6 @@
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn  src/main.ts",
-
-    
     "test": ""
   },
   "author": "Wesam Jabali",
@@ -26,6 +24,8 @@
     "@types/node": "^16.7.10",
     "prisma": "^2.30.3",
     "ts-node": "^10.2.1",
-    "tsc-watch": "^4.5.0"
+    "ts-node-dev": "^1.1.8",
+    "tsc-watch": "^4.5.0",
+    "tsconfig-paths": "^3.11.0"
   }
 }

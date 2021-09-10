@@ -1,16 +1,20 @@
 import { prisma } from "@/prisma/prisma.service";
 import { CommandInteraction, GuildMemberRoleManager } from "discord.js";
-import { CommandOption, ICommand } from "@/commands/command.interface";
+import { CommandOption, CommandOptionPermission, ICommand } from "@/commands/command.interface";
 
 import { getRoleFromCourseName } from "@/helpers/getRoleFromCourseName.helper";
 import { getGuildConfig } from "@/config/guilds.config";
 import { normalizeCourseCode } from "@/helpers/normalizeCourseCode.helper";
 import { Quarter } from ".prisma/client";
 
+
 export class LeaveCourseCommand implements ICommand {
-  name = "leave";
+  name = "leave-course";
   description = "Leave a course";
-  default_permission = true;
+  default_permission = false;
+  permissions: CommandOptionPermission[] = [
+    { type: "Everyone", permission: true },
+  ];
 
   options: CommandOption[] = [
     { type: "String", name: "course", required: true },
