@@ -96,7 +96,7 @@ export class SetupCommand implements ICommand {
 
     /* Send commands and their permissions */
     for (const c of commands) {
-      await updateCommandPermissions(
+      updateCommandPermissions(
         "SET",
         c.name,
         c.permissions ?? [],
@@ -110,10 +110,10 @@ export class SetupCommand implements ICommand {
       );
     }
 
-    await resetCacheForGuild(i.guildId).catch((e) => {
-      console.log(e);
-    });
+    await resetCacheForGuild(i.guildId);
 
-    await i.followUp("Successfully set up server!");
+    await i.followUp(
+      "Successfully set up server! It may take a minute for all commands to become available for priveleged users."
+    );
   }
 }

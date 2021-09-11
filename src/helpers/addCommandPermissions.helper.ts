@@ -12,25 +12,26 @@ import {
   ApplicationCommand,
   ApplicationCommandPermissionData,
   Guild,
+  RoleResolvable,
+  UserResolvable,
 } from "discord.js";
 
 export async function updateCommandPermissions(
-  setOrAdd: "SET" | "ADD",
+  setAddRemove: "SET" | "ADD" | "REMOVE",
   applicationCommandName: string,
   permissions: CommandOptionPermission[],
   dynamicPermissionRoles?: PermissionRoles[],
   guild?: Guild
 ) {
   if (permissions.length === 0) return;
+  const allAppCommands = await new AllApplicationCommands().getAll();
 
-  let applicationCommandId = (
-    await new AllApplicationCommands().getAll()
-  )?.find((c) => c.name === applicationCommandName)?.id;
+  let applicationCommandId = allAppCommands?.find(
+    (c) => c.name === applicationCommandName
+  )?.id;
 
   if (!applicationCommandId) {
-    return Promise.reject(
-      `"${applicationCommandName}" not a root command defined in @/commands/index.ts`
-    );
+    return;
   }
 
   let applicationCommand;
@@ -68,8 +69,20 @@ export async function updateCommandPermissions(
   });
 
   if (permissions.length === 0) return;
-  /* Add permissions on top of existing ones or reset permissions to the parameters */
-  if (setOrAdd === "ADD") {
+
+  if (setAddRemove === "REMOVE") {
+    for (const p of permissions) {
+      if (p.type === "ROLE") {
+        applicationCommand.permissions.remove({
+          roles: [p.id as RoleResolvable],
+        });
+      } else {
+        applicationCommand.permissions.remove({
+          users: [p.id as UserResolvable],
+        });
+      }
+    }
+  } else if (setAddRemove === "ADD") {
     if (config.envConfig.environment === "prod") {
       await guild?.commands.permissions.add({
         command: applicationCommand,

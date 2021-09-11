@@ -40,10 +40,13 @@ export class BuildCommands {
     });
 
     // Attach to application or guild
+    console.log("Attaching...");
     if (config.envConfig.environment === "prod") {
-      await rest.put(Routes.applicationCommands(config.envConfig.clientId), {
-        body: JSONCommands,
-      });
+      console.log(
+        await rest.put(Routes.applicationCommands(config.envConfig.clientId), {
+          body: JSONCommands,
+        })
+      );
     } else {
       await rest.put(
         Routes.applicationGuildCommands(

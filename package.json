@@ -5,7 +5,7 @@
   "main": "src/main.ts",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
-    "dev": "nodemon --exitcrash --delay 10000ms src/main.ts",
+    "dev": "nodemon --delay 1000ms src/main.ts",
     "test": ""
   },
   "author": "Wesam Jabali",

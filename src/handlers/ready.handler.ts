@@ -12,6 +12,12 @@ export class ReadyHandler implements IEventHandler {
   public once = true;
   public readonly EVENT_NAME: keyof ClientEvents = "ready";
   public onEvent = async () => {
+    while (
+      !client.guilds.cache.find((g) => g.id === config.envConfig.devGuildId)
+    ) {
+      await new Promise((r) => setTimeout(r, 5000));
+      console.log("Waiting for bot to join dev guild...");
+    }
     /* Create Guildconfig Cache */
     guildConfigsCache.push(...(await prisma.guild.findMany()));
 
@@ -35,7 +41,6 @@ export class ReadyHandler implements IEventHandler {
             },
             { roleType: "Moderator", id: dbGuild?.moderatorRoleId ?? "" },
             { roleType: "GuildOwner", id: g.ownerId },
-            { roleType: "Everyone", id: g.roles.everyone.id },
           ],
           g
         );
