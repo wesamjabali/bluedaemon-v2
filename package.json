@@ -5,15 +5,18 @@
   "main": "src/main.ts",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
-    "dev": "ts-node-dev -r tsconfig-paths/register --respawn  src/main.ts",
+    "dev": "nodemon --exitcrash --delay 10000ms src/main.ts",
     "test": ""
   },
   "author": "Wesam Jabali",
   "license": "ISC",
+  "_moduleAliases": {
+    "@": "src/"
+  },
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
-    "@prisma/client": "^2.30.3",
+    "@prisma/client": "^3.0.2",
     "discord-api-types": "^0.22.0",
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
@@ -22,10 +25,9 @@
   },
   "devDependencies": {
     "@types/node": "^16.7.10",
-    "prisma": "^2.30.3",
+    "module-alias": "^2.2.2",
+    "prisma": "^3.0.2",
     "ts-node": "^10.2.1",
-    "ts-node-dev": "^1.1.8",
-    "tsc-watch": "^4.5.0",
-    "tsconfig-paths": "^3.11.0"
+    "nodemon": "^2.0.12"
   }
 }

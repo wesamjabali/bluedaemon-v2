@@ -1,0 +1,40 @@
+version: "3.9"
+
+networks:
+  main:
+services:
+  database:
+    image: postgres:13.4
+    container_name: database
+    restart: always
+    networks:
+      - main
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    env_file:
+      - .env
+    volumes:
+      - "database-data:/var/lib/postgresql/data/"
+  app:
+    networks:
+      - main
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - "5555:5555"
+    expose:
+      - "5555"
+    env_file: .env
+    container_name: "bluedaemon"
+    depends_on:
+      - database
+    volumes:
+      - "./app:/usr/src/app/app"
+
+volumes:
+  database-data:
+  app:

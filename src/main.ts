@@ -1,9 +1,9 @@
+require("module-alias/register");
 import { Client } from "discord.js";
 import { handlers } from "./handlers";
 import { clientOptions, config } from "./services/config.service";
 
 const client = new Client(clientOptions);
-
 
 handlers.forEach((handler) => {
   if (handler.once) {
