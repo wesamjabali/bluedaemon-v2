@@ -8,9 +8,9 @@ import { LeaveCourseCommand } from "./leave-course/leave-course.command";
 import { ListCoursesCommand } from "./list-courses/list-courses.command";
 import { PingCommand } from "./ping/ping.command";
 import { SayCommand } from "./say/say.command";
+import { SetCoursePasswordCommand } from "./set-course-password/set-course-password.command";
 import { SourceCommand } from "./source/source.command";
 import { SudoCommand } from "./sudo/sudo.command";
-import { UpdatePermissionCommand } from "./sudo/meta/update-permission/update-permission.command";
 
 const commands: ICommand[] = [
   new SudoCommand(),
@@ -23,6 +23,7 @@ const commands: ICommand[] = [
   new BulkCreateCoursesCommand(),
   new DeleteCourseCommand(),
   new BulkDeleteCoursesCommand(),
+  new SetCoursePasswordCommand(),
 ];
 
 export { commands, PingCommand, SayCommand, SourceCommand, SudoCommand };
