@@ -48,9 +48,10 @@ If this is a subcommand/group, make sure to execute the correct subcommand!`
           });
         }
 
-        interaction.reply(
-          `Button with customId \`${interaction.customId}\` not implemented, ${interaction.user}.`
-        );
+        interaction.reply({
+          content: `Button with customId \`${interaction.customId}\` not implemented, ${interaction.user}.`,
+          ephemeral: true,
+        });
       }
     }
 

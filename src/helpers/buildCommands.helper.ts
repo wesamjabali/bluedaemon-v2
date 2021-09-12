@@ -16,7 +16,6 @@ import { client } from "@/main";
 
 export class BuildCommands {
   public async execute(): Promise<void> {
-    const allAppCommands = await new AllApplicationCommands().getAll();
     if (config.envConfig.environment === "prod") {
       const devGuild = client.guilds.cache.find(
         (g) => g.id === config.envConfig.devGuildId
@@ -24,7 +23,6 @@ export class BuildCommands {
       if (!devGuild) return;
       devGuild.commands.set([]);
     }
-    if (allAppCommands?.length === commands.length) return;
 
     console.log("Rebuilding commands.");
     const JSONCommands: ICommandData[] = [];
@@ -40,13 +38,10 @@ export class BuildCommands {
     });
 
     // Attach to application or guild
-    console.log("Attaching...");
     if (config.envConfig.environment === "prod") {
-      console.log(
-        await rest.put(Routes.applicationCommands(config.envConfig.clientId), {
-          body: JSONCommands,
-        })
-      );
+      await rest.put(Routes.applicationCommands(config.envConfig.clientId), {
+        body: JSONCommands,
+      });
     } else {
       await rest.put(
         Routes.applicationGuildCommands(

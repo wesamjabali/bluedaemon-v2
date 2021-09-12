@@ -10,6 +10,7 @@ import { PingCommand } from "./ping/ping.command";
 import { SayCommand } from "./say/say.command";
 import { SourceCommand } from "./source/source.command";
 import { SudoCommand } from "./sudo/sudo.command";
+import { UpdatePermissionCommand } from "./sudo/meta/update-permission/update-permission.command";
 
 const commands: ICommand[] = [
   new SudoCommand(),
@@ -21,13 +22,7 @@ const commands: ICommand[] = [
   new CreateCourseCommand(),
   new BulkCreateCoursesCommand(),
   new DeleteCourseCommand(),
-  new BulkDeleteCoursesCommand()
+  new BulkDeleteCoursesCommand(),
 ];
 
-export {
-  commands,
-  PingCommand,
-  SayCommand,
-  SourceCommand,
-  SudoCommand,
-};
+export { commands, PingCommand, SayCommand, SourceCommand, SudoCommand };

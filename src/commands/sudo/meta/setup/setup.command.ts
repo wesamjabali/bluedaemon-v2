@@ -1,5 +1,5 @@
 import { CommandInteraction } from "discord.js";
-import { CommandOption, ICommand } from "@/commands/command.interface";
+import { CommandOption, CommandOptionPermission, ICommand } from "@/commands/command.interface";
 import { prisma } from "@/prisma/prisma.service";
 
 import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
@@ -8,8 +8,11 @@ import { updateCommandPermissions } from "@/helpers/addCommandPermissions.helper
 
 export class SetupCommand implements ICommand {
   name = "setup";
-  description = "Set all parameters for this bot.";
+  description = "Prepare this bot for use and activate other commands.";
   default_permission = false;
+  permissions: CommandOptionPermission[] = [
+    { type: "GuildOwner", permission: true },
+  ];
 
   options: CommandOption[] = [
     { type: "String", name: "current_quarter", required: true },
