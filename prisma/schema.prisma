@@ -18,6 +18,7 @@ model Guild {
   loggingChannelId        String?
   moderatorRoleId         String?
   courseManagerRoleId     String?
+  welcomeMessage String?
 
 
   Course  Course[]  @relation("CourseGuild")

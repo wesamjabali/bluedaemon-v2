@@ -17,7 +17,7 @@ export class ConfigService {
 }
 
 export const clientOptions: ClientOptions = {
-  intents: [Intents.FLAGS.GUILDS],
+  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS],
   presence: {
     status: "online",
     activities: [{ name: "Lo-fi hip hop beats", type: "PLAYING" }],

@@ -9,6 +9,7 @@ import { SetupCommand } from "./meta/setup/setup.command";
 import { UpdatePermissionCommand } from "./meta/update-permission/update-permission.command";
 import { UpdateQuarterCommand } from "./course/update-quarter/update-quarter.command";
 import { SetCommand } from "./meta/set/set.command";
+import { SetWelcomeMessageCommand } from "./meta/set-welcome-message/set-welcome-message.command";
 
 export class SudoCommand implements ICommand {
   name = "sudo";
@@ -25,7 +26,12 @@ export class SudoCommand implements ICommand {
         {
           name: "meta",
           description: "Meta Commands",
-          subCommands: [new SetupCommand(), new UpdatePermissionCommand(), new SetCommand()],
+          subCommands: [
+            new SetupCommand(),
+            new UpdatePermissionCommand(),
+            new SetCommand(),
+            new SetWelcomeMessageCommand(),
+          ],
         },
         {
           name: "course",
@@ -37,22 +43,10 @@ export class SudoCommand implements ICommand {
   ];
 
   public async execute(interaction: CommandInteraction): Promise<void> {
-    const route = `${interaction.options.getSubcommandGroup()}/${interaction.options.getSubcommand()}`;
+    const command = this.options[0].subCommandGroups
+      ?.find((c) => c.name === interaction.options.getSubcommandGroup())
+      ?.subCommands.find((c) => c.name === interaction.options.getSubcommand());
 
-    if (route === "meta/setup") {
-      await new SetupCommand().execute(interaction);
-    }
-
-    if (route === "meta/set") {
-      await new SetCommand().execute(interaction);
-    }
-
-    if (route === "meta/update-permission") {
-      await new UpdatePermissionCommand().execute(interaction);
-    }
-
-    if (route === "course/update-quarter") {
-      await new UpdateQuarterCommand().execute(interaction);
-    }
+    command?.execute(interaction);
   }
 }
