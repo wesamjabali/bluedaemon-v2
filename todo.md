@@ -1,0 +1,29 @@
+## JIRA (FREE EDITION)
+- [ ] Code review
+- [ ] Message handler
+- [ ] Count to 100,000
+- [ ] Enable Logging
+  - [ ] To local file
+  - [ ] To Logging channel
+- [ ] Add "all" to permissions command
+  - As in, add the ability to write "all" and apply the permissions change to all commands for a user or role. ie for an admin role.
+- [ ] Course requests
+  - Community voting?
+  - One-click create?
+  - Both?
+- [ ] Self-Roles
+  - [x] Schema
+  - [ ] Commands
+  - [ ] Permissions
+- [ ] Tags
+  - [x] Schema
+  - [ ] Commands
+  - [ ] Permissions
+- [ ] Remove course prefix/number/section in favor for strong validation and alias array in db.
+  - Make sure this is the way to go first.
+- [ ] Add migration routine
+  - Command that allows the guild owner to move to bluedaemon. This will allow you to create a quarter, then add entire categories of classes. Data would need to be validated beforehand ie courses created must match CSC300-123 format.
+- [x] Cache all courses and quarters just like guild.
+- [x] Reset pieces of cache instead of resetting the whole thing every time.
+- [x] Allow multiple course owners
+  - Not going to implement this one. Owners have permission to give granular permissions as needed -- TAs and tutors can be granted these permissions anytime without bot help.

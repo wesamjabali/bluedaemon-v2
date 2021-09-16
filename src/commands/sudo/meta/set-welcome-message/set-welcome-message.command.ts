@@ -30,7 +30,7 @@ export class SetWelcomeMessageCommand implements ICommand {
       where: { guildId: i.guildId as string },
       data: { welcomeMessage: i.options.getString("message") ?? null },
     });
-    await resetCacheForGuild(i.guildId as string);
+    await resetCacheForGuild(i.guildId as string, "welcomeMessage");
     await i.reply(`Member welcome message set!`);
   }
 }

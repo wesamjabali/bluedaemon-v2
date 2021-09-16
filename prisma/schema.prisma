@@ -18,22 +18,23 @@ model Guild {
   loggingChannelId        String?
   moderatorRoleId         String?
   courseManagerRoleId     String?
-  welcomeMessage String?
+  welcomeMessage          String?
 
-
-  Course  Course[]  @relation("CourseGuild")
-  Quarter Quarter[] @relation("QuarterGuild")
+  courses   Course[]
+  quarters  Quarter[]
+  selfRoles SelfRole[]
+  tags      Tag[]
 }
 
 model Course {
   id                Int      @id @default(autoincrement())
-  guild             Guild    @relation("CourseGuild", fields: [guildId], references: [guildId])
+  guild             Guild    @relation(fields: [guildId], references: [guildId])
   guildId           String
   courseCodePrefix  String
   courseCodeNumber  String
   courseCodeSection String?
   description       String?
-  quarter           Quarter  @relation("CourseQuarter", fields: [quarterId], references: [id])
+  quarter           Quarter  @relation(fields: [quarterId], references: [id])
   quarterId         Int
   roleId            String   @unique
   channelId         String
@@ -48,8 +49,24 @@ model Quarter {
   name                      String
   quarterCategoryChannelIds String[]
   guilId                    String
-  guild                     Guild    @relation("QuarterGuild", fields: [guilId], references: [guildId])
+  guild                     Guild    @relation(fields: [guilId], references: [guildId])
 
-  Course Course[] @relation("CourseQuarter")
+  Course Course[]
   Guild  Guild[]  @relation("GuildCurrentQuarter")
+}
+
+model SelfRole {
+  id      Int    @id @default(autoincrement())
+  name    String
+  roleId  String
+  guildId String
+  guild   Guild  @relation(fields: [guildId], references: [guildId])
+}
+
+model Tag {
+  id      Int    @id @default(autoincrement())
+  name    String
+  tagText String
+  guildId String
+  guild   Guild  @relation(fields: [guildId], references: [guildId])
 }

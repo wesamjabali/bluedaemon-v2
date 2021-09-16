@@ -14,8 +14,8 @@ import {
 import { normalizeCourseCode } from "@/helpers/normalizeCourseCode.helper";
 import { Course } from "@prisma/client";
 import { joinCommandOptions } from "./join-course.options";
-import { getRoleFromCourseName } from "@/helpers/getRoleFromCourseName.helper";
 import { getGuildConfig } from "@/config/guilds.config";
+import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
 
 export class JoinCourseCommand implements ICommand {
   name = "join-course";
@@ -35,45 +35,35 @@ export class JoinCourseCommand implements ICommand {
     ).courseName;
     const password = i.options.getString("password", false);
 
-    let dbCourse = await prisma.course.findFirst({
-      where: {
-        AND: {
-          aliases: { has: possibleAlias },
-          guildId: i.guildId,
-          quarterId: guildConfig.currentQuarterId,
-        },
-      },
-    });
+    let dbCourse = guildConfig.courses.find(
+      (c) => c.guildId === i.guildId && c.aliases.includes(possibleAlias)
+    );
 
     if (!dbCourse) {
-      i.reply(`${possibleAlias} doesn't exist this quarter.`);
+      await i.reply({
+        content: `${possibleAlias} doesn't exist this quarter.`,
+        ephemeral: true,
+      });
       return;
     }
 
-    const dbQuarter = await prisma.quarter.findFirst({
-      where: { id: guildConfig.currentQuarterId },
-    });
-
-    if (!dbQuarter) return;
-
-    const courseRole = await getRoleFromCourseName(
-      possibleAlias,
-      dbQuarter,
-      i.guildId
+    const courseRole = i.guild?.roles.cache.find(
+      (r) => r.id === dbCourse?.roleId
     );
 
     if (!courseRole) {
-      prisma.course.delete({ where: { roleId: dbCourse.roleId } });
-      i.reply(
+      await prisma.course.delete({ where: { roleId: dbCourse.roleId } });
+      await i.reply(
         "That course role no longer exists! I removed it from the database."
       );
+      await resetCacheForGuild(i.guildId, "courses");
 
       return;
     }
 
     if (dbCourse.password) {
       if (!password) {
-        i.reply({
+        await i.reply({
           content: `This course is protected by a password! Please make sure you join using the password option. You have to click the "Password" option, a space is not sufficient.`,
           ephemeral: true,
         });
@@ -81,7 +71,7 @@ export class JoinCourseCommand implements ICommand {
       }
 
       if (password !== dbCourse.password) {
-        i.reply({
+        await i.reply({
           content: `Wrong password for ${possibleAlias}. Please try again.`,
           ephemeral: true,
         });
@@ -94,12 +84,12 @@ export class JoinCourseCommand implements ICommand {
             courseRole
           );
           if (dbCourse.category) {
-            i.reply({
+            await i.reply({
               content: `${possibleAlias} added! You can view it here: ${courseChannel}`,
               ephemeral: true,
             });
           } else {
-            i.reply({
+            await i.reply({
               content: `${courseChannel} added!`,
               ephemeral: true,
             });
@@ -146,7 +136,7 @@ async function sendWelcomeMessage(
   }
 
   if (!courseChannel) {
-    i.reply("Original channel no longer exists! Please update the database.");
+    await i.reply("Original channel no longer exists! Please update the database.");
     return null;
   }
 

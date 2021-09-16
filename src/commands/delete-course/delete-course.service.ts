@@ -4,6 +4,7 @@ import { normalizeCourseCode } from "@/helpers/normalizeCourseCode.helper";
 import { getGuildConfig } from "@/config/guilds.config";
 import { client } from "@/main";
 import { Quarter } from ".prisma/client";
+import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
 
 export async function deleteCourse(
   possibleAlias: string,
@@ -15,29 +16,21 @@ export async function deleteCourse(
   if (!guildConfig?.currentQuarterId || !guild) return "Guild not configured.";
 
   possibleAlias = normalizeCourseCode(possibleAlias).courseName;
-  let dbQuarter;
+  let dbQuarter: Quarter | null | undefined;
 
   let builtReply = "";
   if (quarter) {
-    dbQuarter = (await prisma.quarter.findFirst({
-      where: { AND: { name: quarter, guild: { guildId: guildId } } },
-    })) as Quarter;
+    dbQuarter = guildConfig.quarters.find((q) => q.name === quarter);
   } else {
-    dbQuarter = (await prisma.quarter.findFirst({
-      where: { id: guildConfig.currentQuarterId },
-    })) as Quarter;
+    dbQuarter = guildConfig.currentQuarter;
   }
   if (!dbQuarter) {
     return `\`${quarter}\` is not a valid quarter.`;
   }
 
-  let dbCourse = await prisma.course.findFirst({
-    where: {
-      aliases: { has: possibleAlias },
-      guildId: guildId,
-      quarterId: dbQuarter?.id,
-    },
-  });
+  let dbCourse = guildConfig.courses.find(
+    (c) => c.quarterId === dbQuarter?.id && c.aliases.includes(possibleAlias)
+  );
 
   if (!dbCourse) {
     return `\`${possibleAlias}\` is not a valid course.`;
@@ -64,6 +57,7 @@ export async function deleteCourse(
   await courseChannel?.delete();
   await courseRole?.delete();
   await prisma.course.delete({ where: { roleId: dbCourse?.roleId } });
+  await resetCacheForGuild(guild.id, "courses");
 
   return `\`${dbCourse.aliases.join("/")}\` deleted!\n${builtReply}`;
 }

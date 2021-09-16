@@ -8,6 +8,7 @@ import {
   User,
 } from "discord.js";
 import { getGuildConfig } from "@/config/guilds.config";
+import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
 
 export async function createCourse(
   guild: Guild | null,
@@ -49,46 +50,25 @@ export async function createCourse(
   let courseChannel;
   let doneString: string = "";
   const dbQuarter = quarter
-    ? await prisma.quarter.findFirst({
-        where: { name: quarter, guild: { guildId: guild.id } },
-      })
-    : await prisma.quarter.findFirst({
-        where: {
-          AND: {
-            id: guildConfig.currentQuarterId,
-          },
-        },
-      });
+    ? guildConfig.quarters.find((q) => q.name === quarter)
+    : guildConfig.currentQuarter;
 
   if (!dbQuarter)
-    return `${quarter} is not a valid quarter. Available quarters are: \`\`\`${(
-      await prisma.quarter.findMany({
-        where: { guild: { guildId: guild.id as string } },
-        select: { name: true },
-      })
-    )
-      .flatMap((c) => c.name)
+    return `${quarter} is not a valid quarter. Available quarters are: \`\`\`${guildConfig.quarters
+      .flatMap((q) => q.name)
       .join(", ")}\`\`\``;
 
-  const existingCourse = await prisma.course.findFirst({
-    where: {
-      aliases: { hasSome: courseAliases },
-      guildId: guild.id,
-      quarterId: dbQuarter.id,
-    },
-  });
+  const existingCourse = guildConfig.courses.find((c) =>
+    c.aliases.some((a) => courseAliases.includes(a))
+  );
+
   if (!!existingCourse) {
     return `\`${existingCourse.aliases.join("/")}\` already exists!`;
   }
 
   //
   if (!dbQuarter) {
-    return `That quarter doesn't exist in the database. Available quarters are: \`\`\`${(
-      await prisma.quarter.findMany({
-        where: { guild: { guildId: guild.id } },
-        select: { name: true },
-      })
-    )
+    return `That quarter doesn't exist in the database. Available quarters are: \`\`\`${guildConfig.quarters
       .flatMap((c) => c.name)
       .join(", ")}\`\`\``;
   }
@@ -272,6 +252,8 @@ export async function createCourse(
       aliases: courseAliases,
     },
   });
+
+  await resetCacheForGuild(guild.id, "courses");
   //
 
   return (

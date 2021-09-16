@@ -7,6 +7,7 @@ import { guildConfigsCache } from "@/config/guilds.config";
 import { client } from "@/main";
 import { commands } from "@/commands";
 import { updateCommandPermissions } from "@/helpers/addCommandPermissions.helper";
+import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
 
 export class ReadyHandler implements IEventHandler {
   public once = true;
@@ -19,15 +20,14 @@ export class ReadyHandler implements IEventHandler {
       console.log("Waiting for bot to join dev guild...");
     }
     /* Create Guildconfig Cache */
-    guildConfigsCache.push(...(await prisma.guild.findMany()));
+    for (const g of client.guilds.cache.values()) {
+      await resetCacheForGuild(g.id).catch((e) => console.error(e));
+    }
 
     await new BuildCommands().execute();
 
     for (const g of client.guilds.cache.values()) {
-      const dbGuild = await prisma.guild.findFirst({
-        where: { guildId: g.id },
-      });
-
+      const dbGuild = guildConfigsCache.find((gc) => gc.guildId === g.id);
       /* Send commands and their permissions to keep perms up to date even if we add a new command. */
       for (const c of commands) {
         await updateCommandPermissions(

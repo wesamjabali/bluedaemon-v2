@@ -1,19 +1,55 @@
 import { prisma } from "@/prisma/prisma.service";
-import { guildConfigsCache } from "@/config/guilds.config";
+import {
+  GuildCache,
+  GuildCacheItem,
+  guildConfigsCache,
+} from "@/config/guilds.config";
+export async function resetCacheForGuild(
+  guildId: string,
+  propertyToReset?: keyof GuildCache | null
+) {
+  let oldCache: GuildCache | undefined = guildConfigsCache
+    .splice(
+      guildConfigsCache.findIndex((gc) => gc.guildId === guildId),
+      1
+    )
+    .shift();
 
-export async function resetCacheForGuild(guildId: string) {
-  guildConfigsCache.splice(
-    guildConfigsCache.findIndex((gc) => gc.guildId === guildId),
-    1
-  );
+  if (!oldCache) {
+    propertyToReset = null;
+  }
 
-  const newCache = await prisma.guild.findFirst({
-    where: { guildId: guildId },
-  });
+  let newCache: GuildCache | null;
+  if (!propertyToReset) {
+    newCache = await prisma.guild.findFirst({
+      where: { guildId: guildId },
+      include: {
+        courses: true,
+        currentQuarter: true,
+        quarters: true,
+        selfRoles: true,
+        tags: true,
+      },
+    });
+  } else {
+    const updates = (await prisma.guild.findFirst({
+      where: { guildId: guildId },
+      select: {
+        [propertyToReset as string]: true,
+      },
+    })) as Partial<GuildCache>;
+    console.log(oldCache);
+    newCache = oldCache as GuildCache;
+    ((newCache as GuildCache)[propertyToReset] as GuildCacheItem) = updates[
+      propertyToReset
+    ] as GuildCacheItem;
+    console.log(newCache);
+    console.log(`Resetted ${propertyToReset}`);
+  }
 
   if (!newCache) {
     return Promise.reject("Cache could not reset for guild " + guildId);
   }
 
-  guildConfigsCache.push(newCache);
+  guildConfigsCache.push(newCache as GuildCache);
 }
