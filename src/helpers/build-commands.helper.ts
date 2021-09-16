@@ -5,7 +5,7 @@ import { commands } from "@/commands";
 import { APIApplicationCommandOption, Routes } from "discord-api-types/v9";
 import { registerButtons } from "@/buttons";
 import { registerSelectMenus } from "@/selectMenus";
-import { updateCommandPermissions } from "./addCommandPermissions.helper";
+import { updateCommandPermissions } from "./add-command-permissions.helper";
 import {
   SlashCommandBuilder,
   SlashCommandSubcommandBuilder,

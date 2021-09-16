@@ -1,12 +1,15 @@
 import { prisma } from "@/prisma/prisma.service";
 import { CommandInteraction, GuildMemberRoleManager } from "discord.js";
-import { CommandOption, CommandOptionPermission, ICommand } from "@/commands/command.interface";
+import {
+  CommandOption,
+  CommandOptionPermission,
+  ICommand,
+} from "@/commands/command.interface";
 
-import { getRoleFromCourseName } from "@/helpers/getRoleFromCourseName.helper";
+import { getRoleFromCourseName } from "@/helpers/get-role-from-course-name.helper";
 import { getGuildConfig } from "@/config/guilds.config";
 import { normalizeCourseCode } from "@/helpers/normalizeCourseCode.helper";
 import { Quarter } from ".prisma/client";
-
 
 export class LeaveCourseCommand implements ICommand {
   name = "leave-course";
@@ -32,43 +35,32 @@ export class LeaveCourseCommand implements ICommand {
     if (!guildConfig.currentQuarterId) return;
 
     const dbQuarter = quarter
-      ? ((await prisma.quarter.findFirst({
-          where: { AND: { name: quarter, guild: { guildId: i.guildId } } },
-        })) as Quarter)
-      : ((await prisma.quarter.findFirst({
-          where: {
-            AND: {
-              id: guildConfig.currentQuarterId,
-            },
-          },
-        })) as Quarter);
+      ? guildConfig.quarters.find((q) => q.name === quarter)
+      : guildConfig.currentQuarter;
 
     if (!i.guildId) return;
 
     if (!dbQuarter) {
       await i.reply(
-        `${quarter} is not a valid quarter. Available quarters are: \`\`\`${(
-          await prisma.quarter.findMany({
-            where: { guild: { guildId: i.guildId as string } },
-            select: { name: true },
-          })
-        )
+        `${quarter} is not a valid quarter. Available quarters are: \`\`\`${guildConfig.quarters
           .flatMap((c) => c.name)
           .join(", ")}\`\`\``
       );
       return;
     }
     const courseName = normalizeCourseCode(i.options.getString("course", true));
-    const courseRole = await getRoleFromCourseName(
-      courseName.courseName,
-      dbQuarter,
-      i.guildId
-    );
+    const courseRoleId = guildConfig.courses.find(
+      (c) =>
+        c.aliases.includes(courseName.courseName) &&
+        c.quarterId === dbQuarter.id
+    )?.roleId;
+    const courseRole = i.guild?.roles.cache.find((r) => r.id === courseRoleId);
+
     if (!courseRole) return i.reply("courseRole not found");
 
     if (
       !(i.member?.roles as GuildMemberRoleManager).cache.find(
-        (r) => r.id === courseRole.id
+        (r) => r.id === (courseRole.id as string)
       )
     ) {
       i.reply(

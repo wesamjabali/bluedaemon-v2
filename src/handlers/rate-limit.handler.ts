@@ -1,5 +1,5 @@
 import { ClientEvents, RateLimitData } from "discord.js";
-import { IEventHandler } from "./eventHandler.interface";
+import { IEventHandler } from "./event-handler.interface";
 
 export class RateLimitHandler implements IEventHandler {
   public once = false;

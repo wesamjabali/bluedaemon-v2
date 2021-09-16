@@ -1,8 +1,8 @@
 import { ClientEvents, Guild } from "discord.js";
-import { IEventHandler } from "./eventHandler.interface";
+import { IEventHandler } from "./event-handler.interface";
 import { prisma } from "@/prisma/prisma.service";
 import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
-import { updateCommandPermissions } from "@/helpers/addCommandPermissions.helper";
+import { updateCommandPermissions } from "@/helpers/add-command-permissions.helper";
 import { SudoCommand } from "@/commands";
 
 export class GuildCreateHandler implements IEventHandler {

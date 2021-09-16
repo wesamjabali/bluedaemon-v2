@@ -8,8 +8,7 @@ generator client {
 }
 
 model Guild {
-  id                      Int      @id @default(autoincrement())
-  guildId                 String   @unique
+  guildId                 String   @id @unique
   guildOwnerId            String
   currentQuarter          Quarter? @relation("GuildCurrentQuarter", fields: [currentQuarterId], references: [id])
   currentQuarterId        Int?
@@ -56,9 +55,8 @@ model Quarter {
 }
 
 model SelfRole {
-  id      Int    @id @default(autoincrement())
+  roleId  String @id @unique
   name    String
-  roleId  String
   guildId String
   guild   Guild  @relation(fields: [guildId], references: [guildId])
 }

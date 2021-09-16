@@ -4,7 +4,7 @@ import { prisma } from "@/prisma/prisma.service";
 
 import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
 import { commands } from "@/commands";
-import { updateCommandPermissions } from "@/helpers/addCommandPermissions.helper";
+import { updateCommandPermissions } from "@/helpers/add-command-permissions.helper";
 
 export class SetupCommand implements ICommand {
   name = "setup";

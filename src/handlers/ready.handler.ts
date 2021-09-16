@@ -1,12 +1,12 @@
-import { BuildCommands } from "@/helpers/buildCommands.helper";
+import { BuildCommands } from "@/helpers/build-commands.helper";
 import { ClientEvents } from "discord.js";
-import { IEventHandler } from "./eventHandler.interface";
+import { IEventHandler } from "./event-handler.interface";
 import { config } from "@/services/config.service";
 import { prisma } from "@/prisma/prisma.service";
 import { guildConfigsCache } from "@/config/guilds.config";
 import { client } from "@/main";
 import { commands } from "@/commands";
-import { updateCommandPermissions } from "@/helpers/addCommandPermissions.helper";
+import { updateCommandPermissions } from "@/helpers/add-command-permissions.helper";
 import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
 
 export class ReadyHandler implements IEventHandler {

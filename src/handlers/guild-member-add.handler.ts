@@ -1,6 +1,6 @@
 import { getGuildConfig } from "@/config/guilds.config";
 import { ClientEvents, GuildMember } from "discord.js";
-import { IEventHandler } from "./eventHandler.interface";
+import { IEventHandler } from "./event-handler.interface";
 
 export class GuildMemberAddHandler implements IEventHandler {
   public once = false;

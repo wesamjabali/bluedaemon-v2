@@ -4,7 +4,7 @@ import {
   CommandOptionPermission,
   ICommand,
 } from "@/commands/command.interface";
-import { updateCommandPermissions } from "@/helpers/addCommandPermissions.helper";
+import { updateCommandPermissions } from "@/helpers/add-command-permissions.helper";
 import { commands } from "@/commands";
 
 export class UpdatePermissionCommand implements ICommand {
