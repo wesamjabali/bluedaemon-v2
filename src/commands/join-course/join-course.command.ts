@@ -11,11 +11,11 @@ import {
   CommandOptionPermission,
   ICommand,
 } from "@/commands/command.interface";
-import { normalizeCourseCode } from "@/helpers/normalizeCourseCode.helper";
+import { normalizeCourseCode } from "@/helpers/normalize-course-code.helper";
 import { Course } from "@prisma/client";
 import { joinCommandOptions } from "./join-course.options";
 import { getGuildConfig } from "@/config/guilds.config";
-import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
+import { resetCacheForGuild } from "@/helpers/reset-cache-for-guild.helper";
 
 export class JoinCourseCommand implements ICommand {
   name = "join-course";

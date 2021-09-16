@@ -1,7 +1,7 @@
 import { ClientEvents, Guild } from "discord.js";
 import { IEventHandler } from "./event-handler.interface";
 import { prisma } from "@/prisma/prisma.service";
-import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
+import { resetCacheForGuild } from "@/helpers/reset-cache-for-guild.helper";
 import { updateCommandPermissions } from "@/helpers/add-command-permissions.helper";
 import { SudoCommand } from "@/commands";
 

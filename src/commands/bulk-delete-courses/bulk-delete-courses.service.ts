@@ -1,4 +1,4 @@
-import { normalizeCourseCode } from "@/helpers/normalizeCourseCode.helper";
+import { normalizeCourseCode } from "@/helpers/normalize-course-code.helper";
 import { deleteCourse } from "../delete-course/delete-course.service";
 
 export async function bulkDeleteCourses(

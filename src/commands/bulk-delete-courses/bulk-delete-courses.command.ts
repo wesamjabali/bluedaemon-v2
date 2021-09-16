@@ -11,7 +11,7 @@ import {
   ICommand,
 } from "@/commands/command.interface";
 import { bulkDeleteCourses } from "./bulk-delete-courses.service";
-import { ButtonAction } from "@/buttons/buttonAction";
+import { ButtonAction } from "@/buttons/button-action";
 
 export class BulkDeleteCoursesCommand implements ICommand {
   name = "bulk-delete-courses";

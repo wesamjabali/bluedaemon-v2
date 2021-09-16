@@ -1,7 +1,7 @@
 import { prisma } from "@/prisma/prisma.service";
 import { Role } from "discord.js";
 import { client } from "@/main";
-import { normalizeCourseCode } from "./normalizeCourseCode.helper";
+import { normalizeCourseCode } from "./normalize-course-code.helper";
 import { Quarter } from ".prisma/client";
 export async function getRoleFromCourseName(
   possibleAlias: string,

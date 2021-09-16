@@ -1,5 +1,5 @@
 import { prisma } from "@/prisma/prisma.service";
-import { normalizeCourseCode } from "@/helpers/normalizeCourseCode.helper";
+import { normalizeCourseCode } from "@/helpers/normalize-course-code.helper";
 import {
   CategoryChannel,
   CategoryChannelResolvable,
@@ -8,7 +8,7 @@ import {
   User,
 } from "discord.js";
 import { getGuildConfig } from "@/config/guilds.config";
-import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
+import { resetCacheForGuild } from "@/helpers/reset-cache-for-guild.helper";
 
 export async function createCourse(
   guild: Guild | null,

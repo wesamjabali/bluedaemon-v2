@@ -1,4 +1,4 @@
-import { SelectMenuAction } from "./selectMenuAction";
+import { SelectMenuAction } from "./select-menu-action";
 
 export const selectMenus: SelectMenuAction[] = [];
 

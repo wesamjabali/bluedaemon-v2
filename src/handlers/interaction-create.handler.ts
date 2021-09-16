@@ -9,7 +9,7 @@ import {
 import { IEventHandler } from "./event-handler.interface";
 import { commands } from "@/commands";
 import { buttons } from "@/buttons";
-import { selectMenus } from "@/selectMenus";
+import { selectMenus } from "@/select-menus";
 
 export class InteractionCreateHandler implements IEventHandler {
   public once = false;

@@ -5,7 +5,7 @@ import {
   UserOrRole,
 } from "@/commands/command.interface";
 import { client } from "@/main";
-import { AllApplicationCommands } from "@/services/applicationCommands.service";
+import { AllApplicationCommands } from "@/services/application-commands.service";
 import { config } from "@/services/config.service";
 
 import {

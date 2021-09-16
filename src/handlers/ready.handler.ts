@@ -7,7 +7,7 @@ import { guildConfigsCache } from "@/config/guilds.config";
 import { client } from "@/main";
 import { commands } from "@/commands";
 import { updateCommandPermissions } from "@/helpers/add-command-permissions.helper";
-import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
+import { resetCacheForGuild } from "@/helpers/reset-cache-for-guild.helper";
 
 export class ReadyHandler implements IEventHandler {
   public once = true;

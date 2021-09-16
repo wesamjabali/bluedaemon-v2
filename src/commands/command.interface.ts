@@ -1,5 +1,5 @@
-import { ButtonAction } from "@/buttons/buttonAction";
-import { SelectMenuAction } from "@/selectMenus/selectMenuAction";
+import { ButtonAction } from "@/buttons/button-action";
+import { SelectMenuAction } from "@/select-menus/select-menu-action";
 import { ApplicationCommandOptionType, Snowflake } from "discord-api-types";
 import {
   ApplicationCommandPermissionData,

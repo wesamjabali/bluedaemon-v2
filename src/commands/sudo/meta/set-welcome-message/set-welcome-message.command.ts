@@ -5,7 +5,7 @@ import {
   ICommand,
 } from "@/commands/command.interface";
 import { prisma } from "@/prisma/prisma.service";
-import { resetCacheForGuild } from "@/helpers/resetCacheForGuild.helper";
+import { resetCacheForGuild } from "@/helpers/reset-cache-for-guild.helper";
 
 export class SetWelcomeMessageCommand implements ICommand {
   name = "set-welcome-message";

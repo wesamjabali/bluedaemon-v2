@@ -4,14 +4,14 @@ import { CommandOption, ICommand } from "@/commands/command.interface";
 import { commands } from "@/commands";
 import { APIApplicationCommandOption, Routes } from "discord-api-types/v9";
 import { registerButtons } from "@/buttons";
-import { registerSelectMenus } from "@/selectMenus";
+import { registerSelectMenus } from "@/select-menus";
 import { updateCommandPermissions } from "./add-command-permissions.helper";
 import {
   SlashCommandBuilder,
   SlashCommandSubcommandBuilder,
   SlashCommandSubcommandGroupBuilder,
 } from "@discordjs/builders";
-import { AllApplicationCommands } from "@/services/applicationCommands.service";
+import { AllApplicationCommands } from "@/services/application-commands.service";
 import { client } from "@/main";
 
 export class BuildCommands {

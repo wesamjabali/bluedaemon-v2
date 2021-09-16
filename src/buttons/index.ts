@@ -1,4 +1,4 @@
-import { ButtonAction } from "./buttonAction";
+import { ButtonAction } from "./button-action";
 
 export const buttons: ButtonAction[] = [];
 
