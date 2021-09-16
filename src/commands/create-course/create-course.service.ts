@@ -23,6 +23,7 @@ export async function createCourse(
   if (!guild) return "Guild not found";
   const guildConfig = getGuildConfig(guild.id);
   if (!guildConfig?.currentQuarterId || !guild.id) {
+    console.log(guildConfig?.currentQuarterId, guild.id);
     return "Cache failed to load.";
   }
   let aliasRemoved = false;

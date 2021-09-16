@@ -1,4 +1,11 @@
-import { CommandInteraction, Role, User } from "discord.js";
+import {
+  CommandInteraction,
+  Guild,
+  GuildMember,
+  MemberMention,
+  Role,
+  User,
+} from "discord.js";
 import {
   CommandOption,
   CommandOptionPermission,
@@ -16,7 +23,13 @@ export class UpdatePermissionCommand implements ICommand {
   ];
 
   options: CommandOption[] = [
-    { type: "String", name: "command_name", required: true },
+    {
+      type: "String",
+      name: "command_name",
+      required: true,
+      description:
+        'Name of command to change the permission. Use "all" to set permissions for all commands.',
+    },
     {
       type: "String",
       name: "add_remove",
@@ -30,18 +43,28 @@ export class UpdatePermissionCommand implements ICommand {
   ];
 
   async execute(i: CommandInteraction) {
-    i.deferReply();
-    const commandName = i.options.getString("command_name", true);
+    await i.deferReply();
+    const commandName = i.options.getString("command_name", true).toLowerCase();
     const addRemove = i.options.getString("add_remove", true) as "ADD" | "SET";
-    const userRole = i.options.getMentionable("user_role", true) as User | Role;
+    const userRole = i.options.getMentionable("user_role", true) as
+      | GuildMember
+      | Role;
     let permission: CommandOptionPermission = {
-      type: userRole instanceof User ? "USER" : "ROLE",
+      type: userRole instanceof GuildMember ? "USER" : "ROLE",
       permission: addRemove === "ADD" ? true : false,
       id: userRole.id,
     };
 
-    if (userRole.id === i.user.id) {
-      await i.followUp(`You can't change your own permissions.`);
+    if (commandName === "all") {
+      for (const c of commands) {
+        await updateCommandPermissions(
+          addRemove,
+          c.name,
+          [permission],
+          i.guild as Guild
+        );
+      }
+      await i.followUp({ content: "Permissions updated.", ephemeral: true });
       return;
     }
 
@@ -53,7 +76,13 @@ export class UpdatePermissionCommand implements ICommand {
       return;
     }
 
-    await updateCommandPermissions(addRemove, commandName, [permission]);
+    await updateCommandPermissions(
+      addRemove,
+      commandName,
+      [permission],
+      i.guild as Guild
+    );
+
     await i.followUp({ content: "Permissions updated.", ephemeral: true });
   }
 }

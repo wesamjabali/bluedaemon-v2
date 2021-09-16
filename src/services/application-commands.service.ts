@@ -1,4 +1,3 @@
-import { client } from "@/main";
 import { Routes } from "discord-api-types/v9";
 import { ApplicationCommand } from "discord.js";
 import { config } from "./config.service";

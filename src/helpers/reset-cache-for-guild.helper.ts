@@ -38,13 +38,11 @@ export async function resetCacheForGuild(
         [propertyToReset as string]: true,
       },
     })) as Partial<GuildCache>;
-    console.log(oldCache);
+
     newCache = oldCache as GuildCache;
-    ((newCache as GuildCache)[propertyToReset] as GuildCacheItem) = updates[
+    (newCache[propertyToReset] as GuildCacheItem) = updates[
       propertyToReset
     ] as GuildCacheItem;
-    console.log(newCache);
-    console.log(`Resetted ${propertyToReset}`);
   }
 
   if (!newCache) {

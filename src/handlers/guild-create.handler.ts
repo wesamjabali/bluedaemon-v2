@@ -26,8 +26,8 @@ export class GuildCreateHandler implements IEventHandler {
       "SET",
       "sudo",
       new SudoCommand().permissions,
-      [{ roleType: "GuildOwner", id: guild.ownerId }],
-      guild
+      guild,
+      [{ roleType: "GuildOwner", id: guild.ownerId }]
     );
   };
 }

@@ -12,16 +12,14 @@ import {
   ApplicationCommand,
   ApplicationCommandPermissionData,
   Guild,
-  RoleResolvable,
-  UserResolvable,
 } from "discord.js";
 
 export async function updateCommandPermissions(
   setAddRemove: "SET" | "ADD" | "REMOVE",
   applicationCommandName: string,
   permissions: CommandOptionPermission[],
-  dynamicPermissionRoles?: PermissionRoles[],
-  guild?: Guild
+  guild?: Guild,
+  dynamicPermissionRoles?: PermissionRoles[]
 ) {
   if (permissions.length === 0) return;
   const allAppCommands = await new AllApplicationCommands().getAll();
@@ -72,13 +70,16 @@ export async function updateCommandPermissions(
 
   if (setAddRemove === "REMOVE") {
     for (const p of permissions) {
-      if (p.type === "ROLE") {
-        applicationCommand.permissions.remove({
-          roles: [p.id as RoleResolvable],
+      if (config.envConfig.environment === "prod") {
+        await guild?.commands.permissions.remove({
+          command: applicationCommand,
+          roles: [p.id as string],
+          users: [p.id as string],
         });
       } else {
-        applicationCommand.permissions.remove({
-          users: [p.id as UserResolvable],
+        await applicationCommand.permissions.remove({
+          roles: [p.id as string],
+          users: [p.id as string],
         });
       }
     }

@@ -1,5 +1,9 @@
 import { CommandInteraction } from "discord.js";
-import { CommandOption, CommandOptionPermission, ICommand } from "@/commands/command.interface";
+import {
+  CommandOption,
+  CommandOptionPermission,
+  ICommand,
+} from "@/commands/command.interface";
 import { prisma } from "@/prisma/prisma.service";
 
 import { resetCacheForGuild } from "@/helpers/reset-cache-for-guild.helper";
@@ -99,18 +103,12 @@ export class SetupCommand implements ICommand {
 
     /* Send commands and their permissions */
     for (const c of commands) {
-      updateCommandPermissions(
-        "SET",
-        c.name,
-        c.permissions ?? [],
-        [
-          { roleType: "CourseManager", id: courseManagerRole.id },
-          { roleType: "Moderator", id: modRole.id },
-          { roleType: "GuildOwner", id: i.guild.ownerId },
-          { roleType: "Everyone", id: i.guild.roles.everyone.id },
-        ],
-        i.guild
-      );
+      updateCommandPermissions("SET", c.name, c.permissions ?? [], i.guild, [
+        { roleType: "CourseManager", id: courseManagerRole.id },
+        { roleType: "Moderator", id: modRole.id },
+        { roleType: "GuildOwner", id: i.guild.ownerId },
+        { roleType: "Everyone", id: i.guild.roles.everyone.id },
+      ]);
     }
 
     await resetCacheForGuild(i.guildId);

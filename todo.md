@@ -5,7 +5,7 @@
 - [ ] Enable Logging
   - [ ] To local file
   - [ ] To Logging channel
-- [ ] Add "all" to permissions command
+- [x] Add "all" to permissions command
   - As in, add the ability to write "all" and apply the permissions change to all commands for a user or role. ie for an admin role.
 - [ ] Course requests
   - Community voting?
