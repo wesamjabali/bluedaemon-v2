@@ -1,4 +1,3 @@
-import { prisma } from "@/prisma/prisma.service";
 import {
   ButtonInteraction,
   CommandInteraction,
