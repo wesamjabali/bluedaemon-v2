@@ -1,3 +1,4 @@
+import { Course } from ".prisma/client";
 import {
   CommandOption,
   CommandOptionPermission,
@@ -43,15 +44,10 @@ export class ListCoursesCommand implements ICommand {
       .getString("search", false)
       ?.toUpperCase();
 
-    let courses = await prisma.course.findMany({
-      where: {
-        AND: {
-          guild: { guildId: interaction.guildId as string },
-          quarter: { id: guildConfig?.currentQuarterId as number },
-          password: { equals: null },
-        },
-      },
-    });
+    let courses = guildConfig?.courses.filter(
+      (c) => c.quarterId === guildConfig.currentQuarterId && !!c.password
+    ) as Course[];
+    
     let filteredCourses: string[] = [];
     for (const c of courses) {
       filteredCourses.push(
