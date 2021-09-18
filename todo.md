@@ -1,5 +1,5 @@
 ## JIRA (FREE EDITION)
-
+- [ ] Bot needs to be at the top of the roles list. Check for this on boot/commands that it matters for. Anything that calls roles or users needs to be caught.
 - [ ] Code review
 - [ ] Message handler
 - [ ] Count to 100,000
