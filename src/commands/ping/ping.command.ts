@@ -9,7 +9,7 @@ export class PingCommand implements ICommand {
   description = "Pong!";
   default_permission = false;
   permissions: CommandOptionPermission[] = [
-    { type: "CourseManager", permission: true },
+    { type: "Everyone", permission: true },
   ];
 
   public async execute(interaction: CommandInteraction): Promise<void> {
