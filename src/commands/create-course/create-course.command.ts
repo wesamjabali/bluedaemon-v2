@@ -6,6 +6,7 @@ import {
 } from "@/commands/command.interface";
 import { createCommandOptions } from "./create-course.options";
 import { createCourse } from "./create-course.service";
+import { logger } from "@/main";
 
 export class CreateCourseCommand implements ICommand {
   name = "create-course";
@@ -26,17 +27,18 @@ export class CreateCourseCommand implements ICommand {
     const courseCategoryOption = i.options.getBoolean("category", false);
     const courseOwner = i.options.getUser("owner", false);
 
-    await i.reply(
-      await createCourse(
-        i.guild,
-        courseCode,
-        courseDescription,
-        quarter,
-        courseCategoryOption,
-        courseOwner,
-        password,
-        linkedNameOption
-      )
+    const replyMessage = await createCourse(
+      i.guild,
+      courseCode,
+      courseDescription,
+      quarter,
+      courseCategoryOption,
+      courseOwner,
+      password,
+      linkedNameOption
     );
+
+    i.reply(replyMessage);
+    logger.info(i.guild, `${i.user}: ${replyMessage}`);
   }
 }

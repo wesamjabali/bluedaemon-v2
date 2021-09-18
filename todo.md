@@ -2,8 +2,8 @@
 - [ ] Code review
 - [ ] Message handler
 - [ ] Count to 100,000
-- [ ] Enable Logging
-  - [ ] To local file
+- [x] Enable Logging
+  - [ ] To database
   - [ ] To Logging channel
 - [x] Add "all" to permissions command
   - As in, add the ability to write "all" and apply the permissions change to all commands for a user or role. ie for an admin role.

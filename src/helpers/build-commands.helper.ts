@@ -12,7 +12,7 @@ import {
   SlashCommandSubcommandGroupBuilder,
 } from "@discordjs/builders";
 import { AllApplicationCommands } from "@/services/application-commands.service";
-import { client } from "@/main";
+import { client, logger } from "@/main";
 
 export class BuildCommands {
   public async execute(): Promise<void> {
@@ -24,7 +24,6 @@ export class BuildCommands {
       devGuild.commands.set([]);
     }
 
-    console.log("Rebuilding commands.");
     const JSONCommands: ICommandData[] = [];
 
     // Build the command
@@ -60,7 +59,8 @@ export class BuildCommands {
         await updateCommandPermissions("ADD", c.name, c.permissions);
     });
 
-    console.log(
+    logger.info(
+      null,
       `Built commands: [${Array.from(JSONCommands, (command) => command.name)}]`
     );
   }

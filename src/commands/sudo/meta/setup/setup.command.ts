@@ -46,9 +46,7 @@ export class SetupCommand implements ICommand {
       .create({
         data: { guildId: i.guildId, guildOwnerId: i.guild.ownerId },
       })
-      .catch(() => {
-        console.log(i.guild?.name + " already exists in the db.");
-      });
+      .catch(() => {});
 
     await resetCacheForGuild(i.guildId);
 

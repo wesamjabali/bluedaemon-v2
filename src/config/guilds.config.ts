@@ -3,7 +3,7 @@ import { Guild, Course, Quarter } from "@prisma/client";
 export const guildConfigsCache: GuildCache[] = [];
 
 export function getGuildConfig(
-  guildIdToFind: string | null
+  guildIdToFind: string | null | undefined
 ): GuildCache | undefined {
   return guildConfigsCache.find((g) => g.guildId === guildIdToFind);
 }

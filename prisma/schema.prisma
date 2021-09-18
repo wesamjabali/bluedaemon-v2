@@ -68,3 +68,21 @@ model Tag {
   guildId String
   guild   Guild  @relation(fields: [guildId], references: [guildId])
 }
+
+enum BotLogLevel {
+  DEBUG
+  INFO
+  WARN
+  ERROR
+  FATAL
+}
+
+model Log {
+  id        Int      @id @default(autoincrement())
+  level     BotLogLevel
+  message   String
+  timestamp DateTime @default(now())
+
+  @@unique([level, message, timestamp], name: "unique_log")
+  @@map("log")
+}

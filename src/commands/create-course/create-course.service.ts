@@ -9,6 +9,7 @@ import {
 } from "discord.js";
 import { getGuildConfig } from "@/config/guilds.config";
 import { resetCacheForGuild } from "@/helpers/reset-cache-for-guild.helper";
+import { logger } from "@/main";
 
 export async function createCourse(
   guild: Guild | null,
@@ -23,7 +24,7 @@ export async function createCourse(
   if (!guild) return "Guild not found";
   const guildConfig = getGuildConfig(guild.id);
   if (!guildConfig?.currentQuarterId || !guild.id) {
-    console.log(guildConfig?.currentQuarterId, guild.id);
+    logger.error(guild, "Cache failed to load.");
     return "Cache failed to load.";
   }
   let aliasRemoved = false;

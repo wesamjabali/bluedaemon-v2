@@ -4,20 +4,19 @@ import { prisma } from "@/prisma/prisma.service";
 import { resetCacheForGuild } from "@/helpers/reset-cache-for-guild.helper";
 import { updateCommandPermissions } from "@/helpers/add-command-permissions.helper";
 import { SudoCommand } from "@/commands";
+import { logger } from "@/main";
 
 export class GuildCreateHandler implements IEventHandler {
   public once = false;
   public readonly EVENT_NAME: keyof ClientEvents = "guildCreate";
   public onEvent = async (guild: Guild) => {
-    console.log(`Joined guild ${guild.name}`);
+    logger.info(guild, `Joined guild ${guild.name}`);
     /* Create Guildconfig Cache */
     await prisma.guild
       .create({
         data: { guildId: guild.id, guildOwnerId: guild.ownerId },
       })
-      .catch(() => {
-        console.log(guild.name + " already exists in the db.");
-      });
+      .catch(() => {});
 
     await resetCacheForGuild(guild.id);
 
