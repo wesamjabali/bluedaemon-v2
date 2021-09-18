@@ -7,11 +7,11 @@ export class LoggerService {
   log = async (level: BotLogLevel, guild: Guild | null, ...text: string[]) => {
     let loggerChannel;
     if (guild) {
-      loggerChannel = guild?.channels.cache.find(
+      loggerChannel = guild?.channels?.cache?.find(
         (c) => c.id === getGuildConfig(guild?.id)?.loggingChannelId
       ) as TextChannel;
     }
-    console.log(guild?.id, text);
+    console.log(guild?.id, ...text);
 
     for (let t of text) {
       if (guild && loggerChannel) {
@@ -23,14 +23,24 @@ export class LoggerService {
     }
   };
 
+  logToChannel = async (guild: Guild, ...text: string[]) => {
+    const loggerChannel = guild?.channels?.cache?.find(
+      (c) => c.id === getGuildConfig(guild?.id)?.loggingChannelId
+    ) as TextChannel;
+    if (loggerChannel)
+      for (const t of text) {
+        loggerChannel.send(t);
+      }
+  };
+
   info = async (guild: Guild | null, ...text: string[]) => {
     let loggerChannel;
     if (guild) {
-      loggerChannel = guild?.channels.cache.find(
+      loggerChannel = guild?.channels?.cache?.find(
         (c) => c.id === getGuildConfig(guild?.id)?.loggingChannelId
       ) as TextChannel;
     }
-    console.info(guild?.id, text);
+    console.info(guild?.id, ...text);
 
     for (let t of text) {
       if (guild && loggerChannel) {
@@ -45,11 +55,11 @@ export class LoggerService {
   debug = async (guild: Guild | null, ...text: string[]) => {
     let loggerChannel;
     if (guild) {
-      loggerChannel = guild?.channels.cache.find(
+      loggerChannel = guild?.channels?.cache?.find(
         (c) => c.id === getGuildConfig(guild?.id)?.loggingChannelId
       ) as TextChannel;
     }
-    console.debug(guild?.id, text);
+    console.debug(guild?.id, ...text);
 
     for (let t of text) {
       if (guild && loggerChannel) {
@@ -64,11 +74,11 @@ export class LoggerService {
   warn = async (guild: Guild | null, ...text: string[]) => {
     let loggerChannel;
     if (guild) {
-      loggerChannel = guild?.channels.cache.find(
+      loggerChannel = guild?.channels?.cache?.find(
         (c) => c.id === getGuildConfig(guild?.id)?.loggingChannelId
       ) as TextChannel;
     }
-    console.warn(guild?.id, text);
+    console.warn(guild?.id, ...text);
 
     for (let t of text) {
       if (guild && loggerChannel) {
@@ -83,11 +93,11 @@ export class LoggerService {
   error = async (guild: Guild | null, ...text: string[]) => {
     let loggerChannel;
     if (guild) {
-      loggerChannel = guild?.channels.cache.find(
+      loggerChannel = guild?.channels?.cache?.find(
         (c) => c.id === getGuildConfig(guild?.id)?.loggingChannelId
       ) as TextChannel;
     }
-    console.error(guild?.id, text);
+    console.error(guild?.id, ...text);
 
     for (let t of text) {
       if (guild && loggerChannel) {
@@ -102,11 +112,11 @@ export class LoggerService {
   fatal = async (guild: Guild | null, ...text: string[]) => {
     let loggerChannel;
     if (guild) {
-      loggerChannel = guild?.channels.cache.find(
+      loggerChannel = guild?.channels?.cache?.find(
         (c) => c.id === getGuildConfig(guild?.id)?.loggingChannelId
       ) as TextChannel;
     }
-    console.error(guild?.id, text);
+    console.error(guild?.id, ...text);
 
     for (let t of text) {
       if (guild && loggerChannel) {

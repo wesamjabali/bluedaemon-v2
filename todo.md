@@ -1,7 +1,10 @@
 ## JIRA (FREE EDITION)
+
 - [ ] Code review
 - [ ] Message handler
 - [ ] Count to 100,000
+- [ ] Merge tag/role/course list command into a service. They're literally all the same, copy/pasted.
+- [ ] Serious, serious testing.
 - [x] Enable Logging
   - [x] To database
   - [x] To Logging channel
@@ -9,16 +12,15 @@
   - As in, add the ability to write "all" and apply the permissions change to all commands for a user or role. ie for an admin role.
 - [x] Course requests
   - One-click create
-- [ ] Self-Roles
+- [x] Self-Roles
   - [x] Schema
-  - [ ] Commands
-  - [ ] Permissions
-- [ ] Tags
+  - [x] Commands
+- [x] Tags
   - [x] Schema
-  - [ ] Commands
-  - [ ] Permissions
+  - [x] Commands
 - [ ] Remove course prefix/number/section in favor for strong validation and alias array in db.
   - Make sure this is the way to go first.
+- [ ] /qotd command. Preload questions of the day and create threads daily out of them.
 - [ ] Add migration routine
   - Command that allows the guild owner to move to bluedaemon. This will allow you to create a quarter, then add entire categories of classes. Data would need to be validated beforehand ie courses created must match CSC300-123 format.
 - [x] Cache all courses and quarters just like guild.

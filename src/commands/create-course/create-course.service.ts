@@ -167,6 +167,8 @@ export async function createCourse(
       return "Failed to create channel.";
     }
 
+    await resetCacheForGuild(guild.id, "courses");
+
     doneString = `${courseAliases.join(
       "/"
     )} created! View it here: ${courseChannel}`;

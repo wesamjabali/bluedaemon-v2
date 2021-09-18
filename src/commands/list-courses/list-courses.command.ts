@@ -5,7 +5,6 @@ import {
   ICommand,
 } from "@/commands/command.interface";
 import { getGuildConfig } from "@/config/guilds.config";
-import { prisma } from "@/prisma/prisma.service";
 import {
   CommandInteraction,
   Message,
@@ -44,10 +43,11 @@ export class ListCoursesCommand implements ICommand {
       .getString("search", false)
       ?.toUpperCase();
 
-    let courses = guildConfig?.courses.filter(
-      (c) => c.quarterId === guildConfig.currentQuarterId && !!c.password
-    ) as Course[];
-    
+    let courses =
+      (guildConfig?.courses.filter(
+        (c) => c.quarterId === guildConfig.currentQuarterId && !c.password
+      ) as Course[]) || ([] as Course[]);
+
     let filteredCourses: string[] = [];
     for (const c of courses) {
       filteredCourses.push(
@@ -73,6 +73,11 @@ export class ListCoursesCommand implements ICommand {
       pageNumber,
       searchTerm
     );
+    
+    if (courses.length <= 24) {
+      interaction.followUp({ embeds: initialEmbed });
+      return;
+    }
 
     if (initialEmbed[0].fields.length !== 24) {
       buttons[0].components[1].setDisabled(true);

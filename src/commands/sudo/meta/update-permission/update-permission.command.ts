@@ -36,7 +36,7 @@ export class UpdatePermissionCommand implements ICommand {
       required: true,
       choices: [
         ["ADD", "ADD"],
-        ["REMOVE", "SET"],
+        ["REMOVE", "REMOVE"],
       ],
     },
     { type: "Mentionable", name: "user_role", required: true },
@@ -45,7 +45,7 @@ export class UpdatePermissionCommand implements ICommand {
   async execute(i: CommandInteraction) {
     await i.deferReply();
     const commandName = i.options.getString("command_name", true).toLowerCase();
-    const addRemove = i.options.getString("add_remove", true) as "ADD" | "SET";
+    const addRemove = i.options.getString("add_remove", true) as "ADD" | "REMOVE";
     const userRole = i.options.getMentionable("user_role", true) as
       | GuildMember
       | Role;

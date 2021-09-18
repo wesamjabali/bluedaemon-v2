@@ -8,13 +8,18 @@ export async function resetCacheForGuild(
   guildId: string,
   propertyToReset?: keyof GuildCache | null
 ) {
-  let oldCache: GuildCache | undefined = guildConfigsCache
-    .splice(
-      guildConfigsCache.findIndex((gc) => gc.guildId === guildId),
-      1
-    )
-    .shift();
+  // Get old cache
+  let oldCache = guildConfigsCache.find((gc) => gc.guildId === guildId);
 
+  // delete old cache if it exists.
+  const oldCacheIndex = guildConfigsCache.findIndex(
+    (gcc) => gcc.guildId === guildId
+  );
+  if (oldCacheIndex > -1) {
+    guildConfigsCache.splice(oldCacheIndex, 1);
+  }
+
+  // If it doesn't exist, start from scratch.
   if (!oldCache) {
     propertyToReset = null;
   }
@@ -31,6 +36,9 @@ export async function resetCacheForGuild(
         tags: true,
       },
     });
+    if (!newCache) {
+      return Promise.reject("Cache could not reset for guild " + guildId);
+    }
   } else {
     const updates = (await prisma.guild.findFirst({
       where: { guildId: guildId },
@@ -45,9 +53,5 @@ export async function resetCacheForGuild(
     ] as GuildCacheItem;
   }
 
-  if (!newCache) {
-    return Promise.reject("Cache could not reset for guild " + guildId);
-  }
-
-  guildConfigsCache.push(newCache as GuildCache);
+  guildConfigsCache.push(newCache);
 }

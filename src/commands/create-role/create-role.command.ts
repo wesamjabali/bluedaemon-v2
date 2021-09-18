@@ -39,7 +39,7 @@ export class CreateSelfRoleCommand implements ICommand {
     let roleName = i.options.getString("role_name", true);
     let role = i.options.getRole("existing_role", false);
 
-    if (guildConfig?.selfRoles.find((r) => r.name === roleName)) {
+    if (guildConfig?.selfRoles.find((r) => r.name.toLowerCase() === roleName.toLowerCase())) {
       await i.reply(`${roleName} already exists!`);
       return;
     }
