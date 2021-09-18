@@ -6,6 +6,7 @@ import { DeleteCourseCommand } from "./delete-course/delete-course.command";
 import { JoinCourseCommand } from "./join-course/join-course.command";
 import { LeaveCourseCommand } from "./leave-course/leave-course.command";
 import { ListCoursesCommand } from "./list-courses/list-courses.command";
+import { LogCommand } from "./log/log.command";
 import { PingCommand } from "./ping/ping.command";
 import { RequestCourseCommand } from "./request-course/request-course.command";
 import { SayCommand } from "./say/say.command";
@@ -25,7 +26,8 @@ const commands: ICommand[] = [
   new DeleteCourseCommand(),
   new BulkDeleteCoursesCommand(),
   new SetCoursePasswordCommand(),
-  new RequestCourseCommand()
+  new RequestCourseCommand(),
+  new LogCommand(),
 ];
 
 export { commands, PingCommand, SayCommand, SourceCommand, SudoCommand };
