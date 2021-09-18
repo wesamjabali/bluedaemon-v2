@@ -16,10 +16,9 @@ export class LoggerService {
     for (let t of text) {
       if (guild && loggerChannel) {
         loggerChannel.send(t);
-        t = `Guild: ${guild.id}\n${t}`;
       }
       await prisma.log.create({
-        data: { level: level, message: t },
+        data: { guildId: guild?.id, level: level, message: t },
       });
     }
   };
@@ -36,10 +35,9 @@ export class LoggerService {
     for (let t of text) {
       if (guild && loggerChannel) {
         loggerChannel.send(t);
-        t = `Guild: ${guild.id}\n${t}`;
       }
       await prisma.log.create({
-        data: { level: "INFO", message: t },
+        data: { guildId: guild?.id, level: "INFO", message: t },
       });
     }
   };
@@ -56,10 +54,9 @@ export class LoggerService {
     for (let t of text) {
       if (guild && loggerChannel) {
         loggerChannel.send(t);
-        t = `Guild: ${guild.id}\n${t}`;
       }
       await prisma.log.create({
-        data: { level: "DEBUG", message: t },
+        data: { guildId: guild?.id, level: "DEBUG", message: t },
       });
     }
   };
@@ -76,10 +73,9 @@ export class LoggerService {
     for (let t of text) {
       if (guild && loggerChannel) {
         loggerChannel.send(t);
-        t = `Guild: ${guild.id}\n${t}`;
       }
       await prisma.log.create({
-        data: { level: "WARN", message: t },
+        data: { guildId: guild?.id, level: "WARN", message: t },
       });
     }
   };
@@ -96,10 +92,9 @@ export class LoggerService {
     for (let t of text) {
       if (guild && loggerChannel) {
         loggerChannel.send(t);
-        t = `Guild: ${guild.id}\n${t}`;
       }
       await prisma.log.create({
-        data: { level: "ERROR", message: t },
+        data: { guildId: guild?.id, level: "ERROR", message: t },
       });
     }
   };
@@ -116,10 +111,9 @@ export class LoggerService {
     for (let t of text) {
       if (guild && loggerChannel) {
         loggerChannel.send(t);
-        t = `Guild: ${guild.id}\n${t}`;
       }
       await prisma.log.create({
-        data: { level: "FATAL", message: t },
+        data: { guildId: guild?.id, level: "FATAL", message: t },
       });
     }
   };

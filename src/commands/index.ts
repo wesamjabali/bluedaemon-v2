@@ -2,9 +2,13 @@ import { BulkCreateCoursesCommand } from "./bulk-create-courses/bulk-create-cour
 import { BulkDeleteCoursesCommand } from "./bulk-delete-courses/bulk-delete-courses.command";
 import { ICommand } from "./command.interface";
 import { CreateCourseCommand } from "./create-course/create-course.command";
+import { CreateSelfRoleCommand } from "./create-role/create-role.command";
 import { DeleteCourseCommand } from "./delete-course/delete-course.command";
+import { DeleteSelfRoleCommand } from "./delete-role/delete-role.command";
 import { JoinCourseCommand } from "./join-course/join-course.command";
+import { JoinSelfRoleCommand } from "./join-role/join-role.command";
 import { LeaveCourseCommand } from "./leave-course/leave-course.command";
+import { LeaveSelfRoleCommand } from "./leave-role/leave-role.command";
 import { ListCoursesCommand } from "./list-courses/list-courses.command";
 import { LogCommand } from "./log/log.command";
 import { PingCommand } from "./ping/ping.command";
@@ -28,6 +32,10 @@ const commands: ICommand[] = [
   new SetCoursePasswordCommand(),
   new RequestCourseCommand(),
   new LogCommand(),
+  new CreateSelfRoleCommand(),
+  new DeleteSelfRoleCommand(),
+  new JoinSelfRoleCommand(),
+  new LeaveSelfRoleCommand(),
 ];
 
 export { commands, PingCommand, SayCommand, SourceCommand, SudoCommand };

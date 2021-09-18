@@ -79,6 +79,7 @@ enum BotLogLevel {
 
 model Log {
   id        Int      @id @default(autoincrement())
+  guildId String?
   level     BotLogLevel
   message   String
   timestamp DateTime @default(now())
