@@ -15,6 +15,7 @@ export class ReadyHandler implements IEventHandler {
     logger.info(null, "Bot started.");
 
     while (
+      config.envConfig.environment !== "prod" &&
       !client.guilds.cache.find((g) => g.id === config.envConfig.devGuildId)
     ) {
       await new Promise((r) => setTimeout(r, 5000));
