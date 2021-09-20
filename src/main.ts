@@ -17,3 +17,7 @@ handlers.forEach((handler) => {
 client.login(config.envConfig.token);
 
 export { client, logger };
+
+process.on("uncaughtException", (err) => {
+  logger.fatal(null, `${err.message}\n${err.stack || "No stack trace."}`);
+});

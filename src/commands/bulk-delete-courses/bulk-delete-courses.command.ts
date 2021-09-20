@@ -21,10 +21,7 @@ export class BulkDeleteCoursesCommand implements ICommand {
     { type: "CourseManager", permission: true },
   ];
   buttonActions: ButtonAction[] = [
-    {
-      customId: "bulkdelete-confirm",
-      execute: () => {},
-    },
+    { customId: "bulkdelete-confirm", execute: () => {} },
     { customId: "bulkdelete-cancel", execute: () => {} },
   ];
 
