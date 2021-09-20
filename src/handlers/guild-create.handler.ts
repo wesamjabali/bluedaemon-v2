@@ -4,7 +4,8 @@ import { prisma } from "@/prisma/prisma.service";
 import { resetCacheForGuild } from "@/helpers/reset-cache-for-guild.helper";
 import { updateCommandPermissions } from "@/helpers/add-command-permissions.helper";
 import { logger } from "@/main";
-import { SetupCommand } from "@/setup/setup.command";
+import { config } from "@/services/config.service";
+import { BuildCommands } from "@/helpers/build-commands.helper";
 
 export class GuildCreateHandler implements IEventHandler {
   public once = false;
@@ -20,13 +21,19 @@ export class GuildCreateHandler implements IEventHandler {
 
     await resetCacheForGuild(guild.id);
 
-    /* Give owner access to sudo commands */
+    if (
+      config.envConfig.environment !== "prod" &&
+      guild.id === config.envConfig.devGuildId
+    ) {
+      await new BuildCommands().execute();
+    }
+
+    /* Give owner access to setup commands */
     await updateCommandPermissions(
       "SET",
       "setup",
-      new SetupCommand().permissions,
-      guild,
-      [{ roleType: "GuildOwner", id: guild.ownerId }]
+      [{ type: "USER", permission: true, id: guild.ownerId }],
+      guild
     );
   };
 }

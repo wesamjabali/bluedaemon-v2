@@ -27,21 +27,25 @@ export class ReadyHandler implements IEventHandler {
     for (const guild of client.guilds.cache.values()) {
       const dbGuild = guildConfigsCache.find((gc) => gc.guildId === guild.id);
       /* Send commands and their permissions to keep perms up to date even if we add a new command. */
-      for (const c of commands) {
-        updateCommandPermissions("ADD", c.name, c.permissions ?? [], guild, [
-          {
-            roleType: "CourseManager",
-            id: dbGuild?.courseManagerRoleId ?? "",
-          },
-          { roleType: "Moderator", id: dbGuild?.moderatorRoleId ?? "" },
-          { roleType: "GuildOwner", id: guild.ownerId },
-        ]);
-      }
+      // for (const c of commands) {
+      //   updateCommandPermissions("ADD", c.name, c.permissions ?? [], guild, [
+      //     {
+      //       roleType: "CourseManager",
+      //       id: dbGuild?.courseManagerRoleId ?? "",
+      //     },
+      //     { roleType: "Moderator", id: dbGuild?.moderatorRoleId ?? "" },
+      //     { roleType: "GuildOwner", id: guild.ownerId },
+      //   ]);
+      // }
 
       await resetCacheForGuild(guild.id).catch(() =>
         logger.error(guild, "Ready handler cannot load cache")
       );
     }
-    console.log(`Running in ${config.envConfig.environment} mode.`);
+    console.log(
+      `Running in ${
+        config.envConfig.environment === "prod" ? "Production" : "Developement"
+      } mode as ${client.user?.username}`
+    );
   };
 }

@@ -10,6 +10,7 @@ import { IEventHandler } from "./event-handler.interface";
 import { commands } from "@/commands";
 import { buttons } from "@/buttons";
 import { selectMenus } from "@/select-menus";
+import { logger } from "@/main";
 
 export class InteractionCreateHandler implements IEventHandler {
   public once = false;
@@ -29,7 +30,7 @@ If this is a subcommand/group, make sure to execute the correct subcommand!`
 
     if (interaction.isButton()) {
       const button = buttons.find((b) => b.customId === interaction.customId);
-      if (button && interaction.channel) {
+      if (button) {
         button.execute(interaction);
       } else {
         const rowComponent = (interaction.message as Message).components.find(
@@ -48,10 +49,10 @@ If this is a subcommand/group, make sure to execute the correct subcommand!`
           });
         }
 
-        interaction.reply({
-          content: `Button with customId \`${interaction.customId}\` not implemented, ${interaction.user}.`,
-          ephemeral: true,
-        });
+        logger.warn(
+          interaction.guild,
+          `Button with customId \`${interaction.customId}\` not implemented, but was used.`
+        );
       }
     }
 

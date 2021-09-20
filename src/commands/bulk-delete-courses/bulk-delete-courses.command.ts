@@ -21,7 +21,10 @@ export class BulkDeleteCoursesCommand implements ICommand {
     { type: "CourseManager", permission: true },
   ];
   buttonActions: ButtonAction[] = [
-    { customId: "bulkdelete-confirm", execute: () => {} },
+    {
+      customId: "bulkdelete-confirm",
+      execute: () => {},
+    },
     { customId: "bulkdelete-cancel", execute: () => {} },
   ];
 
@@ -111,8 +114,6 @@ export class BulkDeleteCoursesCommand implements ICommand {
           components: [],
         });
       }
-      await j.reply("​"); // zero-width character (​)
-      await j.deleteReply();
     });
   }
 }

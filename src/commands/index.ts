@@ -50,9 +50,9 @@ const commands: ICommand[] = [
 ];
 
 export function createSetupCommand() {
-  commands.push(new SetupCommand())
+  if (!commands.find((c) => c.name === "setup"))
+    commands.push(new SetupCommand());
 }
-
 
 export function getCommands() {
   return commands;

@@ -16,13 +16,12 @@ import { client, logger } from "@/main";
 
 export class BuildCommands {
   public async execute(): Promise<void> {
-    createSetupCommand()
+    createSetupCommand();
     if (config.envConfig.environment === "prod") {
       const devGuild = client.guilds.cache.find(
         (g) => g.id === config.envConfig.devGuildId
       );
-      if (!devGuild) return;
-      devGuild.commands.set([]);
+      if (devGuild) devGuild.commands.set([]);
     }
 
     const JSONCommands: ICommandData[] = [];
