@@ -1,7 +1,7 @@
 import { rest } from "@/services/rest.service";
 import { config } from "@/services/config.service";
 import { CommandOption, ICommand } from "@/commands/command.interface";
-import { commands } from "@/commands";
+import { commands, createSetupCommand } from "@/commands";
 import { APIApplicationCommandOption, Routes } from "discord-api-types/v9";
 import { registerButtons } from "@/buttons";
 import { registerSelectMenus } from "@/select-menus";
@@ -16,6 +16,7 @@ import { client, logger } from "@/main";
 
 export class BuildCommands {
   public async execute(): Promise<void> {
+    createSetupCommand()
     if (config.envConfig.environment === "prod") {
       const devGuild = client.guilds.cache.find(
         (g) => g.id === config.envConfig.devGuildId

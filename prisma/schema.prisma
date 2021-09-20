@@ -17,6 +17,7 @@ model Guild {
   loggingChannelId        String?
   moderatorRoleId         String?
   courseManagerRoleId     String?
+  communityPingRoleId     String?
   welcomeMessage          String?
 
   courses   Course[]
@@ -78,11 +79,11 @@ enum BotLogLevel {
 }
 
 model Log {
-  id        Int      @id @default(autoincrement())
-  guildId String?
+  id        Int         @id @default(autoincrement())
+  guildId   String?
   level     BotLogLevel
   message   String
-  timestamp DateTime @default(now())
+  timestamp DateTime    @default(now())
 
   @@unique([level, message, timestamp], name: "unique_log")
   @@map("log")

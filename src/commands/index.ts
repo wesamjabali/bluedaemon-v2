@@ -20,6 +20,7 @@ import { RequestCourseCommand } from "./request-course/request-course.command";
 import { SayCommand } from "./say/say.command";
 import { SetCoursePasswordCommand } from "./set-course-password/set-course-password.command";
 import { SourceCommand } from "./source/source.command";
+import { SetupCommand } from "../setup/setup.command";
 import { SudoCommand } from "./sudo/sudo.command";
 import { TagCommand } from "./tag/tag.command";
 
@@ -47,5 +48,14 @@ const commands: ICommand[] = [
   new ListTagsCommand(),
   new ListRolesCommand(),
 ];
+
+export function createSetupCommand() {
+  commands.push(new SetupCommand())
+}
+
+
+export function getCommands() {
+  return commands;
+}
 
 export { commands, PingCommand, SayCommand, SourceCommand, SudoCommand };

@@ -5,11 +5,12 @@ import {
   CommandOptionPermission,
   ICommand,
 } from "@/commands/command.interface";
-import { SetupCommand } from "./meta/setup/setup.command";
 import { UpdatePermissionCommand } from "./meta/update-permission/update-permission.command";
 import { UpdateQuarterCommand } from "./course/update-quarter/update-quarter.command";
 import { SetCommand } from "./meta/set/set.command";
 import { SetWelcomeMessageCommand } from "./meta/set-welcome-message/set-welcome-message.command";
+import { SetWelcomeRoleCommand } from "./meta/set-welcome-role/set-welcome-role.command";
+import { SetupCommand } from "../../setup/setup.command";
 
 export class SudoCommand implements ICommand {
   name = "sudo";
@@ -27,10 +28,10 @@ export class SudoCommand implements ICommand {
           name: "meta",
           description: "Meta Commands",
           subCommands: [
-            new SetupCommand(),
             new UpdatePermissionCommand(),
             new SetCommand(),
             new SetWelcomeMessageCommand(),
+            new SetWelcomeRoleCommand(),
           ],
         },
         {
