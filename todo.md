@@ -5,6 +5,9 @@
 - [ ] Count to 100,000
 - [ ] Merge tag/role/course list command into a service. They're literally all the same, copy/pasted.
 - [ ] Serious, serious testing.
+  - [ ] Nick tested and found some course creation bugs. 
+  - [ ] Most bugs found are related to cacheing -- pay attention to where caches are being reset. 
+- [ ] Add /set- and /get-realname. Let students privately set their realname so only faculty can access them. 
 - [x] Enable Logging
   - [x] To database
   - [x] To Logging channel
