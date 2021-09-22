@@ -18,7 +18,7 @@ import { createCourse } from "../create-course/create-course.service";
 
 export class RequestCourseCommand implements ICommand {
   name = "request-course";
-  description = "Delete a set of courses";
+  description = "Request a course if it doesn't already exist.";
   default_permission = false;
   permissions: CommandOptionPermission[] = [
     { type: "CourseManager", permission: true },

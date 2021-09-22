@@ -60,8 +60,10 @@ export async function createCourse(
       .flatMap((q) => q.name)
       .join(", ")}\`\`\``;
 
-  const existingCourse = guildConfig.courses.find((c) =>
-    c.aliases.some((a) => courseAliases.includes(a))
+  const existingCourse = guildConfig.courses.find(
+    (c) =>
+      c.aliases.some((a) => courseAliases.includes(a)) &&
+      c.quarterId == dbQuarter.id
   );
 
   if (!!existingCourse) {
@@ -102,6 +104,7 @@ export async function createCourse(
       }
     }
 
+    // Create new quarter category and push it to the db. then reset cache for quarter.
     if (!category) {
       category = await guild.channels.create(dbQuarter.name, {
         reason: "Created by BlueDaemon as a quarter category.",
@@ -120,6 +123,10 @@ export async function createCourse(
           ),
         },
       });
+
+      await resetCacheForGuild(guild.id, "currentQuarter");
+      await resetCacheForGuild(guild.id, "currentQuarterId");
+      await resetCacheForGuild(guild.id, "quarters");
     }
 
     courseChannel = await guild.channels.create(courseName, {

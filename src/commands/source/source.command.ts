@@ -5,6 +5,7 @@ import {
   MessageEmbed,
 } from "discord.js";
 import { ICommand } from "@/commands/command.interface";
+import { getGuildConfig } from "@/config/guilds.config";
 
 export class SourceCommand implements ICommand {
   name = "source";
@@ -12,6 +13,7 @@ export class SourceCommand implements ICommand {
   default_permission = true;
 
   public async execute(interaction: CommandInteraction): Promise<void> {
+    console.log(getGuildConfig(interaction.guildId))
     await interaction.reply({
       embeds: [
         new MessageEmbed()

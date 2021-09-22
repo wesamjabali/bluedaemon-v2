@@ -50,7 +50,9 @@ export class UpdateQuarterCommand implements ICommand {
       },
     });
 
-    await resetCacheForGuild(i.guildId);
+    await resetCacheForGuild(i.guildId, "currentQuarter");
+    await resetCacheForGuild(i.guildId, "currentQuarterId");
+    await resetCacheForGuild(i.guildId, "quarters");
 
     await i.followUp(`Quarter updated to ${currentQuarter}`);
   }
