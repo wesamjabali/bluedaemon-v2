@@ -30,7 +30,9 @@ export class JoinSelfRoleCommand implements ICommand {
     const guildConfig = getGuildConfig(i.guildId);
 
     const roleId =
-      guildConfig?.selfRoles.find((r) => r.name.toLowerCase() === roleName.toLowerCase())?.roleId ?? "";
+      guildConfig?.selfRoles.find(
+        (r) => r.name.toLowerCase() === roleName.toLowerCase()
+      )?.roleId ?? "";
 
     const role = i.guild?.roles.cache.find((r) => r.id === roleId);
     if (!role) {
@@ -40,7 +42,12 @@ export class JoinSelfRoleCommand implements ICommand {
       return;
     }
 
-    await (i.member?.roles as GuildMemberRoleManager).add(role);
+    await (i.member?.roles as GuildMemberRoleManager).add(role).catch(() => {
+      i.reply(
+        `<@${i.guild?.ownerId}>, please make sure the BlueDaemon role is ordered above all other roles. https://support.discord.com/hc/en-us/articles/214836687-Role-Management-101`
+      );
+      return;
+    });
 
     await i.reply({
       content: `Joined self-role ${roleName}!`,
