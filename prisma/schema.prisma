@@ -30,9 +30,6 @@ model Course {
   id                Int      @id @default(autoincrement())
   guild             Guild    @relation(fields: [guildId], references: [guildId])
   guildId           String
-  courseCodePrefix  String
-  courseCodeNumber  String
-  courseCodeSection String?
   description       String?
   quarter           Quarter  @relation(fields: [quarterId], references: [id])
   quarterId         Int

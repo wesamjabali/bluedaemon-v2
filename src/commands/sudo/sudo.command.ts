@@ -11,6 +11,7 @@ import { SetCommand } from "./meta/set/set.command";
 import { SetWelcomeMessageCommand } from "./meta/set-welcome-message/set-welcome-message.command";
 import { SetWelcomeRoleCommand } from "./meta/set-welcome-role/set-welcome-role.command";
 import { SetupCommand } from "../../setup/setup.command";
+import { MigrateCommand } from "./course/migrate/migrate.command";
 
 export class SudoCommand implements ICommand {
   name = "sudo";
@@ -37,7 +38,7 @@ export class SudoCommand implements ICommand {
         {
           name: "course",
           description: "Course Commands",
-          subCommands: [new UpdateQuarterCommand()],
+          subCommands: [new UpdateQuarterCommand(), new MigrateCommand()],
         },
       ],
     },

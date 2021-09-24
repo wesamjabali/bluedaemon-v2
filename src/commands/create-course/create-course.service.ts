@@ -247,9 +247,6 @@ export async function createCourse(
 
   await prisma.course.create({
     data: {
-      courseCodePrefix: courseCodePrefix,
-      courseCodeNumber: courseCodeNumber,
-      courseCodeSection: courseCodeSection,
       channelId: courseChannel?.id as string,
       description: courseDescription,
       quarter: {

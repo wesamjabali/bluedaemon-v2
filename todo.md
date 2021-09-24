@@ -21,10 +21,10 @@
 - [x] Tags
   - [x] Schema
   - [x] Commands
-- [ ] Remove course prefix/number/section in favor for strong validation and alias array in db.
+- [x] Remove course prefix/number/section in favor for strong validation and alias array in db.
   - Make sure this is the way to go first.
 - [ ] /qotd command. Preload questions of the day and create threads daily out of them.
-- [ ] Add migration routine
+- [x] Add migration routine
   - Command that allows the guild owner to move to bluedaemon. This will allow you to create a quarter, then add entire categories of classes. Data would need to be validated beforehand ie courses created must match CSC300-123 format.
 - [x] Cache all courses and quarters just like guild.
 - [x] Reset pieces of cache instead of resetting the whole thing every time.
