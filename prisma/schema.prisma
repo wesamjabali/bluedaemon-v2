@@ -82,6 +82,5 @@ model Log {
   message   String
   timestamp DateTime    @default(now())
 
-  @@unique([level, message, timestamp], name: "unique_log")
   @@map("log")
 }

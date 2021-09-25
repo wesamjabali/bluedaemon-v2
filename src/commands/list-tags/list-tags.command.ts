@@ -114,7 +114,7 @@ function getTagListEmbedPage(
   pageNumber: number,
   searchTerm?: string
 ): MessageEmbed[] {
-  let filteredTags = tagList.slice(24 * pageNumber, 24);
+  let filteredTags = tagList.slice(24 * pageNumber, 24 * (pageNumber + 1));
   if (filteredTags.length === 0) {
     filteredTags = tagList.slice(24 * pageNumber);
   }

@@ -73,7 +73,7 @@ export class ListCoursesCommand implements ICommand {
       pageNumber,
       searchTerm
     );
-    
+
     if (courses.length <= 24) {
       interaction.followUp({ embeds: initialEmbed });
       return;
@@ -139,7 +139,10 @@ function getCourseListEmbedPage(
   pageNumber: number,
   searchTerm?: string
 ): MessageEmbed[] {
-  let filteredCourses = courseList.slice(24 * pageNumber, 24);
+  let filteredCourses = courseList.slice(
+    24 * pageNumber,
+    24 * (pageNumber + 1)
+  );
   if (filteredCourses.length === 0) {
     filteredCourses = courseList.slice(24 * pageNumber);
   }
