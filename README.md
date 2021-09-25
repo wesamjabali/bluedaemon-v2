@@ -5,6 +5,7 @@
 To run this project:
 
 create `.env` in root folder:
+
 ```
 NODE_ENV=dev/prod
 DATABASE_URL=postgresql://username:password@localhost:5432/dbName
@@ -15,7 +16,8 @@ DEV_GUILD_ID=
 ```
 
 Then:
-```npm i
+
+````npm i
 npm install prisma -g
 prisma migrate dev
 
@@ -25,8 +27,10 @@ npm run start```
 
 ### Using Docker:
 Includes Node and Postgres.
+````
 
 .env:
+
 ```
 NODE_ENV=dev/prod
 DATABASE_URL=postgresql://username:password@localhost:5432/dbName
