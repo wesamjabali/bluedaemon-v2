@@ -1,4 +1,4 @@
-import { CommandInteraction, GuildMemberRoleManager } from "discord.js";
+import { CommandInteraction, Guild, GuildMemberRoleManager } from "discord.js";
 import {
   CommandOption,
   CommandOptionPermission,
@@ -6,6 +6,7 @@ import {
 } from "@/commands/command.interface";
 
 import { getGuildConfig } from "@/config/guilds.config";
+import { logger } from "@/main";
 
 export class JoinSelfRoleCommand implements ICommand {
   name = "join-role";
@@ -44,8 +45,10 @@ export class JoinSelfRoleCommand implements ICommand {
 
     let errorFlag = false;
     await (i.member?.roles as GuildMemberRoleManager).add(role).catch(() => {
-      i.reply(
-        `<@${i.guild?.ownerId}>, please make sure the BlueDaemon role is ordered above all other roles. https://support.discord.com/hc/en-us/articles/214836687-Role-Management-101`
+      logger.logToChannel(
+        i.guild as Guild,
+        `<@${i.guild?.ownerId}>: ${i.user} tried to join a course, but couldn't because the BlueDaemon role isn't high enough. Make sure you make my role the highest in the server.
+      https://support.discord.com/hc/en-us/articles/214836687-Role-Management-101`
       );
       errorFlag = true;
     });

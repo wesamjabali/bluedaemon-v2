@@ -6,6 +6,9 @@ export class RateLimitHandler implements IEventHandler {
   public once = false;
   public readonly EVENT_NAME: keyof ClientEvents = "rateLimit";
   public onEvent = async (rateLimitData: RateLimitData) => {
-    logger.warn(null, "Timeout: " + JSON.stringify(rateLimitData, null, 2));
+    logger.warn(
+      null,
+      "Rate Limit detected:\n" + JSON.stringify(rateLimitData, null, 2)
+    );
   };
 }

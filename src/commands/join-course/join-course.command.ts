@@ -2,6 +2,7 @@ import { prisma } from "@/prisma/prisma.service";
 import {
   CategoryChannel,
   CommandInteraction,
+  Guild,
   GuildMemberRoleManager,
   Role,
   TextChannel,
@@ -16,6 +17,7 @@ import { Course } from "@prisma/client";
 import { joinCommandOptions } from "./join-course.options";
 import { getGuildConfig } from "@/config/guilds.config";
 import { resetCacheForGuild } from "@/helpers/reset-cache-for-guild.helper";
+import { logger } from "@/main";
 
 export class JoinCourseCommand implements ICommand {
   name = "join-course";
@@ -136,7 +138,9 @@ async function sendWelcomeMessage(
   }
 
   if (!courseChannel) {
-    await i.reply("Original channel no longer exists! Please update the database.");
+    await i.reply(
+      "Original channel no longer exists! Please update the database."
+    );
     return null;
   }
 
@@ -168,7 +172,16 @@ async function addRole(
 
     return false;
   }
-
-  await (i.member?.roles as GuildMemberRoleManager).add(courseRole);
-  return true;
+  let success = true;
+  await (i.member?.roles as GuildMemberRoleManager)
+    .add(courseRole)
+    .catch(() => {
+      logger.logToChannel(
+        i.guild as Guild,
+        `<@${i.guild?.ownerId}>: ${i.user} tried to join a course, but couldn't because the BlueDaemon role isn't high enough. Make sure you make my role the highest in the server.
+https://support.discord.com/hc/en-us/articles/214836687-Role-Management-101`
+      );
+      success = false;
+    });
+  return success;
 }

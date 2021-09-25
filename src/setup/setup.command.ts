@@ -111,8 +111,12 @@ export class SetupCommand implements ICommand {
 
     await resetCacheForGuild(i.guildId);
 
+    updateCommandPermissions("REMOVE", "setup", [
+      { id: i.user.id, permission: false, type: "USER" },
+    ]);
+
     await i.followUp(
-      "Successfully set up server! It may take a minute for all commands to become available for priveleged users."
+      "Successfully set up server! \n\n***IMPORTANT:***\nOne last step: Make the BlueDaemon role ordered above all other roles. It needs to be the first in the list.\nhttps://support.discord.com/hc/en-us/articles/214836687-Role-Management-101"
     );
   }
 }

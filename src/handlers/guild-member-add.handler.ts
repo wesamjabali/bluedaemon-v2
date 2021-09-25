@@ -1,5 +1,6 @@
 import { getGuildConfig } from "@/config/guilds.config";
-import { ClientEvents, GuildMember } from "discord.js";
+import { logger } from "@/main";
+import { ClientEvents, Guild, GuildMember } from "discord.js";
 import { IEventHandler } from "./event-handler.interface";
 
 export class GuildMemberAddHandler implements IEventHandler {
@@ -12,8 +13,14 @@ export class GuildMemberAddHandler implements IEventHandler {
       await member.send(guildConfig.welcomeMessage);
     }
 
-    if(guildConfig?.communityPingRoleId) {
-      await member.roles.add(guildConfig.communityPingRoleId)
+    if (guildConfig?.communityPingRoleId) {
+      await member.roles.add(guildConfig.communityPingRoleId).catch(() => {
+        logger.logToChannel(
+          member.guild as Guild,
+          `<@${member.guild?.ownerId}>: ${member.user} didn't get the welcome role after joining because the BlueDaemon role isn't high enough. Make sure you make my role the highest in the server.
+        https://support.discord.com/hc/en-us/articles/214836687-Role-Management-101`
+        );
+      });
     }
   };
 }
