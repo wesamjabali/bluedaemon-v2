@@ -44,9 +44,12 @@ export class ListCoursesCommand implements ICommand {
       ?.toUpperCase();
 
     let courses =
-      (guildConfig?.courses.filter(
-        (c) => c.quarterId === guildConfig.currentQuarterId && !c.password
-      ) as Course[]) || ([] as Course[]);
+      (
+        guildConfig?.courses.filter(
+          (c) => c.quarterId === guildConfig.currentQuarterId && !c.password
+        ) as Course[]
+      ).sort((a, b) => (a.aliases[0] < b.aliases[0] ? -1 : 1)) ||
+      ([] as Course[]);
 
     let filteredCourses: string[] = [];
     for (const c of courses) {
