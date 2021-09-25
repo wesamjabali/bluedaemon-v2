@@ -54,9 +54,17 @@ export class LeaveCourseCommand implements ICommand {
         c.aliases.includes(courseName.courseName) &&
         c.quarterId === dbQuarter.id
     )?.roleId;
+    if (!courseRoleId) {
+      return i.reply(
+        `${courseName} doesn't exist for quarter ${dbQuarter.name}`
+      );
+    }
     const courseRole = i.guild?.roles.cache.find((r) => r.id === courseRoleId);
 
-    if (!courseRole) return i.reply("courseRole not found");
+    if (!courseRole)
+      return i.reply(
+        `Oops! It looks like the role for that course was deleted.`
+      );
 
     if (
       !(i.member?.roles as GuildMemberRoleManager).cache.find(
