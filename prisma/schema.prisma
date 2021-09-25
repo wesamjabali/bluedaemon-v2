@@ -27,6 +27,8 @@ model Guild {
   quarters  Quarter[]
   selfRoles SelfRole[]
   tags      Tag[]
+
+  @@map("guild")
 }
 
 model Course {
@@ -42,6 +44,8 @@ model Course {
   owner       String?
   password    String?
   aliases     String[]
+
+  @@map("course")
 }
 
 model Quarter {
@@ -53,6 +57,8 @@ model Quarter {
 
   Course Course[]
   Guild  Guild[]  @relation("GuildCurrentQuarter")
+
+  @@map("quarter")
 }
 
 model SelfRole {
@@ -60,6 +66,8 @@ model SelfRole {
   name    String
   guildId String
   guild   Guild  @relation(fields: [guildId], references: [guildId])
+
+  @@map("self_role")
 }
 
 model Tag {
@@ -68,6 +76,8 @@ model Tag {
   tagText String
   guildId String
   guild   Guild  @relation(fields: [guildId], references: [guildId])
+
+  @@map("tag")
 }
 
 enum BotLogLevel {
