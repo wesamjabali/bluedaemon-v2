@@ -72,7 +72,7 @@ export class ListTagsCommand implements ICommand {
 
     const collector = sentReplyMessage.createMessageComponentCollector({
       componentType: "BUTTON",
-      time: 15000,
+      time: 300000,
     });
     collector.on("collect", async (b) => {
       if (b.user.id !== i.user.id) {
@@ -114,7 +114,7 @@ function getTagListEmbedPage(
   pageNumber: number,
   searchTerm?: string
 ): MessageEmbed[] {
-  let filteredTags = tagList.slice(24 * pageNumber, 24);
+  let filteredTags = tagList.slice(24 * pageNumber, 24 * (pageNumber + 1));
   if (filteredTags.length === 0) {
     filteredTags = tagList.slice(24 * pageNumber);
   }

@@ -44,9 +44,12 @@ export class ListCoursesCommand implements ICommand {
       ?.toUpperCase();
 
     let courses =
-      (guildConfig?.courses.filter(
-        (c) => c.quarterId === guildConfig.currentQuarterId && !c.password
-      ) as Course[]) || ([] as Course[]);
+      (
+        guildConfig?.courses.filter(
+          (c) => c.quarterId === guildConfig.currentQuarterId && !c.password
+        ) as Course[]
+      ).sort((a, b) => (a.aliases[0] < b.aliases[0] ? -1 : 1)) ||
+      ([] as Course[]);
 
     let filteredCourses: string[] = [];
     for (const c of courses) {
@@ -73,7 +76,7 @@ export class ListCoursesCommand implements ICommand {
       pageNumber,
       searchTerm
     );
-    
+
     if (courses.length <= 24) {
       interaction.followUp({ embeds: initialEmbed });
       return;
@@ -89,7 +92,7 @@ export class ListCoursesCommand implements ICommand {
 
     const collector = sentReplyMessage.createMessageComponentCollector({
       componentType: "BUTTON",
-      time: 15000,
+      time: 300000,
     });
     collector.on("collect", async (b) => {
       if (b.user.id !== interaction.user.id) {
@@ -139,7 +142,10 @@ function getCourseListEmbedPage(
   pageNumber: number,
   searchTerm?: string
 ): MessageEmbed[] {
-  let filteredCourses = courseList.slice(24 * pageNumber, 24);
+  let filteredCourses = courseList.slice(
+    24 * pageNumber,
+    24 * (pageNumber + 1)
+  );
   if (filteredCourses.length === 0) {
     filteredCourses = courseList.slice(24 * pageNumber);
   }

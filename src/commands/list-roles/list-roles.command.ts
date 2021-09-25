@@ -39,7 +39,9 @@ export class ListRolesCommand implements ICommand {
     let pageNumber = 0;
     const searchTerm = i.options.getString("search", false)?.toLowerCase();
     let roles = (
-      guildConfig?.selfRoles.filter((r) => r.name.toLowerCase().includes(searchTerm ?? "")) || []
+      guildConfig?.selfRoles.filter((r) =>
+        r.name.toLowerCase().includes(searchTerm ?? "")
+      ) || []
     ).map((r) => r.name);
 
     const buttons = [
@@ -72,7 +74,7 @@ export class ListRolesCommand implements ICommand {
 
     const collector = sentReplyMessage.createMessageComponentCollector({
       componentType: "BUTTON",
-      time: 15000,
+      time: 300000,
     });
     collector.on("collect", async (b) => {
       if (b.user.id !== i.user.id) {
@@ -114,7 +116,7 @@ function getRoleListEmbedPage(
   pageNumber: number,
   searchTerm?: string
 ): MessageEmbed[] {
-  let filteredRoles = roleList.slice(24 * pageNumber, 24);
+  let filteredRoles = roleList.slice(24 * pageNumber, 24 * (pageNumber + 1));
   if (filteredRoles.length === 0) {
     filteredRoles = roleList.slice(24 * pageNumber);
   }
