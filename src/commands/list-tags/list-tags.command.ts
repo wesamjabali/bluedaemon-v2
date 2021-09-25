@@ -72,7 +72,7 @@ export class ListTagsCommand implements ICommand {
 
     const collector = sentReplyMessage.createMessageComponentCollector({
       componentType: "BUTTON",
-      time: 15000,
+      time: 300000,
     });
     collector.on("collect", async (b) => {
       if (b.user.id !== i.user.id) {
