@@ -8,17 +8,20 @@ generator client {
 }
 
 model Guild {
-  guildId                 String   @id @unique
-  guildOwnerId            String
-  currentQuarter          Quarter? @relation("GuildCurrentQuarter", fields: [currentQuarterId], references: [id])
-  currentQuarterId        Int?
-  countingChannelId       String?
-  courseRequestsChannelId String?
-  loggingChannelId        String?
-  moderatorRoleId         String?
-  courseManagerRoleId     String?
-  communityPingRoleId     String?
-  welcomeMessage          String?
+  guildId                   String   @id @unique
+  guildOwnerId              String
+  currentQuarter            Quarter? @relation("GuildCurrentQuarter", fields: [currentQuarterId], references: [id])
+  currentQuarterId          Int?
+  countingChannelId         String?
+  countingChannelCurrentInt Int?
+  courseRequestsChannelId   String?
+  loggingChannelId          String?
+  qotdChannelId             String?
+  introductionsChannelId    String?
+  moderatorRoleId           String?
+  courseManagerRoleId       String?
+  communityPingRoleId       String?
+  welcomeMessage            String?
 
   courses   Course[]
   quarters  Quarter[]
@@ -27,18 +30,18 @@ model Guild {
 }
 
 model Course {
-  id                Int      @id @default(autoincrement())
-  guild             Guild    @relation(fields: [guildId], references: [guildId])
-  guildId           String
-  description       String?
-  quarter           Quarter  @relation(fields: [quarterId], references: [id])
-  quarterId         Int
-  roleId            String   @unique
-  channelId         String
-  category          Boolean  @default(false)
-  owner             String?
-  password          String?
-  aliases           String[]
+  id          Int      @id @default(autoincrement())
+  guild       Guild    @relation(fields: [guildId], references: [guildId])
+  guildId     String
+  description String?
+  quarter     Quarter  @relation(fields: [quarterId], references: [id])
+  quarterId   Int
+  roleId      String   @unique
+  channelId   String
+  category    Boolean  @default(false)
+  owner       String?
+  password    String?
+  aliases     String[]
 }
 
 model Quarter {

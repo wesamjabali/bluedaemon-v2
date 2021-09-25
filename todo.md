@@ -2,16 +2,17 @@
 
 - [ ] Bot needs to be at the top of the roles list. Check for this on boot/commands that it matters for. Anything that calls roles or users needs to be caught.
 - [ ] Code review
-- [ ] Message handler
-- [ ] Count to 100,000
+- [x] Message handler
+- [x] Count to 100,000
 - [ ] Merge tag/role/course list command into a service. They're literally all the same, copy/pasted.
 - [ ] Serious, serious testing.
   - [ ] Nick tested and found some course creation bugs.
   - [ ] Most bugs found are related to cacheing -- pay attention to where caches are being reset.
 - [ ] Add /set- and /get-realname. Let students privately set their realname so only faculty can access them.
 - [ ] Add logging everywhere.
-- [ ] Add quarter list command.
+- [x] Add quarter list command.
 - [ ] /qotd command. Preload questions of the day and create threads daily out of them.
+- [x] Create thread from every introduction message
 - [x] Enable Logging
   - [x] To database
   - [x] To Logging channel

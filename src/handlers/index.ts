@@ -2,6 +2,7 @@ import { IEventHandler } from "./event-handler.interface";
 import { GuildCreateHandler } from "./guild-create.handler";
 import { GuildMemberAddHandler } from "./guild-member-add.handler";
 import { InteractionCreateHandler } from "./interaction-create.handler";
+import { MessageCreateHandler } from "./message-create/message-create.handler";
 import { RateLimitHandler } from "./rate-limit.handler";
 import { ReadyHandler } from "./ready.handler";
 
@@ -10,7 +11,8 @@ const handlers: IEventHandler[] = [
   new InteractionCreateHandler(),
   new GuildCreateHandler(),
   new RateLimitHandler(),
-  new GuildMemberAddHandler()
+  new GuildMemberAddHandler(),
+  new MessageCreateHandler()
 ];
 
 export { handlers, ReadyHandler, InteractionCreateHandler, GuildCreateHandler };

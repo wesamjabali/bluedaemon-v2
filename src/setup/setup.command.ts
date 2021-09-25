@@ -25,6 +25,7 @@ export class SetupCommand implements ICommand {
     { type: "Channel", name: "course_requests_channel", required: true },
     { type: "Channel", name: "logging_channel", required: true },
     { type: "Channel", name: "counting_channel", required: false },
+    { type: "Channel", name: "introductions_channel", required: false },
   ];
 
   async execute(i: CommandInteraction) {
@@ -32,6 +33,10 @@ export class SetupCommand implements ICommand {
 
     const currentQuarter = i.options.getString("current_quarter", true);
     const countingChannel = i.options.getChannel("counting_channel", false);
+    const introductionsChannel = i.options.getChannel(
+      "introductions_channel",
+      false
+    );
     const courseRequestsChannel = i.options.getChannel(
       "course_requests_channel",
       true
@@ -89,15 +94,11 @@ export class SetupCommand implements ICommand {
         loggingChannelId: loggingChannel.id,
         moderatorRoleId: modRole.id,
         courseManagerRoleId: courseManagerRole.id,
+        countingChannelId: countingChannel?.id ?? undefined,
+        countingChannelCurrentInt: countingChannel ? 0 : undefined,
+        introductionsChannelId: introductionsChannel?.id ?? undefined,
       },
     });
-
-    if (countingChannel) {
-      await prisma.guild.update({
-        where: { guildId: i.guildId },
-        data: { countingChannelId: countingChannel.id },
-      });
-    }
 
     /* Send commands and their permissions */
     for (const c of commands) {

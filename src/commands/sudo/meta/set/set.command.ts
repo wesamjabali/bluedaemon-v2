@@ -1,4 +1,4 @@
-import { CommandInteraction } from "discord.js";
+import { CommandInteraction, Message } from "discord.js";
 import {
   CommandOption,
   CommandOptionPermission,
@@ -7,6 +7,7 @@ import {
 import { prisma } from "@/prisma/prisma.service";
 
 import { resetCacheForGuild } from "@/helpers/reset-cache-for-guild.helper";
+import { logger } from "@/main";
 
 export class SetCommand implements ICommand {
   name = "set";
@@ -17,12 +18,12 @@ export class SetCommand implements ICommand {
   ];
 
   options: CommandOption[] = [
-    { type: "String", name: "current_quarter", required: false },
     { type: "Role", name: "moderator_role", required: false },
     { type: "Role", name: "course_manager_role", required: false },
     { type: "Channel", name: "course_requests_channel", required: false },
     { type: "Channel", name: "logging_channel", required: false },
     { type: "Channel", name: "counting_channel", required: false },
+    { type: "Channel", name: "introductions_channel", required: false },
   ];
 
   async execute(i: CommandInteraction) {
@@ -32,10 +33,13 @@ export class SetCommand implements ICommand {
       return;
     }
 
-    const currentQuarter = i.options.getString("current_quarter", false);
     const countingChannel = i.options.getChannel("counting_channel", false);
     const courseRequestsChannel = i.options.getChannel(
       "course_requests_channel",
+      false
+    );
+    const introductionsChannel = i.options.getChannel(
+      "introductions_channel",
       false
     );
     const loggingChannel = i.options.getChannel("logging_channel", false);
@@ -43,11 +47,12 @@ export class SetCommand implements ICommand {
     const courseManagerRole = i.options.getRole("course_manager_role", false);
     if (!i.guildId || !i.guild || !i.guild?.ownerId) return;
 
-    await resetCacheForGuild(i.guildId);
-
     let errorResponse = "";
     if (loggingChannel && loggingChannel.type !== "GUILD_TEXT") {
       errorResponse = `${errorResponse}\nLogging channel must be text channel.`;
+    }
+    if (introductionsChannel && introductionsChannel.type !== "GUILD_TEXT") {
+      errorResponse = `${errorResponse}\nIntroductions channel must be text channel.`;
     }
     if (courseRequestsChannel && courseRequestsChannel.type !== "GUILD_TEXT") {
       errorResponse = `${errorResponse}\nCourse requests channel must be text channel.`;
@@ -61,38 +66,26 @@ export class SetCommand implements ICommand {
       return;
     }
 
-    let existingDbQuarter;
-    if (currentQuarter) {
-      existingDbQuarter = await prisma.quarter.findFirst({
-        where: { AND: { name: currentQuarter, guild: { guildId: i.guildId } } },
-      });
-
-      if (!existingDbQuarter) {
-        existingDbQuarter = await prisma.quarter.create({
-          data: {
-            name: currentQuarter,
-            guild: { connect: { guildId: i.guildId } },
-          },
-        });
-      }
-    }
-
     await prisma.guild.update({
       where: { guildId: i.guildId },
       data: {
-        currentQuarter: {
-          connect: { id: existingDbQuarter?.id ?? undefined },
-        },
         courseRequestsChannelId: courseRequestsChannel?.id ?? undefined,
         loggingChannelId: loggingChannel?.id ?? undefined,
         moderatorRoleId: modRole?.id ?? undefined,
         courseManagerRoleId: courseManagerRole?.id ?? undefined,
         countingChannelId: countingChannel?.id ?? undefined,
+        countingChannelCurrentInt: countingChannel ? 0 : undefined,
+        introductionsChannelId: introductionsChannel?.id ?? undefined,
       },
     });
 
     await resetCacheForGuild(i.guildId);
 
-    await i.followUp("Successfully updated settings.");
+    const replyMessage = await i.followUp("Successfully updated settings.");
+
+    logger.logToChannel(
+      i.guild,
+      `Bot settings updated. Context: ${(replyMessage as Message).url}`
+    );
   }
 }
