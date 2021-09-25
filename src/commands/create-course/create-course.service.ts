@@ -112,6 +112,7 @@ export async function createCourse(
       });
 
       if (!category?.id) {
+        await courseRole.delete()
         return "Failed to create category.";
       }
 
@@ -171,6 +172,7 @@ export async function createCourse(
     }
 
     if (!courseChannel) {
+      await courseRole.delete()
       return "Failed to create channel.";
     }
 

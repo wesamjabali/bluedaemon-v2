@@ -1,4 +1,4 @@
-import { CommandInteraction } from "discord.js";
+import { CommandInteraction, Message } from "discord.js";
 import {
   CommandOption,
   CommandOptionPermission,
@@ -7,6 +7,7 @@ import {
 import { createCommandOptions } from "./create-course.options";
 import { createCourse } from "./create-course.service";
 import { logger } from "@/main";
+import { normalizeCourseCode } from "@/helpers/normalize-course-code.helper";
 
 export class CreateCourseCommand implements ICommand {
   name = "create-course";
@@ -27,7 +28,7 @@ export class CreateCourseCommand implements ICommand {
     const courseCategoryOption = i.options.getBoolean("category", false);
     const courseOwner = i.options.getUser("owner", false);
 
-    const replyMessage = await createCourse(
+    const replyText = await createCourse(
       i.guild,
       courseCode,
       courseDescription,
@@ -38,7 +39,20 @@ export class CreateCourseCommand implements ICommand {
       linkedNameOption
     );
 
-    i.reply(replyMessage);
-    logger.info(i.guild, `${i.user}: ${replyMessage}`);
+    const replyMessage = await i.reply({
+      content: replyText,
+      fetchReply: true,
+    });
+
+    if (replyText.includes("created!")) {
+      logger.logToChannel(
+        i.guild,
+        `Course created:
+\`Name: ${normalizeCourseCode(courseCode).courseName}\`
+\`Created by: ${i.user}\`
+\`${password ? "Password: " + password : ""}\`
+\`Context:\` ${(replyMessage as Message).url}`
+      );
+    }
   }
 }

@@ -14,7 +14,7 @@ export class LoggerService {
     }
   };
 
-  logToChannel = async (guild: Guild, ...text: string[]) => {
+  logToChannel = async (guild: Guild | null, ...text: string[]) => {
     const loggerChannel = guild?.channels?.cache?.find(
       (c) => c.id === getGuildConfig(guild?.id)?.loggingChannelId
     ) as TextChannel;

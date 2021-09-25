@@ -12,7 +12,7 @@ export class ReadyHandler implements IEventHandler {
   public once = true;
   public readonly EVENT_NAME: keyof ClientEvents = "ready";
   public onEvent = async () => {
-    logger.info(null, "Bot started.");
+    logger.info(null, "Starting bot...");
 
     while (
       config.envConfig.environment !== "prod" &&

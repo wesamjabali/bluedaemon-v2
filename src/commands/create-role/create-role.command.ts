@@ -1,4 +1,4 @@
-import { CommandInteraction, Message, Role } from "discord.js";
+import { CommandInteraction, Guild, Message, Role } from "discord.js";
 import {
   CommandOption,
   CommandOptionPermission,
@@ -39,7 +39,11 @@ export class CreateSelfRoleCommand implements ICommand {
     let roleName = i.options.getString("role_name", true);
     let role = i.options.getRole("existing_role", false);
 
-    if (guildConfig?.selfRoles.find((r) => r.name.toLowerCase() === roleName.toLowerCase())) {
+    if (
+      guildConfig?.selfRoles.find(
+        (r) => r.name.toLowerCase() === roleName.toLowerCase()
+      )
+    ) {
       await i.reply(`${roleName} already exists!`);
       return;
     }
@@ -77,7 +81,7 @@ export class CreateSelfRoleCommand implements ICommand {
 
     await resetCacheForGuild(i.guildId as string, "selfRoles");
 
-    await logger.info(
+    await logger.logToChannel(
       i.guild,
       `Self-role created by ${i.user}.\n${role}: ${roleName}.\n\nContext: ${replyMessage.url}`
     );

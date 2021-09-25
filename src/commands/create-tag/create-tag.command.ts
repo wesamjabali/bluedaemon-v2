@@ -63,9 +63,9 @@ export class CreateTagCommand implements ICommand {
 
     await resetCacheForGuild(i.guildId as string, "tags");
 
-    await logger.info(
+    await logger.logToChannel(
       i.guild,
-      `Tag created by ${i.user}.\n${tagName}: ${content}.\n\nContext: ${replyMessage.url}`
+      `Tag created by ${i.user}.\n\n${tagName}:\n${content}.\n\nContext: ${replyMessage.url}`
     );
   }
 }
