@@ -69,7 +69,8 @@ export class MigrateCommand implements ICommand {
       for (const c of categoryChannel.children.values()) {
         const existingRole = i.guild.roles.cache.find(
           (r) =>
-            r.name.toLowerCase() === `${quarterName}-${c.name}`.toLowerCase()
+            normalizeCourseCode(r.name).courseName ===
+            normalizeCourseCode(`${quarterName}-${c.name}`).courseName
         );
 
         if (existingRole) {
