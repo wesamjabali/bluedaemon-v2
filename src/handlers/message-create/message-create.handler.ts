@@ -43,7 +43,7 @@ export class MessageCreateHandler implements IEventHandler {
         prisma.guild.update({
           where: { guildId: msg.guildId as string },
           data: {
-            countingChannelCurrentInt: guildConfig.countingChannelCurrentInt,
+            countingChannelCurrentInt: msgNumber,
           },
         });
       } else {
