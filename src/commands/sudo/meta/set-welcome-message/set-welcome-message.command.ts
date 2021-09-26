@@ -28,7 +28,10 @@ export class SetWelcomeMessageCommand implements ICommand {
   async execute(i: CommandInteraction) {
     await prisma.guild.update({
       where: { guildId: i.guildId as string },
-      data: { welcomeMessage: i.options.getString("message") ?? null },
+      data: {
+        welcomeMessage:
+          i.options.getString("message")?.replace(/\\n/g, "\n") ?? null,
+      },
     });
     await resetCacheForGuild(i.guildId as string, "welcomeMessage");
     await i.reply(`Member welcome message set!`);
