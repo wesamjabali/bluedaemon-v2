@@ -30,7 +30,9 @@ export class LeaveSelfRoleCommand implements ICommand {
     const guildConfig = getGuildConfig(i.guildId);
 
     const roleId =
-      guildConfig?.selfRoles.find((r) => r.name === roleName)?.roleId ?? "";
+      guildConfig?.selfRoles.find(
+        (r) => r.name.toLowerCase() === roleName.toLowerCase()
+      )?.roleId ?? "";
 
     const role = i.guild?.roles.cache.find((r) => r.id === roleId);
     if (!role) {

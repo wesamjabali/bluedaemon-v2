@@ -1,4 +1,3 @@
-import { prisma } from "@/prisma/prisma.service";
 import { CommandInteraction, GuildMemberRoleManager } from "discord.js";
 import {
   CommandOption,
@@ -6,10 +5,8 @@ import {
   ICommand,
 } from "@/commands/command.interface";
 
-import { getRoleFromCourseName } from "@/helpers/get-role-from-course-name.helper";
 import { getGuildConfig } from "@/config/guilds.config";
 import { normalizeCourseCode } from "@/helpers/normalize-course-code.helper";
-import { Quarter } from ".prisma/client";
 
 export class LeaveCourseCommand implements ICommand {
   name = "leave-course";
