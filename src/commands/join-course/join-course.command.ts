@@ -144,7 +144,7 @@ async function sendWelcomeMessage(
     return null;
   }
 
-  const roleMemberCount = courseRole.members.size + 1;
+  const roleMemberCount = courseRole.members.size;
 
   courseChannel.send(
     `Welcome ${i.user}! There are now **${roleMemberCount}** people here. ` +
