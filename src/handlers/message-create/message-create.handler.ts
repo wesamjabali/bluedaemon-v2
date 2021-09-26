@@ -47,7 +47,24 @@ export class MessageCreateHandler implements IEventHandler {
           },
         });
       } else {
-        msg.delete();
+        const lastMessage = (
+          await msg.channel.messages.fetch({ limit: 2 })
+        ).last()?.content;
+
+        const previousNumber = parseInt(lastMessage?.split(" ").shift() || "0");
+
+        if (msgNumber === previousNumber + 1) {
+          guildConfig.countingChannelCurrentInt = msgNumber;
+
+          await prisma.guild.update({
+            where: { guildId: msg.guildId as string },
+            data: {
+              countingChannelCurrentInt: msgNumber,
+            },
+          });
+        } else {
+          msg.delete();
+        }
       }
     }
   }
