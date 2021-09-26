@@ -7,10 +7,7 @@ import {
 export class PingCommand implements ICommand {
   name = "ping";
   description = "Pong!";
-  default_permission = false;
-  permissions: CommandOptionPermission[] = [
-    { type: "Everyone", permission: true },
-  ];
+  default_permission = true;
 
   public async execute(interaction: CommandInteraction): Promise<void> {
     await interaction.reply("Pong!");
