@@ -147,6 +147,7 @@ async function sendWelcomeMessage(
     return null;
   }
 
+  await i.guild?.members.fetch();
   const roleMemberCount = courseRole.members.size;
 
   courseChannel.send(
