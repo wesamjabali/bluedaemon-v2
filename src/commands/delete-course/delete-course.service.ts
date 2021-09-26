@@ -29,7 +29,10 @@ export async function deleteCourse(
   }
 
   let dbCourse = guildConfig.courses.find(
-    (c) => c.quarterId === dbQuarter?.id && c.aliases.includes(possibleAlias)
+    (c) =>
+      c.quarterId === dbQuarter?.id &&
+      c.aliases.includes(possibleAlias) &&
+      c.quarterId === dbQuarter.id
   );
 
   if (!dbCourse) {

@@ -38,7 +38,10 @@ export class JoinCourseCommand implements ICommand {
     const password = i.options.getString("password", false);
 
     let dbCourse = guildConfig.courses.find(
-      (c) => c.guildId === i.guildId && c.aliases.includes(possibleAlias)
+      (c) =>
+        c.guildId === i.guildId &&
+        c.aliases.includes(possibleAlias) &&
+        c.quarterId === guildConfig.currentQuarterId
     );
 
     if (!dbCourse) {
