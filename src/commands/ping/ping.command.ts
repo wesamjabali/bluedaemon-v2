@@ -14,7 +14,6 @@ export class PingCommand implements ICommand {
 
   public async execute(interaction: CommandInteraction): Promise<void> {
     await interaction.reply("Pong!");
-    await interaction.reply("Pong!");
 
     const replyTime = new Date();
 
