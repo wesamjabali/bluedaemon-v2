@@ -24,6 +24,7 @@ export class SetCommand implements ICommand {
     { type: "Channel", name: "logging_channel", required: false },
     { type: "Channel", name: "counting_channel", required: false },
     { type: "Channel", name: "introductions_channel", required: false },
+    { type: "Integer", name: "counting_number", required: false },
   ];
 
   async execute(i: CommandInteraction) {
@@ -34,6 +35,7 @@ export class SetCommand implements ICommand {
     }
 
     const countingChannel = i.options.getChannel("counting_channel", false);
+    const countingNumber = i.options.getInteger("counting_number", false);
     const courseRequestsChannel = i.options.getChannel(
       "course_requests_channel",
       false
@@ -74,7 +76,7 @@ export class SetCommand implements ICommand {
         moderatorRoleId: modRole?.id ?? undefined,
         courseManagerRoleId: courseManagerRole?.id ?? undefined,
         countingChannelId: countingChannel?.id ?? undefined,
-        countingChannelCurrentInt: countingChannel ? 0 : undefined,
+        countingChannelCurrentInt: countingNumber ?? undefined,
         introductionsChannelId: introductionsChannel?.id ?? undefined,
       },
     });
