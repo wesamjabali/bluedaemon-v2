@@ -55,6 +55,21 @@ export class AddCourseAliasCommand implements ICommand {
     if (!newAlias.courseCodeNumber || !newAlias.courseCodePrefix) {
       return i.reply(`Invalid alias, please use this template: **CSC300-401**`);
     }
+    const existingAlias = guildConfig?.courses.find(
+      (c) =>
+        c.aliases.includes(newAlias.courseName) && c.quarterId === dbQuarter?.id
+    );
+    if (existingAlias) {
+      return i.reply(
+        `That alias is already exists for course ${existingAlias.aliases.join(
+          "/"
+        )}, found here: <#${
+          existingAlias.category
+            ? existingAlias.roleId
+            : existingAlias.channelId
+        }>`
+      );
+    }
 
     const dbCourseIndex = guildConfig?.courses.findIndex(
       (c) => c.aliases.includes(courseName) && c.quarterId === dbQuarter?.id
@@ -65,7 +80,7 @@ export class AddCourseAliasCommand implements ICommand {
     }
 
     guildConfig?.courses[dbCourseIndex].aliases.push(newAlias.courseName);
-
+    i.reply("Alias added.");
     await prisma.course.update({
       where: { id: guildConfig?.courses[dbCourseIndex].id },
       data: { aliases: guildConfig?.courses[dbCourseIndex].aliases },

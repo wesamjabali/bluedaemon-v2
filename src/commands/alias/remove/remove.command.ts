@@ -28,7 +28,7 @@ export class RemoveCourseAliasCommand implements ICommand {
       type: "String",
       name: "quarter",
       description: "Name of the quarter this should take effect in",
-      required: true,
+      required: false,
     },
   ];
 
@@ -59,7 +59,7 @@ export class RemoveCourseAliasCommand implements ICommand {
     guildConfig.courses[dbCourseIndex].aliases = guildConfig?.courses[
       dbCourseIndex
     ].aliases.filter((a) => a !== aliasToRemove);
-
+    i.reply("Alias removed.");
     await prisma.course.update({
       where: { id: guildConfig?.courses[dbCourseIndex].id },
       data: { aliases: guildConfig?.courses[dbCourseIndex].aliases },
