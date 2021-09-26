@@ -24,6 +24,7 @@ import { SetupCommand } from "../setup/setup.command";
 import { SudoCommand } from "./sudo/sudo.command";
 import { TagCommand } from "./tag/tag.command";
 import { ListQuartersCommand } from "./list-quarters/list-quarters.command";
+import { AliasCommand } from "./alias/alias.command";
 
 const commands: ICommand[] = [
   new SudoCommand(),
@@ -49,6 +50,7 @@ const commands: ICommand[] = [
   new ListTagsCommand(),
   new ListRolesCommand(),
   new ListQuartersCommand(),
+  new AliasCommand(),
 ];
 
 export function createSetupCommand() {

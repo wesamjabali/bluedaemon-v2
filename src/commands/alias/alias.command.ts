@@ -8,7 +8,7 @@ import {
 import { AddCourseAliasCommand } from "./add/add.command";
 import { RemoveCourseAliasCommand } from "./remove/remove.command";
 
-export class SudoCommand implements ICommand {
+export class AliasCommand implements ICommand {
   name = "alias";
   description = "Alias commands";
   default_permission = false;
