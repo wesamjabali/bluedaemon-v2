@@ -95,7 +95,9 @@ export class MigrateCommand implements ICommand {
     } else {
       //create 1 new course of a category course.
       const existingRole = i.guild.roles.cache.find(
-        (r) => r.name.toLowerCase() === categoryChannel.name.toLowerCase()
+        (r) =>
+          normalizeCourseCode(r.name).courseName ===
+          normalizeCourseCode(categoryChannel.name).courseName
       );
 
       const courseName = categoryChannel.name
