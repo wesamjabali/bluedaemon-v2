@@ -1,8 +1,5 @@
 import { CommandInteraction } from "discord.js";
-import {
-  CommandOptionPermission,
-  ICommand,
-} from "@/commands/command.interface";
+import { ICommand } from "@/commands/command.interface";
 
 export class PingCommand implements ICommand {
   name = "ping";
