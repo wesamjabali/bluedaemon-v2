@@ -22,6 +22,7 @@ export class InviteCommand implements ICommand {
     if (introductionsChannel) {
       invite = await introductionsChannel?.createInvite({
         unique: true,
+        maxAge: 0,
       });
     } else {
       invite = (
@@ -30,6 +31,7 @@ export class InviteCommand implements ICommand {
         ) as TextChannel
       ).createInvite({
         unique: true,
+        maxAge: 0,
       });
     }
 
