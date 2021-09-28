@@ -10,7 +10,6 @@ import { IEventHandler } from "./event-handler.interface";
 import { commands } from "@/commands";
 import { buttons } from "@/buttons";
 import { selectMenus } from "@/select-menus";
-import { logger } from "@/main";
 
 export class InteractionCreateHandler implements IEventHandler {
   public once = false;
@@ -48,11 +47,6 @@ If this is a subcommand/group, make sure to execute the correct subcommand!`
             components: interaction.message.components as MessageActionRow[],
           });
         }
-
-        logger.warn(
-          interaction.guild,
-          `Button with customId \`${interaction.customId}\` not implemented, but was used.`
-        );
       }
     }
 
@@ -79,10 +73,6 @@ If this is a subcommand/group, make sure to execute the correct subcommand!`
             components: interaction.message.components as MessageActionRow[],
           });
         }
-
-        interaction.reply(
-          `Select Menu with customId \`${interaction.customId}\` not implemented, ${interaction.user}.`
-        );
       }
     }
   }
