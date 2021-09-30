@@ -4,7 +4,7 @@
 - [ ] Code review
 - [x] Message handler
 - [x] Count to 100,000
-- [ ] Merge tag/role/course list command into a service. They're literally all the same, copy/pasted.
+- [x] Merge tag/role/course list command into a service. They're literally all the same, copy/pasted.
 - [ ] Serious, serious testing.
   - [ ] Nick tested and found some course creation bugs.
   - [ ] Most bugs found are related to cacheing -- pay attention to where caches are being reset.
