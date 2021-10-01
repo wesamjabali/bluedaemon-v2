@@ -1,4 +1,4 @@
-import { Guild, Course, Quarter, SelfRole, Tag } from "@prisma/client";
+import { Guild, Course, Quarter, SelfRole, Tag, Qotd } from "@prisma/client";
 
 export const guildConfigsCache: GuildCache[] = [];
 
@@ -14,6 +14,7 @@ export type GuildCache = Guild & {
   quarters: Quarter[];
   selfRoles: SelfRole[];
   tags: Tag[];
+  qotds: Qotd[];
 };
 
 export type GuildCacheItem = keyof GuildCache | keyof Guild | null;

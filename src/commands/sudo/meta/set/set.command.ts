@@ -25,6 +25,7 @@ export class SetCommand implements ICommand {
     { type: "Channel", name: "counting_channel", required: false },
     { type: "Channel", name: "introductions_channel", required: false },
     { type: "Integer", name: "counting_number", required: false },
+    { type: "Channel", name: "qotd_channel", required: false },
   ];
 
   async execute(i: CommandInteraction) {
@@ -36,6 +37,8 @@ export class SetCommand implements ICommand {
 
     const countingChannel = i.options.getChannel("counting_channel", false);
     const countingNumber = i.options.getInteger("counting_number", false);
+    const qotdChannel = i.options.getChannel("qotd_channel", false);
+
     const courseRequestsChannel = i.options.getChannel(
       "course_requests_channel",
       false
@@ -59,6 +62,9 @@ export class SetCommand implements ICommand {
     if (courseRequestsChannel && courseRequestsChannel.type !== "GUILD_TEXT") {
       errorResponse = `${errorResponse}\nCourse requests channel must be text channel.`;
     }
+    if (qotdChannel && qotdChannel.type !== "GUILD_TEXT") {
+      errorResponse = `${errorResponse}\nQOTD channel must be text channel.`;
+    }
     if (countingChannel && countingChannel.type !== "GUILD_TEXT") {
       errorResponse = `${errorResponse}\nCounting channel must be text channel.`;
     }
@@ -78,6 +84,7 @@ export class SetCommand implements ICommand {
         countingChannelId: countingChannel?.id ?? undefined,
         countingChannelCurrentInt: countingNumber ?? undefined,
         introductionsChannelId: introductionsChannel?.id ?? undefined,
+        qotdChannelId: qotdChannel?.id ?? undefined,
       },
     });
 

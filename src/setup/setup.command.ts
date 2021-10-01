@@ -26,12 +26,14 @@ export class SetupCommand implements ICommand {
     { type: "Channel", name: "logging_channel", required: true },
     { type: "Channel", name: "counting_channel", required: false },
     { type: "Channel", name: "introductions_channel", required: false },
+    { type: "Channel", name: "qotd_channel", required: false },
   ];
 
   async execute(i: CommandInteraction) {
     i.deferReply();
 
     const currentQuarter = i.options.getString("current_quarter", true);
+    const qotdChannel = i.options.getChannel("qotd_channel", false);
     const countingChannel = i.options.getChannel("counting_channel", false);
     const introductionsChannel = i.options.getChannel(
       "introductions_channel",
@@ -65,6 +67,9 @@ export class SetupCommand implements ICommand {
     if (countingChannel && countingChannel.type !== "GUILD_TEXT") {
       errorResponse = `${errorResponse}\nCounting channel must be text channel.`;
     }
+    if (qotdChannel && qotdChannel.type !== "GUILD_TEXT") {
+      errorResponse = `${errorResponse}\nQOTD channel must be text channel.`;
+    }
 
     if (errorResponse.length > 0) {
       i.followUp(`\`\`\`${errorResponse}\`\`\``);
@@ -97,6 +102,7 @@ export class SetupCommand implements ICommand {
         countingChannelId: countingChannel?.id ?? undefined,
         countingChannelCurrentInt: countingChannel ? 0 : undefined,
         introductionsChannelId: introductionsChannel?.id ?? undefined,
+        qotdChannelId: qotdChannel?.id ?? undefined,
       },
     });
 

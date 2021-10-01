@@ -4,39 +4,13 @@ import { getGuildConfig } from "@/config/guilds.config";
 import { prisma } from "@/prisma/prisma.service";
 import { client } from "@/main";
 
-const welcomeMessages = [
-  "A huge welcome to you,",
-  "Everyone please welcome",
-  "Welcome,",
-  "We're so happy to have you,",
-  "Thanks for joining,",
-  "You're gonna love it here,",
-  "Glad you made it,",
-  "Welcome aboard,",
-];
-
 export class MessageCreateHandler implements IEventHandler {
   public once = false;
   public readonly EVENT_NAME: keyof ClientEvents = "messageCreate";
   public async onEvent(msg: Message) {
     if (msg.member?.user.id === client.user?.id) return;
     const guildConfig = getGuildConfig(msg.guildId);
-    if (msg.channelId === guildConfig?.introductionsChannelId) {
-      const newThread = await msg.startThread({
-        name: msg.author.username,
-        autoArchiveDuration: "MAX",
-        reason: "Intro thread by BlueDaemon",
-      });
-
-      newThread.send(
-        `${
-          welcomeMessages[
-            Math.floor(Math.random() * welcomeMessages.length - 1)
-          ]
-        } ${msg.author}!`
-      );
-    }
-
+    console.log(guildConfig);
     if (msg.channelId === guildConfig?.countingChannelId) {
       const msgArray = msg.content.split(/\s+/g);
       const msgNumber = parseInt(msgArray[0]);

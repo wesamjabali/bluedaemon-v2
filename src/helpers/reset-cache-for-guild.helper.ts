@@ -34,6 +34,7 @@ export async function resetCacheForGuild(
         quarters: true,
         selfRoles: true,
         tags: true,
+        qotds: true,
       },
     });
     if (!newCache) {

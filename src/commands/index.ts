@@ -26,6 +26,8 @@ import { TagCommand } from "./tag/tag.command";
 import { ListQuartersCommand } from "./list-quarters/list-quarters.command";
 import { AliasCommand } from "./alias/alias.command";
 import { InviteCommand } from "./invite/invite.command";
+import { CreateQotdCommand } from "./create-qotd/create-qotd.command";
+import { DeleteQotdCommand } from "./delete-qotd/delete-qotd.command";
 
 const commands: ICommand[] = [
   new SudoCommand(),
@@ -53,6 +55,8 @@ const commands: ICommand[] = [
   new ListQuartersCommand(),
   new AliasCommand(),
   new InviteCommand(),
+  new CreateQotdCommand(),
+  new DeleteQotdCommand(),
 ];
 
 export function createSetupCommand() {
