@@ -7,8 +7,6 @@ export const resetCacheForRealNames = async () => {
   realNames = await prisma.realName.findMany();
 };
 
-export function getRealName(
-  userIdToFind: string | null | undefined
-): string | undefined {
+export function getRealName(userIdToFind: string): string | undefined {
   return realNames.find((n) => n.userId === userIdToFind)?.realName;
 }
