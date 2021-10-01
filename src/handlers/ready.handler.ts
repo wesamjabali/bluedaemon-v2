@@ -45,7 +45,7 @@ export class ReadyHandler implements IEventHandler {
     }
 
     cron.schedule(
-      "* 10 * * *",
+      "0 10 * * *",
       () => {
         dispatchQotds();
       },
