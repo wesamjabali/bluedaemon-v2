@@ -6,6 +6,7 @@ import {
 } from "@/commands/command.interface";
 import { logger } from "@/main";
 import { CommandInteraction } from "discord.js";
+import { resetCacheForRealNames } from "@/config/real-names.config";
 
 export class RealNameSetCommand implements ICommand {
   name = "set-realname";
@@ -40,6 +41,8 @@ export class RealNameSetCommand implements ICommand {
 
       logger.logToChannel(i.guild, `${i.user} reset their real name.`);
     }
+
+    resetCacheForRealNames();
 
     await i.reply({
       content: realName
