@@ -8,7 +8,9 @@ export class MessageCreateHandler implements IEventHandler {
   public once = false;
   public readonly EVENT_NAME: keyof ClientEvents = "messageCreate";
   public async onEvent(msg: Message) {
-    if (msg.member?.user.id === client.user?.id) return;
+    if (msg.member?.user.id === client.user?.id || msg.channel.type === "DM")
+      return;
+
     const guildConfig = getGuildConfig(msg.guildId);
     if (msg.channelId === guildConfig?.countingChannelId) {
       const msgArray = msg.content.split(/\s+/g);
