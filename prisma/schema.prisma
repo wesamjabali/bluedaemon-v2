@@ -27,6 +27,7 @@ model Guild {
   quarters  Quarter[]
   selfRoles SelfRole[]
   tags      Tag[]
+  qotds     Qotd[]
 
   @@map("guild")
 }
@@ -96,4 +97,16 @@ model Log {
   timestamp DateTime    @default(now())
 
   @@map("log")
+}
+
+model Qotd {
+  id              Int     @id @default(autoincrement())
+  createdByUserId String
+  question        String
+  used            Boolean
+  guildId         String
+  guild           Guild   @relation(fields: [guildId], references: [guildId])
+
+
+  @@map("qotd")
 }

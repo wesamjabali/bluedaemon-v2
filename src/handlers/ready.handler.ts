@@ -7,7 +7,8 @@ import { client, logger } from "@/main";
 import { commands } from "@/commands";
 import { updateCommandPermissions } from "@/helpers/add-command-permissions.helper";
 import { resetCacheForGuild } from "@/helpers/reset-cache-for-guild.helper";
-
+import { dispatchQotds } from "@/services/dispatchQotds.service";
+import cron from "node-cron";
 export class ReadyHandler implements IEventHandler {
   public once = true;
   public readonly EVENT_NAME: keyof ClientEvents = "ready";
@@ -42,6 +43,15 @@ export class ReadyHandler implements IEventHandler {
         logger.error(guild, "Ready handler cannot load cache")
       );
     }
+
+    cron.schedule(
+      "* 10 * * *",
+      () => {
+        dispatchQotds();
+      },
+      { scheduled: true, timezone: "America/Chicago" }
+    );
+
     console.log(
       `Running in ${
         config.envConfig.environment === "prod" ? "Production" : "Developement"

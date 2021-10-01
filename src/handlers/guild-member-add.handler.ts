@@ -1,7 +1,19 @@
-import { getGuildConfig } from "@/config/guilds.config";
+import { getGuildConfig, GuildCache } from "@/config/guilds.config";
 import { logger } from "@/main";
-import { ClientEvents, Guild, GuildMember } from "discord.js";
+import { prisma } from "@/prisma/prisma.service";
+import { ClientEvents, Guild, GuildMember, TextChannel } from "discord.js";
 import { IEventHandler } from "./event-handler.interface";
+
+const introMessages = [
+  "A huge welcome to you,",
+  "Everyone please welcome",
+  "Welcome,",
+  "We're so happy to have you,",
+  "Thanks for joining,",
+  "You're gonna love it here,",
+  "Glad you made it,",
+  "Welcome aboard,",
+];
 
 export class GuildMemberAddHandler implements IEventHandler {
   public once = false;
@@ -11,6 +23,27 @@ export class GuildMemberAddHandler implements IEventHandler {
 
     if (guildConfig?.welcomeMessage) {
       await member.send(guildConfig.welcomeMessage);
+    }
+
+    if (guildConfig?.introductionsChannelId) {
+      const introChannel = member.guild.channels.cache.find(
+        (c) => c.id === guildConfig.introductionsChannelId
+      ) as TextChannel;
+      if (introChannel) {
+        const introMessage = await introChannel.send(
+          `${
+            introMessages[Math.floor(Math.random() * introMessages.length - 1)]
+          } ${member.user}! ${
+            guildConfig.qotds[
+              Math.floor(Math.random() * guildConfig.qotds.length - 1)
+            ] || "Please introduce yourself!"
+          }`
+        );
+        introMessage.startThread({
+          name: member.nickname ?? member.user.username,
+          autoArchiveDuration: "MAX",
+        });
+      }
     }
 
     if (guildConfig?.communityPingRoleId) {
