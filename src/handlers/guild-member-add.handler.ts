@@ -1,6 +1,5 @@
-import { getGuildConfig, GuildCache } from "@/config/guilds.config";
+import { getGuildConfig } from "@/config/guilds.config";
 import { logger } from "@/main";
-import { prisma } from "@/prisma/prisma.service";
 import { ClientEvents, Guild, GuildMember, TextChannel } from "discord.js";
 import { IEventHandler } from "./event-handler.interface";
 
@@ -13,6 +12,19 @@ const introMessages = [
   "You're gonna love it here,",
   "Glad you made it,",
   "Welcome aboard,",
+];
+
+const introPostfixes = [
+  "What's your major?",
+  "How'd you find this server?",
+  "What city are you from?",
+  "What's your favorite food?",
+  "What's your favorite movie?",
+  "What kind of video games do you like?",
+  "Please introduce yourself!",
+  "We can't wait to meet you!",
+  "What are your pronouns?",
+  "What's your name?",
 ];
 
 export class GuildMemberAddHandler implements IEventHandler {
@@ -34,9 +46,9 @@ export class GuildMemberAddHandler implements IEventHandler {
           `${
             introMessages[Math.floor(Math.random() * introMessages.length - 1)]
           } ${member.user}! ${
-            guildConfig.qotds[
-              Math.floor(Math.random() * guildConfig.qotds.length - 1)
-            ] || "Please introduce yourself!"
+            introPostfixes[
+              Math.floor(Math.random() * introPostfixes.length - 1)
+            ]
           }`
         );
         introMessage.startThread({
