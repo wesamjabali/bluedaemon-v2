@@ -33,7 +33,7 @@ export async function dispatchQotd(
         webhook = await qotdChannel.createWebhook("QOTD Channel Webhook");
       }
       const qotdMessage = (await webhook.send({
-        content: `Official Question of the Day #${guild.qotds.length}:\n${nextQotd.question}`,
+        content: `Official Question of the Day #${guild.qotds.indexOf(nextQotd) + 1}:\n${nextQotd.question}`,
         avatarURL: qotdUser?.user.avatarURL() ?? undefined,
         username:
           qotdUser?.nickname ??
