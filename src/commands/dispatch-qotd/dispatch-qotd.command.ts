@@ -28,7 +28,7 @@ export class DispatchQotdCommand implements ICommand {
       });
     }
 
-    if (guildConfig?.qotds.length === 0) {
+    if (guildConfig?.qotds.filter((q) => !q.used).length === 0) {
       return i.reply({
         content: `There are no unused QOTDs.`,
         ephemeral: true,
