@@ -110,3 +110,9 @@ model Qotd {
 
   @@map("qotd")
 }
+
+model RealName {
+  id       Int    @id @default(autoincrement())
+  userId   String @unique
+  realName String
+}

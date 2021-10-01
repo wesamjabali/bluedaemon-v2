@@ -27,7 +27,7 @@ export const clientOptions: ClientOptions = {
   ],
   presence: {
     status: "online",
-    activities: [{ name: "Lo-fi hip hop beats", type: "PLAYING" }],
+    activities: [{ name: "lo-fi hip hop beats", type: "PLAYING" }],
   },
 };
 

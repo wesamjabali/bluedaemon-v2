@@ -1,6 +1,6 @@
 ## JIRA (FREE EDITION)
 
-- [ ] Bot needs to be at the top of the roles list. Check for this on boot/commands that it matters for. Anything that calls roles or users needs to be caught.
+- [x] Bot needs to be at the top of the roles list. Check for this on boot/commands that it matters for. Anything that calls roles or users needs to be caught.
 - [ ] Code review
 - [x] Message handler
 - [x] Count to 100,000
@@ -10,8 +10,9 @@
   - [ ] Most bugs found are related to cacheing -- pay attention to where caches are being reset.
 - [ ] Add /set- and /get-realname. Let students privately set their realname so only faculty can access them.
 - [ ] Add logging everywhere.
+- [x] Add introductions threading
 - [x] Add quarter list command.
-- [ ] /qotd command. Preload questions of the day and create threads daily out of them.
+- [x] /qotd command. Preload questions of the day and create threads daily out of them.
 - [x] Create thread from every introduction message
 - [x] Enable Logging
   - [x] To database
