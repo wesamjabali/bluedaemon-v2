@@ -29,6 +29,8 @@ import { InviteCommand } from "./invite/invite.command";
 import { CreateQotdCommand } from "./create-qotd/create-qotd.command";
 import { DeleteQotdCommand } from "./delete-qotd/delete-qotd.command";
 import { DispatchQotdCommand } from "./dispatch-qotd/dispatch-qotd.command";
+import { RealNameSetCommand } from "./set-realname/set-realname.command";
+import { RealNameGetCommand } from "./get-realname/get-realname.command";
 
 const commands: ICommand[] = [
   new SudoCommand(),
@@ -59,6 +61,8 @@ const commands: ICommand[] = [
   new CreateQotdCommand(),
   new DeleteQotdCommand(),
   new DispatchQotdCommand(),
+  new RealNameSetCommand(),
+  new RealNameGetCommand(),
 ];
 
 export function createSetupCommand() {

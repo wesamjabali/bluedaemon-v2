@@ -8,7 +8,7 @@ import { logger } from "@/main";
 import { CommandInteraction } from "discord.js";
 
 export class RealNameGetCommand implements ICommand {
-  name = "get";
+  name = "get-realname";
   description = "Get a member's real name";
   default_permission = false;
   permissions: CommandOptionPermission[] = [

@@ -7,15 +7,10 @@ import {
 import { logger } from "@/main";
 import { CommandInteraction } from "discord.js";
 
-export class RealNameGetCommand implements ICommand {
-  name = "set";
+export class RealNameSetCommand implements ICommand {
+  name = "set-realname";
   description = "Set your real name";
-  default_permission = false;
-  permissions: CommandOptionPermission[] = [
-    { type: "CourseManager", permission: true },
-    { type: "Moderator", permission: true },
-    { type: "GuildOwner", permission: true },
-  ];
+  default_permission = true;
 
   options: CommandOption[] = [
     {
@@ -35,7 +30,7 @@ export class RealNameGetCommand implements ICommand {
         update: { realName: realName },
         create: { realName: realName, userId: i.user.id },
       });
-      
+
       logger.logToChannel(
         i.guild,
         `${i.user} set their real name to real name of ${realName}`
