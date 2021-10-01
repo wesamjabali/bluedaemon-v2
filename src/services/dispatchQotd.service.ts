@@ -24,7 +24,6 @@ export async function dispatchQotd(
     const qotdChannel = clientGuild?.channels.cache.find(
       (c) => c.id === guild.qotdChannelId
     ) as TextChannel;
-    console.log(guild.qotds);
 
     if (nextQotd) {
       const qotdUser = clientGuild?.members.cache.find(
