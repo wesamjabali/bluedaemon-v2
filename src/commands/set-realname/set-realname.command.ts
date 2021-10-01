@@ -34,7 +34,7 @@ export class RealNameSetCommand implements ICommand {
 
       logger.logToChannel(
         i.guild,
-        `${i.user} set their real name to real name to "${realName}""`
+        `${i.user} set their real name to real name to "${realName}"`
       );
     } else {
       await prisma.realName.delete({ where: { userId: i.user.id } }).catch();

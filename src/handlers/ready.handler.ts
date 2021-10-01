@@ -9,6 +9,7 @@ import { updateCommandPermissions } from "@/helpers/add-command-permissions.help
 import { resetCacheForGuild } from "@/helpers/reset-cache-for-guild.helper";
 import { dispatchQotds } from "@/services/dispatchQotds.service";
 import cron from "node-cron";
+import { resetCacheForRealNames } from "@/config/real-names.config";
 export class ReadyHandler implements IEventHandler {
   public once = true;
   public readonly EVENT_NAME: keyof ClientEvents = "ready";
@@ -24,6 +25,7 @@ export class ReadyHandler implements IEventHandler {
     }
 
     await new BuildCommands().execute();
+    await resetCacheForRealNames();
 
     for (const guild of client.guilds.cache.values()) {
       const dbGuild = guildConfigsCache.find((gc) => gc.guildId === guild.id);
