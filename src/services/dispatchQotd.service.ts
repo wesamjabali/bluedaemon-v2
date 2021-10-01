@@ -14,6 +14,7 @@ export async function dispatchQotd(
 
   if (guild.qotdChannelId) {
     const clientGuild = client.guilds.cache.find((g) => g.id === guild.guildId);
+    clientGuild?.members.fetch();
     let nextQotd: Qotd | undefined;
     if (qotdId) {
       nextQotd = guild.qotds.find((q) => q.id === qotdId);
@@ -23,6 +24,7 @@ export async function dispatchQotd(
     const qotdChannel = clientGuild?.channels.cache.find(
       (c) => c.id === guild.qotdChannelId
     ) as TextChannel;
+    console.log(guild.qotds);
 
     if (nextQotd) {
       const qotdUser = clientGuild?.members.cache.find(
@@ -33,7 +35,9 @@ export async function dispatchQotd(
         webhook = await qotdChannel.createWebhook("QOTD Channel Webhook");
       }
       const qotdMessage = (await webhook.send({
-        content: `Official Question of the Day #${guild.qotds.indexOf(nextQotd) + 1}:\n${nextQotd.question}`,
+        content: `Official Question of the Day #${
+          guild.qotds.indexOf(nextQotd) + 1
+        }:\n${nextQotd.question}`,
         avatarURL: qotdUser?.user.avatarURL() ?? undefined,
         username:
           qotdUser?.nickname ??
@@ -43,7 +47,7 @@ export async function dispatchQotd(
       })) as Message;
 
       qotdMessage.startThread({
-        name: `QOTD ${guild.qotds.length}`,
+        name: `QOTD ${guild.qotds.indexOf(nextQotd) + 1}`,
         autoArchiveDuration: "MAX",
       });
       await prisma.qotd.update({
