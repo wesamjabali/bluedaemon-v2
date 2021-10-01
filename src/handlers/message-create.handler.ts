@@ -10,7 +10,6 @@ export class MessageCreateHandler implements IEventHandler {
   public async onEvent(msg: Message) {
     if (msg.member?.user.id === client.user?.id) return;
     const guildConfig = getGuildConfig(msg.guildId);
-    console.log(guildConfig);
     if (msg.channelId === guildConfig?.countingChannelId) {
       const msgArray = msg.content.split(/\s+/g);
       const msgNumber = parseInt(msgArray[0]);

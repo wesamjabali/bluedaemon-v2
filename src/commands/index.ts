@@ -28,6 +28,7 @@ import { AliasCommand } from "./alias/alias.command";
 import { InviteCommand } from "./invite/invite.command";
 import { CreateQotdCommand } from "./create-qotd/create-qotd.command";
 import { DeleteQotdCommand } from "./delete-qotd/delete-qotd.command";
+import { DispatchQotdCommand } from "./dispatch-qotd/dispatch-qotd.command";
 
 const commands: ICommand[] = [
   new SudoCommand(),
@@ -57,6 +58,7 @@ const commands: ICommand[] = [
   new InviteCommand(),
   new CreateQotdCommand(),
   new DeleteQotdCommand(),
+  new DispatchQotdCommand(),
 ];
 
 export function createSetupCommand() {
