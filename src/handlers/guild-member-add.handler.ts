@@ -23,8 +23,8 @@ const introPostfixes = [
   "What kind of video games do you like?",
   "Please introduce yourself!",
   "We can't wait to meet you!",
-  "What are your pronouns?",
-  "What's your name?",
+  "You can introduce yourself here!",
+  ""
 ];
 
 
