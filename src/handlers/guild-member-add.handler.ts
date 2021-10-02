@@ -27,6 +27,7 @@ const introPostfixes = [
   "What's your name?",
 ];
 
+
 export class GuildMemberAddHandler implements IEventHandler {
   public once = false;
   public readonly EVENT_NAME: keyof ClientEvents = "guildMemberAdd";
@@ -44,10 +45,10 @@ export class GuildMemberAddHandler implements IEventHandler {
       if (introChannel) {
         const introMessage = await introChannel.send(
           `${
-            introMessages[Math.floor(Math.random() * introMessages.length - 1)]
+            introMessages[Math.floor(Math.random() * introMessages.length)]
           } ${member.user}! ${
             introPostfixes[
-              Math.floor(Math.random() * introPostfixes.length - 1)
+              Math.floor(Math.random() * introPostfixes.length)
             ]
           }`
         );
