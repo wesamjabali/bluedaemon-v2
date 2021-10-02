@@ -7,6 +7,7 @@ import {
 
 import { getGuildConfig } from "@/config/guilds.config";
 import { logger } from "@/main";
+import { SelfRole } from ".prisma/client";
 
 export class JoinSelfRoleCommand implements ICommand {
   name = "join-role";
@@ -30,10 +31,11 @@ export class JoinSelfRoleCommand implements ICommand {
 
     const guildConfig = getGuildConfig(i.guildId);
 
-    const roleId =
-      guildConfig?.selfRoles.find((r) =>
-        r.name.toLowerCase().startsWith(roleName.toLowerCase())
-      )?.roleId ?? "";
+    const dbRole = guildConfig?.selfRoles.find((r) =>
+      r.name.toLowerCase().startsWith(roleName.toLowerCase())
+    ) ?? { roleId: "" };
+
+    const roleId = dbRole.roleId;
 
     const role = i.guild?.roles.cache.find((r) => r.id === roleId);
     if (!role) {
@@ -56,7 +58,7 @@ export class JoinSelfRoleCommand implements ICommand {
     if (errorFlag) return;
 
     await i.reply({
-      content: `Joined self-role ${roleName}!`,
+      content: `Joined self-role ${(dbRole as SelfRole).name}!`,
     });
   }
 }
