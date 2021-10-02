@@ -24,7 +24,8 @@ export class SayCommand implements ICommand {
     },
   ];
 
-  public async execute(interaction: CommandInteraction): Promise<void> {
-    await interaction.reply(`${interaction.options.getString("repeat", true)}`);
+  public async execute(i: CommandInteraction): Promise<void> {
+    await i.channel?.send({ content: `${i.options.getString("repeat", true)}` });
+    i.reply({ content: "Done!", ephemeral: true });
   }
 }
