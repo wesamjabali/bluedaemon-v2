@@ -6,6 +6,7 @@ import {
 } from "@/commands/command.interface";
 
 import { getGuildConfig } from "@/config/guilds.config";
+import { SelfRole } from ".prisma/client";
 
 export class LeaveSelfRoleCommand implements ICommand {
   name = "leave-role";
@@ -29,10 +30,11 @@ export class LeaveSelfRoleCommand implements ICommand {
 
     const guildConfig = getGuildConfig(i.guildId);
 
-    const roleId =
-      guildConfig?.selfRoles.find(
-        (r) => r.name.toLowerCase() === roleName.toLowerCase()
-      )?.roleId ?? "";
+    const dbRole = guildConfig?.selfRoles.find((r) =>
+      r.name.toLowerCase().startsWith(roleName.toLowerCase())
+    ) ?? { roleId: "" };
+
+    const roleId = dbRole.roleId;
 
     const role = i.guild?.roles.cache.find((r) => r.id === roleId);
     if (!role) {
@@ -45,7 +47,7 @@ export class LeaveSelfRoleCommand implements ICommand {
     await (i.member?.roles as GuildMemberRoleManager).remove(role);
 
     await i.reply({
-      content: `Left self-role ${roleName}!`,
+      content: `Left self-role ${(dbRole as SelfRole).name}!`,
     });
   }
 }
