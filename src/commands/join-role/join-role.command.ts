@@ -31,8 +31,8 @@ export class JoinSelfRoleCommand implements ICommand {
     const guildConfig = getGuildConfig(i.guildId);
 
     const roleId =
-      guildConfig?.selfRoles.find(
-        (r) => r.name.toLowerCase() === roleName.toLowerCase()
+      guildConfig?.selfRoles.find((r) =>
+        r.name.toLowerCase().startsWith(roleName.toLowerCase())
       )?.roleId ?? "";
 
     const role = i.guild?.roles.cache.find((r) => r.id === roleId);
