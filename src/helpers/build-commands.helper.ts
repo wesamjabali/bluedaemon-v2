@@ -55,7 +55,7 @@ export class BuildCommands {
 
     // Add permission overrides
     commands.forEach(async (c) => {
-      if (c.permissions)
+      if (c.permissions?.some((p) => p.type === "ROLE" || p.type === "USER"))
         await updateCommandPermissions("ADD", c.name, c.permissions);
     });
 

@@ -12,6 +12,7 @@ import { SetWelcomeMessageCommand } from "./meta/set-welcome-message/set-welcome
 import { SetWelcomeRoleCommand } from "./meta/set-welcome-role/set-welcome-role.command";
 import { SetupCommand } from "../../setup/setup.command";
 import { MigrateCommand } from "./course/migrate/migrate.command";
+import { EditMessageCommand } from "./meta/edit-message/edit-message.command";
 
 export class SudoCommand implements ICommand {
   name = "sudo";
@@ -33,6 +34,7 @@ export class SudoCommand implements ICommand {
             new SetCommand(),
             new SetWelcomeMessageCommand(),
             new SetWelcomeRoleCommand(),
+            new EditMessageCommand(),
           ],
         },
         {

@@ -4,7 +4,7 @@ import {
   PermissionRoles,
   UserOrRole,
 } from "@/commands/command.interface";
-import { client } from "@/main";
+import { client, logger } from "@/main";
 import { AllApplicationCommands } from "@/services/application-commands.service";
 import { config } from "@/services/config.service";
 
@@ -32,7 +32,7 @@ export async function updateCommandPermissions(
     return;
   }
 
-  let applicationCommand;
+  let applicationCommand: ApplicationCommand;
   /* Get command from discord server */
   if (config.envConfig.environment === "prod") {
     applicationCommand = (await client.application?.commands.fetch(
@@ -62,6 +62,10 @@ export async function updateCommandPermissions(
 
   permissions.forEach((p) => {
     if ((p.type !== "ROLE" && p.type !== "USER") || !p.id) {
+      logger.error(
+        null,
+        `Tried setting permission for ${p.type} on command ${applicationCommand.name}, but no id was passed.`
+      );
       permissions.splice(permissions.indexOf(p), 1);
     }
   });
