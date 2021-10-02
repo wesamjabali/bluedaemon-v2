@@ -45,6 +45,14 @@ export class JoinSelfRoleCommand implements ICommand {
       return;
     }
 
+    if (
+      (i.member?.roles as GuildMemberRoleManager).cache.some(
+        (r) => r.id === roleId
+      )
+    ) {
+      return i.reply(`You already have role ${(dbRole as SelfRole).name}`);
+    }
+
     let errorFlag = false;
     await (i.member?.roles as GuildMemberRoleManager).add(role).catch(() => {
       logger.logToChannel(
