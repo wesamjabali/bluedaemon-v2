@@ -34,7 +34,7 @@ export async function resetCacheForGuild(
         quarters: true,
         selfRoles: true,
         tags: true,
-        qotds: true,
+        qotds: { orderBy: { id: "asc" } },
       },
     });
     if (!newCache) {
