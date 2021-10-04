@@ -31,8 +31,7 @@ export class EditMessageCommand implements ICommand {
 
   async execute(i: CommandInteraction) {
     const messageId = i.options.getString("message_id", true);
-    const message = i.options.getString("message", true);
-
+    const message = i.options.getString("message", true).replace(/\\n/g, "\n");
     const apiMessage = await i.channel?.messages.fetch(messageId);
 
     if (!apiMessage) {
