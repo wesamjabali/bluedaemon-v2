@@ -49,6 +49,7 @@ export async function resetCacheForGuild(
     })) as Partial<GuildCache>;
 
     newCache = oldCache as GuildCache;
+    newCache.qotds.sort((a, b) => a.id - b.id);
     (newCache[propertyToReset] as GuildCacheItem) = updates[
       propertyToReset
     ] as GuildCacheItem;
