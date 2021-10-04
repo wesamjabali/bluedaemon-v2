@@ -21,12 +21,14 @@ export async function dispatchQotd(
     } else {
       nextQotd = guild.qotds.find((q) => !q.used);
     }
-    console.log(guild.qotds);
+
     const qotdChannel = clientGuild?.channels.cache.find(
       (c) => c.id === guild.qotdChannelId
     ) as TextChannel;
 
     if (nextQotd) {
+      await clientGuild?.members.fetch();
+
       const qotdUser = clientGuild?.members.cache.find(
         (u) => u.id === nextQotd?.createdByUserId
       );
@@ -48,8 +50,9 @@ export async function dispatchQotd(
 
       qotdMessage.startThread({
         name: `QOTD ${guild.qotds.indexOf(nextQotd) + 1}`,
-        autoArchiveDuration: "MAX",
+        autoArchiveDuration: 1440,
       });
+      
       await prisma.qotd.update({
         where: { id: nextQotd.id },
         data: { used: true },

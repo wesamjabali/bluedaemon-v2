@@ -53,7 +53,7 @@ export async function resetCacheForGuild(
       propertyToReset
     ] as GuildCacheItem;
   }
-
-  newCache.qotds = newCache.qotds.sort((a, b) => a.id - b.id);
+  newCache.qotds.sort((a, b) => a.id - b.id);
+  
   guildConfigsCache.push(newCache);
 }
