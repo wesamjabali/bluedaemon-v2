@@ -54,7 +54,7 @@ export class GuildMemberAddHandler implements IEventHandler {
         );
         introMessage.startThread({
           name: member.nickname ?? member.user.username,
-          autoArchiveDuration: "MAX",
+          autoArchiveDuration: 1440,
         });
       }
     }
