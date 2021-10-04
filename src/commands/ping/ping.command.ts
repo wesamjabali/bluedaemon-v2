@@ -1,5 +1,6 @@
 import { CommandInteraction } from "discord.js";
 import { ICommand } from "@/commands/command.interface";
+import { getGuildConfig } from "@/config/guilds.config";
 
 export class PingCommand implements ICommand {
   name = "ping";
@@ -8,6 +9,8 @@ export class PingCommand implements ICommand {
 
   public async execute(interaction: CommandInteraction): Promise<void> {
     await interaction.reply("Pong!");
+    const guildConfig = getGuildConfig(interaction.guildId);
+    console.log(guildConfig?.qotds);
 
     const replyTime = new Date();
 
