@@ -4,7 +4,7 @@ import {
   CommandOptionPermission,
   ICommand,
 } from "@/commands/command.interface";
-import { logger } from "@/main";
+import { client, logger } from "@/main";
 
 export class EditMessageCommand implements ICommand {
   name = "edit-message";
@@ -33,12 +33,7 @@ export class EditMessageCommand implements ICommand {
     const messageId = i.options.getString("message_id", true);
     const message = i.options.getString("message", true);
 
-    let errorFlag = false;
-    const apiMessage = await i.channel?.messages.fetch(messageId).catch(() => {
-      i.reply("I don't have permission to edit that message.");
-      errorFlag = true;
-    });
-    if (errorFlag) return;
+    const apiMessage = await i.channel?.messages.fetch(messageId);
 
     if (!apiMessage) {
       return i.reply({
@@ -52,7 +47,25 @@ export class EditMessageCommand implements ICommand {
       i.guild,
       `Bot message edited by ${i.user}.\n\n\`Before:\`\n${apiMessage.content}\n\n\`After:\`\n${message}`
     );
-    apiMessage?.edit(message);
+
+    const messageWebhook = await apiMessage.fetchWebhook().catch(() => {});
+    if (apiMessage.member?.id === client.user?.id) {
+      apiMessage?.edit(message);
+    } else if (messageWebhook) {
+      messageWebhook.editMessage(apiMessage, {
+        content: message,
+      });
+    } else {
+      return i.reply({
+        content: "I don't have permission to edit that message",
+        ephemeral: true,
+      });
+    }
+
+    // .catch(() => {
+    //     i.reply("I don't have permission to edit that message.");
+    //     errorFlag = true;
+    //   });
     i.reply({ content: "Message edited.", ephemeral: true });
   }
 }
