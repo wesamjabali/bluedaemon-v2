@@ -43,11 +43,6 @@ export class EditMessageCommand implements ICommand {
       });
     }
 
-    logger.logToChannel(
-      i.guild,
-      `Bot message edited by ${i.user}.\n\n\`Before:\`\n${apiMessage.content}\n\n\`After:\`\n${message}`
-    );
-
     const messageWebhook = await apiMessage.fetchWebhook().catch(() => {});
     if (apiMessage.member?.id === client.user?.id) {
       apiMessage?.edit(message);
@@ -62,10 +57,11 @@ export class EditMessageCommand implements ICommand {
       });
     }
 
-    // .catch(() => {
-    //     i.reply("I don't have permission to edit that message.");
-    //     errorFlag = true;
-    //   });
+    logger.logToChannel(
+      i.guild,
+      `Bot message edited by ${i.user}.\n\n\`Before:\`\n${apiMessage.content}\n\n\`After:\`\n${message}`
+    );
+
     i.reply({ content: "Message edited.", ephemeral: true });
   }
 }
