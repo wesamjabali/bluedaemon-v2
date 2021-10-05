@@ -12,7 +12,7 @@ export class ListCourseMembersCommand implements ICommand {
   description = "Search course members, or display all";
   default_permission = false;
   permissions: CommandOptionPermission[] = [
-    { type: "CourseManager", permission: true },
+    { type: "Everyone", permission: true },
   ];
 
   options: CommandOption[] = [
@@ -43,9 +43,11 @@ export class ListCourseMembersCommand implements ICommand {
     );
 
     const allMembers = Array.from(
-      courseRole?.members.keys() as IterableIterator<string>
+      courseRole?.members.map((g) => g.nickname ?? g.user.username) || []
     );
 
-    displayList(i, allMembers, "Courses", searchTerm);
+    console.log(allMembers);
+    await i.deferReply();
+    displayList(i, allMembers, `${course.aliases[0]} members`, searchTerm);
   }
 }
