@@ -24,6 +24,11 @@ export class ListCourseMembersCommand implements ICommand {
     },
   ];
 
+  buttonActions = [
+    { customId: "role-list-back", execute: () => {} },
+    { customId: "role-list-forward", execute: () => {} },
+  ];
+
   public async execute(i: CommandInteraction): Promise<void> {
     const guildConfig = getGuildConfig(i.guildId as string);
     const searchTerm = i.options.getString("search", false)?.toUpperCase();

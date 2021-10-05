@@ -1,10 +1,4 @@
-import {
-  CommandInteraction,
-  Message,
-  MessageActionRow,
-  MessageButton,
-  MessageEmbed,
-} from "discord.js";
+import { CommandInteraction } from "discord.js";
 import {
   CommandOption,
   CommandOptionPermission,
