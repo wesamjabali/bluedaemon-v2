@@ -38,6 +38,8 @@ export class ListCourseMembersCommand implements ICommand {
     if (!course)
       return i.reply("This command only works inside course channels.");
 
+    await i.guild?.members.fetch();
+
     const courseRole = i.guild?.roles.cache.find(
       (r) => r.id === course?.roleId
     );
@@ -46,7 +48,6 @@ export class ListCourseMembersCommand implements ICommand {
       courseRole?.members.map((g) => g.nickname ?? g.user.username) || []
     );
 
-    console.log(allMembers);
     await i.deferReply();
     displayList(i, allMembers, `${course.aliases[0]} members`, searchTerm);
   }
