@@ -49,6 +49,11 @@ export class ListCourseMembersCommand implements ICommand {
     );
 
     await i.deferReply();
-    displayList(i, allMembers, `${course.aliases[0]} members`, searchTerm);
+    displayList(
+      i,
+      allMembers,
+      `${course.aliases[0]} members (${courseRole?.members.size})`,
+      searchTerm
+    );
   }
 }
