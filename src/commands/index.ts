@@ -31,6 +31,7 @@ import { DeleteQotdCommand } from "./delete-qotd/delete-qotd.command";
 import { DispatchQotdCommand } from "./dispatch-qotd/dispatch-qotd.command";
 import { RealNameSetCommand } from "./set-realname/set-realname.command";
 import { RealNameGetCommand } from "./get-realname/get-realname.command";
+import { ListCourseMembersCommand } from "./list-course-members/list-course-members.command";
 
 const commands: ICommand[] = [
   new SudoCommand(),
@@ -63,6 +64,7 @@ const commands: ICommand[] = [
   new DispatchQotdCommand(),
   new RealNameSetCommand(),
   new RealNameGetCommand(),
+  new ListCourseMembersCommand(),
 ];
 
 export function createSetupCommand() {
