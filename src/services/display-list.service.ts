@@ -1,4 +1,10 @@
-import { CommandInteraction, Message, MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
+import {
+  CommandInteraction,
+  Message,
+  MessageActionRow,
+  MessageButton,
+  MessageEmbed,
+} from "discord.js";
 
 export const displayList = async (
   i: CommandInteraction,
@@ -33,9 +39,6 @@ export const displayList = async (
     return;
   }
 
-  if (initialEmbed[0].fields.length !== 24) {
-    buttons[0].components[1].setDisabled(true);
-  }
   const sentReplyMessage = (await i.followUp({
     embeds: initialEmbed,
     components: buttons,
@@ -48,7 +51,7 @@ export const displayList = async (
   collector.on("collect", async (b) => {
     if (b.user.id !== i.user.id) {
       await b.reply({
-        content: "You're not allowed to do that. Make your own search.",
+        content: "Sorry, only the command caller can do that.",
         ephemeral: true,
       });
       return;
@@ -78,7 +81,7 @@ export const displayList = async (
         searchTerm
       );
       buttons[0].components[0].setDisabled(false);
-      if (embed[0].fields.length !== 24) {
+      if (embed[0].fields.length < 24) {
         buttons[0].components[1].setDisabled(true);
       }
       i.editReply({
