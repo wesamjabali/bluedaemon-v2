@@ -24,9 +24,8 @@ const introPostfixes = [
   "Please introduce yourself!",
   "We can't wait to meet you!",
   "You can introduce yourself here!",
-  ""
+  "",
 ];
-
 
 export class GuildMemberAddHandler implements IEventHandler {
   public once = false;
@@ -44,14 +43,13 @@ export class GuildMemberAddHandler implements IEventHandler {
       ) as TextChannel;
       if (introChannel) {
         const introMessage = await introChannel.send(
-          `${
-            introMessages[Math.floor(Math.random() * introMessages.length)]
-          } ${member.user}! ${
-            introPostfixes[
-              Math.floor(Math.random() * introPostfixes.length)
-            ]
+          `${introMessages[Math.floor(Math.random() * introMessages.length)]} ${
+            member.user
+          }! ${
+            introPostfixes[Math.floor(Math.random() * introPostfixes.length)]
           }`
         );
+        introMessage.react("👋");
         introMessage.startThread({
           name: member.nickname ?? member.user.username,
           autoArchiveDuration: 1440,
