@@ -1,10 +1,4 @@
-import {
-  CommandInteraction,
-  Message,
-  MessageActionRow,
-  MessageButton,
-  MessageEmbed,
-} from "discord.js";
+import { CommandInteraction } from "discord.js";
 import {
   CommandOption,
   CommandOptionPermission,
@@ -20,10 +14,7 @@ export class ListTagsCommand implements ICommand {
   permissions: CommandOptionPermission[] = [
     { type: "Everyone", permission: true },
   ];
-  buttonActions = [
-    { customId: "tag-list-back", execute: () => {} },
-    { customId: "tag-list-forward", execute: () => {} },
-  ];
+
   options: CommandOption[] = [
     {
       type: "String",

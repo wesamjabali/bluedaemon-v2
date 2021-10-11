@@ -6,13 +6,7 @@ import {
 } from "@/commands/command.interface";
 import { getGuildConfig } from "@/config/guilds.config";
 import { displayList } from "@/services/display-list.service";
-import {
-  CommandInteraction,
-  Message,
-  MessageActionRow,
-  MessageButton,
-  MessageEmbed,
-} from "discord.js";
+import { CommandInteraction } from "discord.js";
 
 export class ListCoursesCommand implements ICommand {
   name = "list-courses";
@@ -21,8 +15,6 @@ export class ListCoursesCommand implements ICommand {
   permissions: CommandOptionPermission[] = [
     { type: "Everyone", permission: true },
   ];
-
-  buttonActions = [];
 
   options: CommandOption[] = [
     {
@@ -56,4 +48,3 @@ export class ListCoursesCommand implements ICommand {
     displayList(i, filteredCourses, "Courses", searchTerm);
   }
 }
-

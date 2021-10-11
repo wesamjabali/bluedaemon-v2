@@ -14,10 +14,7 @@ export class ListRolesCommand implements ICommand {
   permissions: CommandOptionPermission[] = [
     { type: "Everyone", permission: true },
   ];
-  buttonActions = [
-    { customId: "role-list-back", execute: () => {} },
-    { customId: "role-list-forward", execute: () => {} },
-  ];
+
   options: CommandOption[] = [
     {
       type: "String",
