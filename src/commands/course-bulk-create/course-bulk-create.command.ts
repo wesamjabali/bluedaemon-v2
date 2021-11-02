@@ -27,7 +27,7 @@ export class BulkCreateCoursesCommand implements ICommand {
   ];
 
   async execute(i: CommandInteraction) {
-    i.deferReply();
+    await i.deferReply();
     const quarter = i.options.getString("quarter", true);
     const courseCodes = i.options.getString("courses", true);
     const courseDescription = null;

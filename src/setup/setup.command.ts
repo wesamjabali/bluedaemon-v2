@@ -30,7 +30,7 @@ export class SetupCommand implements ICommand {
   ];
 
   async execute(i: CommandInteraction) {
-    i.deferReply();
+    await i.deferReply();
 
     const currentQuarter = i.options.getString("current_quarter", true);
     const qotdChannel = i.options.getChannel("qotd_channel", false);

@@ -27,7 +27,7 @@ export class ListTagsCommand implements ICommand {
   async execute(i: CommandInteraction) {
     const guildConfig = getGuildConfig(i.guildId);
 
-    i.deferReply();
+    await i.deferReply();
     const searchTerm = i.options.getString("search", false)?.toLowerCase();
     let tags = (
       guildConfig?.tags.filter((t) => t.name.includes(searchTerm ?? "")) || []

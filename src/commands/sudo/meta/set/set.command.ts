@@ -29,7 +29,7 @@ export class SetCommand implements ICommand {
   ];
 
   async execute(i: CommandInteraction) {
-    i.deferReply();
+    await i.deferReply();
     if (!prisma.guild.findFirst({ where: { NOT: { currentQuarter: null } } })) {
       await i.followUp("You have to set up your server first.");
       return;

@@ -41,7 +41,7 @@ export class SetCoursePasswordCommand implements ICommand {
   ];
 
   async execute(i: CommandInteraction) {
-    i.deferReply();
+    await i.deferReply();
     const courseCode = i.options.getString("course", true);
     let quarter = i.options.getString("quarter", false);
     const password = i.options.getString("password", false);

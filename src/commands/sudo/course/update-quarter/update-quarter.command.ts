@@ -22,7 +22,7 @@ export class UpdateQuarterCommand implements ICommand {
   ];
 
   async execute(i: CommandInteraction) {
-    i.deferReply();
+    await i.deferReply();
 
     const currentQuarter = i.options.getString("current_quarter", true);
 

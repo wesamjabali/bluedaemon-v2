@@ -26,7 +26,7 @@ export class ListCoursesCommand implements ICommand {
   ];
 
   public async execute(i: CommandInteraction): Promise<void> {
-    i.deferReply();
+    await i.deferReply();
     const guildConfig = getGuildConfig(i.guildId as string);
     const searchTerm = i.options.getString("search", false)?.toUpperCase();
 

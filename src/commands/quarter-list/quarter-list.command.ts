@@ -1,6 +1,4 @@
-import {
-  CommandInteraction,
-} from "discord.js";
+import { CommandInteraction } from "discord.js";
 import {
   CommandOption,
   CommandOptionPermission,
@@ -28,7 +26,7 @@ export class ListQuartersCommand implements ICommand {
   async execute(i: CommandInteraction) {
     const guildConfig = getGuildConfig(i.guildId);
 
-    i.deferReply();
+    await i.deferReply();
     const searchTerm = i.options.getString("search", false)?.toLowerCase();
     let quarters = (
       guildConfig?.quarters.filter((q) => q.name.includes(searchTerm ?? "")) ||

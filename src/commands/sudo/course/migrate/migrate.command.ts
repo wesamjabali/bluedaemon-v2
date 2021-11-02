@@ -35,7 +35,7 @@ export class MigrateCommand implements ICommand {
       "quarter_category",
       true
     );
-    i.deferReply();
+    await i.deferReply();
     const guildConfig = getGuildConfig(i.guildId);
     if (!i.guildId || !i.guild || !i.guild?.ownerId) return;
     if (!(categoryChannel instanceof CategoryChannel)) {
