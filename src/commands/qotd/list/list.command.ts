@@ -19,7 +19,7 @@ export class ListQotdCommand implements ICommand {
       type: "Integer",
       name: "first",
       required: false,
-      description: "Select the first x results up to 30. default: 7",
+      description: "Select the first x results up to 30. default: 6",
     },
   ];
 
@@ -29,7 +29,7 @@ export class ListQotdCommand implements ICommand {
     const numResults = i.options.getInteger("first", false);
     const unusedQotds = guildConfig?.qotds
       .filter((q) => !q.used)
-      .slice(0, numResults ?? 7)
+      .slice(0, numResults ?? 6)
       .map((q) => `${q.id}: ${q.question}`);
 
     if (unusedQotds?.length > 0) {
