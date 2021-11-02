@@ -5,7 +5,7 @@ import {
   ICommand,
 } from "@/commands/command.interface";
 import { getGuildConfig } from "@/config/guilds.config";
-import { normalizeTagName } from "../create-tag/create-tag.service";
+import { normalizeTagName } from "../tag-create/tag-create.service";
 
 export class TagCommand implements ICommand {
   name = "tag";

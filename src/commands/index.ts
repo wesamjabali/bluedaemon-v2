@@ -1,37 +1,37 @@
-import { BulkCreateCoursesCommand } from "./bulk-create-courses/bulk-create-courses.command";
-import { BulkDeleteCoursesCommand } from "./bulk-delete-courses/bulk-delete-courses.command";
+import { BulkCreateCoursesCommand } from "./course-bulk-create/course-bulk-create.command";
+import { BulkDeleteCoursesCommand } from "./course-bulk-delete/course-bulk-delete.command";
 import { ICommand } from "./command.interface";
-import { CreateCourseCommand } from "./create-course/create-course.command";
-import { CreateSelfRoleCommand } from "./create-role/create-role.command";
-import { CreateTagCommand } from "./create-tag/create-tag.command";
-import { DeleteCourseCommand } from "./delete-course/delete-course.command";
-import { DeleteSelfRoleCommand } from "./delete-role/delete-role.command";
+import { CreateCourseCommand } from "./create/create.command";
+import { CreateSelfRoleCommand } from "./role-create/role-create.command";
+import { CreateTagCommand } from "./tag-create/tag-create.command";
+import { DeleteCourseCommand } from "./course-delete/course-delete.command";
+import { DeleteSelfRoleCommand } from "./role-delete/role-delete.command";
 import { DeleteTagCommand } from "./delete-tag/delete-tag.command";
-import { JoinCourseCommand } from "./join-course/join-course.command";
-import { JoinSelfRoleCommand } from "./join-role/join-role.command";
-import { LeaveCourseCommand } from "./leave-course/leave-course.command";
-import { LeaveSelfRoleCommand } from "./leave-role/leave-role.command";
-import { ListCoursesCommand } from "./list-courses/list-courses.command";
+import { JoinCourseCommand } from "./course-join/join.command";
+import { JoinSelfRoleCommand } from "./role-join/role-join.command";
+import { LeaveCourseCommand } from "./leave/leave.command";
+import { LeaveSelfRoleCommand } from "./role-leave/leave-role.command";
+import { ListCoursesCommand } from "./course-list/course-list.command";
 import { ListRolesCommand } from "./list-roles/list-roles.command";
-import { ListTagsCommand } from "./list-tags/list-tags.command";
+import { ListTagsCommand } from "./tag-list/tag-list.command";
 import { LogCommand } from "./log/log.command";
 import { PingCommand } from "./ping/ping.command";
-import { RequestCourseCommand } from "./request-course/request-course.command";
+import { RequestCourseCommand } from "./course-request/course-request.command";
 import { SayCommand } from "./say/say.command";
-import { SetCoursePasswordCommand } from "./set-course-password/set-course-password.command";
+import { SetCoursePasswordCommand } from "./course-set-password/course-set-password.command";
 import { SourceCommand } from "./source/source.command";
 import { SetupCommand } from "../setup/setup.command";
 import { SudoCommand } from "./sudo/sudo.command";
 import { TagCommand } from "./tag/tag.command";
-import { ListQuartersCommand } from "./list-quarters/list-quarters.command";
-import { AliasCommand } from "./alias/alias.command";
+import { ListQuartersCommand } from "./quarter-list/quarter-list.command";
+import { AliasCommand } from "./course-alias/course-alias.command";
 import { InviteCommand } from "./invite/invite.command";
-import { CreateQotdCommand } from "./create-qotd/create-qotd.command";
-import { DeleteQotdCommand } from "./delete-qotd/delete-qotd.command";
-import { DispatchQotdCommand } from "./dispatch-qotd/dispatch-qotd.command";
-import { RealNameSetCommand } from "./set-realname/set-realname.command";
-import { RealNameGetCommand } from "./get-realname/get-realname.command";
-import { ListCourseMembersCommand } from "./list-course-members/list-course-members.command";
+import { CreateQotdCommand } from "./qotd/create/create.command";
+import { DeleteQotdCommand } from "./qotd/delete/delete-qotd.command";
+import { DispatchQotdCommand } from "./qotd/dispatch/dispatch-qotd.command";
+import { RealNameSetCommand } from "./realname-set/realname-set.command";
+import { RealNameGetCommand } from "./realname-get/realname-get.command";
+import { ListCourseMembersCommand } from "./course-member-list/course-member-list.command";
 
 const commands: ICommand[] = [
   new SudoCommand(),
@@ -76,4 +76,38 @@ export function getCommands() {
   return commands;
 }
 
-export { commands, PingCommand, SayCommand, SourceCommand, SudoCommand };
+export {
+  commands,
+  PingCommand,
+  SayCommand,
+  SudoCommand,
+  SourceCommand,
+  JoinCourseCommand,
+  LeaveCourseCommand,
+  ListCoursesCommand,
+  CreateCourseCommand,
+  BulkCreateCoursesCommand,
+  DeleteCourseCommand,
+  BulkDeleteCoursesCommand,
+  SetCoursePasswordCommand,
+  RequestCourseCommand,
+  LogCommand,
+  CreateSelfRoleCommand,
+  DeleteSelfRoleCommand,
+  JoinSelfRoleCommand,
+  LeaveSelfRoleCommand,
+  CreateTagCommand,
+  TagCommand,
+  DeleteTagCommand,
+  ListTagsCommand,
+  ListRolesCommand,
+  ListQuartersCommand,
+  AliasCommand,
+  InviteCommand,
+  CreateQotdCommand,
+  DeleteQotdCommand,
+  DispatchQotdCommand,
+  RealNameSetCommand,
+  RealNameGetCommand,
+  ListCourseMembersCommand,
+};

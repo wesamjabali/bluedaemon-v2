@@ -1,4 +1,4 @@
-import { CommandInteraction, Role, User } from "discord.js";
+import { CommandInteraction } from "discord.js";
 import {
   CommandOption,
   CommandOptionPermission,
