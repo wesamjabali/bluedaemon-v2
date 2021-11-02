@@ -12,6 +12,10 @@ export const displayList = async (
   listName: string,
   searchTerm?: string
 ) => {
+  if (!i.deferred) {
+    await i.deferReply();
+  }
+
   let pageNumber = 0;
 
   const buttons = [

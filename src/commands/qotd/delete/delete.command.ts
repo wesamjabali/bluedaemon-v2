@@ -28,7 +28,7 @@ export class DeleteQotdCommand implements ICommand {
   ];
 
   async execute(i: CommandInteraction) {
-    i.deferReply();
+    await i.deferReply();
     let qotdId = i.options.getInteger("qotd_id", true);
     const guildConfig = getGuildConfig(i.guildId);
     const qotd = guildConfig?.qotds.find((q) => q.id === qotdId);
