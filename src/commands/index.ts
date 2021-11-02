@@ -27,8 +27,9 @@ import { ListQuartersCommand } from "./quarter-list/quarter-list.command";
 import { AliasCommand } from "./course-alias/course-alias.command";
 import { InviteCommand } from "./invite/invite.command";
 import { CreateQotdCommand } from "./qotd/create/create.command";
-import { DeleteQotdCommand } from "./qotd/delete/delete-qotd.command";
-import { DispatchQotdCommand } from "./qotd/dispatch/dispatch-qotd.command";
+import { DeleteQotdCommand } from "./qotd/delete/delete.command";
+import { DispatchQotdCommand } from "./qotd/dispatch/dispatch.command";
+import { ListQotdCommand } from "./qotd/list/list.command";
 import { RealNameSetCommand } from "./realname-set/realname-set.command";
 import { RealNameGetCommand } from "./realname-get/realname-get.command";
 import { ListCourseMembersCommand } from "./course-member-list/course-member-list.command";
@@ -59,9 +60,6 @@ const commands: ICommand[] = [
   new ListQuartersCommand(),
   new AliasCommand(),
   new InviteCommand(),
-  new CreateQotdCommand(),
-  new DeleteQotdCommand(),
-  new DispatchQotdCommand(),
   new RealNameSetCommand(),
   new RealNameGetCommand(),
   new ListCourseMembersCommand(),
@@ -107,6 +105,7 @@ export {
   CreateQotdCommand,
   DeleteQotdCommand,
   DispatchQotdCommand,
+  ListQotdCommand,
   RealNameSetCommand,
   RealNameGetCommand,
   ListCourseMembersCommand,

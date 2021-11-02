@@ -5,12 +5,14 @@ import {
   CommandOptionPermission,
   ICommand,
 } from "@/commands/command.interface";
-import { CreateQotdCommand } from "@/commands";
-import { DeleteQotdCommand } from "./delete/delete-qotd.command";
-import { DispatchQotdCommand } from "./dispatch/dispatch-qotd.command";
+import {
+  CreateQotdCommand,
+  DeleteQotdCommand,
+  DispatchQotdCommand,
+  ListQotdCommand,
+} from "@/commands";
 
-
-export class AliasCommand implements ICommand {
+export class QotdCommand implements ICommand {
   name = "qotd";
   description = "QOTD commands";
   default_permission = false;
@@ -24,7 +26,8 @@ export class AliasCommand implements ICommand {
       subCommands: [
         new CreateQotdCommand(),
         new DeleteQotdCommand(),
-        new DispatchQotdCommand()
+        new DispatchQotdCommand(),
+        new ListQotdCommand(),
       ],
     },
   ];
