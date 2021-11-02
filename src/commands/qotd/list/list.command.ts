@@ -33,7 +33,7 @@ export class ListQotdCommand implements ICommand {
       .map((q) => `${q.id}: ${q.question}`);
 
     if (unusedQotds?.length > 0) {
-      displayList(i, unusedQotds, "QOTDs");
+      return displayList(i, unusedQotds, "QOTDs");
     } else {
       return i.reply({
         content: `There are no unused QOTDs.`,
