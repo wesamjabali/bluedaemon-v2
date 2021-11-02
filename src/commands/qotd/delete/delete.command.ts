@@ -49,7 +49,9 @@ export class DeleteQotdCommand implements ICommand {
 
     await logger.logToChannel(
       i.guild,
-      `QOTD created by ${i.user}.\n\n\`${qotd}\`\n\nContext: ${replyMessage.url}`
+      `QOTD deleted by ${i.user}.\n\n\`${JSON.stringify(
+        qotd.question
+      )}\`\n\nContext: ${replyMessage.url}`
     );
   }
 }
