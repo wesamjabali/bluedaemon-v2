@@ -8,7 +8,7 @@ import { getGuildConfig } from "@/config/guilds.config";
 import { displayList } from "@/services/display-list.service";
 
 export class ListRolesCommand implements ICommand {
-  name = "list-roles";
+  name = "role-list";
   description = "List all roles";
   default_permission = false;
   permissions: CommandOptionPermission[] = [

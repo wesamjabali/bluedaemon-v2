@@ -12,7 +12,7 @@ import { getGuildConfig } from "@/config/guilds.config";
 import { normalizeTagName } from "../tag-create/tag-create.service";
 
 export class DeleteTagCommand implements ICommand {
-  name = "delete-tag";
+  name = "tag-delete";
   description = "Delete a tag";
   default_permission = false;
   permissions: CommandOptionPermission[] = [

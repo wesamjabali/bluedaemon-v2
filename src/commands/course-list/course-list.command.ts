@@ -9,7 +9,7 @@ import { displayList } from "@/services/display-list.service";
 import { CommandInteraction } from "discord.js";
 
 export class ListCoursesCommand implements ICommand {
-  name = "list-courses";
+  name = "course-list";
   description = "Search courses, or display all";
   default_permission = false;
   permissions: CommandOptionPermission[] = [

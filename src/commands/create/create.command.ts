@@ -10,7 +10,7 @@ import { logger } from "@/main";
 import { normalizeCourseCode } from "@/helpers/normalize-course-code.helper";
 
 export class CreateCourseCommand implements ICommand {
-  name = "create";
+  name = "course-create";
   description = "Create a course";
   default_permission = false;
   permissions: CommandOptionPermission[] = [
