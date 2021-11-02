@@ -21,7 +21,7 @@ export class DeleteQotdCommand implements ICommand {
   options: CommandOption[] = [
     {
       type: "Integer",
-      name: "qotd_td",
+      name: "qotd_id",
       description: "ID of the QOTD to delete.",
       required: true,
     },
