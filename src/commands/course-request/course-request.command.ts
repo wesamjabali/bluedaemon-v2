@@ -58,7 +58,7 @@ export class RequestCourseCommand implements ICommand {
           (i.message as Message).mentions.users
             .first()
             ?.send(
-              `Your course request for ${paramsMatcher[0]} was approved in ${i.guild?.name}! Use \`/join-course ${paramsMatcher[0]}\` to join the course.`
+              `Your course request for ${paramsMatcher[0]} was approved in ${i.guild?.name}! Use \`/join ${paramsMatcher[0]}\` to join the course.`
             );
         } catch {}
       },
@@ -134,7 +134,7 @@ export class RequestCourseCommand implements ICommand {
       )
     ) {
       await i.reply(
-        `${courseCode.courseName} already exists! You can join it by using: \`\`\`/join-course ${courseCode.courseName}\`\`\``
+        `${courseCode.courseName} already exists! You can join it by using: \`\`\`/join ${courseCode.courseName}\`\`\``
       );
       return;
     }
