@@ -14,18 +14,18 @@ const introMessages = [
   "Welcome aboard,",
 ];
 
-const introPostfixes = [
-  "What's your major?",
-  "How'd you find this server?",
-  "What city are you from?",
-  "What's your favorite food?",
-  "What's your favorite movie?",
-  "What kind of video games do you like?",
-  "Please introduce yourself!",
-  "We can't wait to meet you!",
-  "You can introduce yourself here!",
-  "",
-];
+// const introPostfixes = [
+//   "What's your major?",
+//   "How'd you find this server?",
+//   "What city are you from?",
+//   "What's your favorite food?",
+//   "What's your favorite movie?",
+//   "What kind of video games do you like?",
+//   "Please introduce yourself!",
+//   "We can't wait to meet you!",
+//   "You can introduce yourself here!",
+//   "",
+// ];
 
 export class GuildMemberAddHandler implements IEventHandler {
   public once = false;
@@ -45,15 +45,12 @@ export class GuildMemberAddHandler implements IEventHandler {
         const introMessage = await introChannel.send(
           `${introMessages[Math.floor(Math.random() * introMessages.length)]} ${
             member.user
-          }! ${
-            introPostfixes[Math.floor(Math.random() * introPostfixes.length)]
-          }`
+          }!`
+          // ${
+          // introPostfixes[Math.floor(Math.random() * introPostfixes.length)]
+          // }`
         );
         introMessage.react("👋");
-        introMessage.startThread({
-          name: member.nickname ?? member.user.username,
-          autoArchiveDuration: 1440,
-        });
       }
     }
 
