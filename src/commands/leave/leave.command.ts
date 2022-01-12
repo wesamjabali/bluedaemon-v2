@@ -53,7 +53,7 @@ export class LeaveCourseCommand implements ICommand {
     )?.roleId;
     if (!courseRoleId) {
       return i.reply(
-        `${courseName} doesn't exist for quarter ${dbQuarter.name}`
+        `${courseName.courseName} doesn't exist for quarter ${dbQuarter.name}`
       );
     }
     const courseRole = i.guild?.roles.cache.find((r) => r.id === courseRoleId);
