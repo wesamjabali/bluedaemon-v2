@@ -11,7 +11,6 @@ import {
   SlashCommandSubcommandBuilder,
   SlashCommandSubcommandGroupBuilder,
 } from "@discordjs/builders";
-import { AllApplicationCommands } from "@/services/application-commands.service";
 import { client, logger } from "@/main";
 
 export class BuildCommands {
