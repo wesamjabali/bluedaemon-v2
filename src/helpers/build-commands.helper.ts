@@ -27,9 +27,7 @@ export class BuildCommands {
 
     // Build the command
     commands.forEach((command) => {
-      JSONCommands.push(
-        (getCommandBuilder(command, false) as SlashCommandBuilder).toJSON()
-      );
+      JSONCommands.push((getCommandBuilder(command, false) as any).toJSON());
 
       registerButtons(command.buttonActions ?? []);
       registerSelectMenus(command.selectMenuActions ?? []);
