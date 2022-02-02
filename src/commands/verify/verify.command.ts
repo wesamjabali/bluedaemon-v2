@@ -3,7 +3,7 @@ import { CommandOption, ICommand } from "@/commands/command.interface";
 import axios from "axios";
 import { logger } from "@/main";
 
-export class LogCommand implements ICommand {
+export class VerifyCommand implements ICommand {
   name = "verify";
   description = "Verify school email";
   default_permission = true;

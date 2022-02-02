@@ -34,6 +34,7 @@ import { RealNameSetCommand } from "./realname-set/realname-set.command";
 import { RealNameGetCommand } from "./realname-get/realname-get.command";
 import { ListCourseMembersCommand } from "./course-member-list/course-member-list.command";
 import { QotdCommand } from "./qotd/qotd.command";
+import { VerifyCommand } from "./verify/verify.command";
 
 const commands: ICommand[] = [
   new SudoCommand(),
@@ -65,6 +66,7 @@ const commands: ICommand[] = [
   new RealNameGetCommand(),
   new ListCourseMembersCommand(),
   new QotdCommand(),
+  new VerifyCommand(),
 ];
 
 export function createSetupCommand() {
@@ -111,4 +113,5 @@ export {
   RealNameSetCommand,
   RealNameGetCommand,
   ListCourseMembersCommand,
+  VerifyCommand,
 };
