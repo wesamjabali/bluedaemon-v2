@@ -36,11 +36,17 @@ export class VerifyCommand implements ICommand {
           `Verification email sent to ${emailOrCode} for user ${i.user}`
         );
       } catch (err: any) {
-        i.reply({ content: `ERROR: ${err.message}`, ephemeral: true });
+        const {
+          response: {
+            data: { message },
+          },
+        } = err;
+
+        i.reply({ content: `ERROR: ${message}`, ephemeral: true });
         logger.log(
           "INFO",
           i.guild,
-          `Verification failed to send to ${emailOrCode} for user ${i.user} with error \`\`\`${err.message}\`\`\``
+          `Verification failed to send to ${emailOrCode} for user ${i.user} with error \`\`\`${message}\`\`\``
         );
       }
     } else if (emailOrCode.match(/\b\d{6}\b/)) {
@@ -57,11 +63,17 @@ export class VerifyCommand implements ICommand {
         });
         logger.log("INFO", i.guild, `${i.user} verified`);
       } catch (err: any) {
-        i.reply({ content: `ERROR: ${err.message}`, ephemeral: true });
+        const {
+          response: {
+            data: { message },
+          },
+        } = err;
+
+        i.reply({ content: `ERROR: ${message}`, ephemeral: true });
         logger.log(
           "INFO",
           i.guild,
-          `${i.user} failed to verify with error: \`\`\`${err.message}\`\`\``
+          `${i.user} failed to verify with error: \`\`\`${message}\`\`\``
         );
       }
     } else {
