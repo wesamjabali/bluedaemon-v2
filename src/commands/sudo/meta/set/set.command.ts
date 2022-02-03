@@ -20,6 +20,7 @@ export class SetCommand implements ICommand {
   options: CommandOption[] = [
     { type: "Role", name: "moderator_role", required: false },
     { type: "Role", name: "course_manager_role", required: false },
+    { type: "Role", name: "verified_role", required: false },
     { type: "Channel", name: "course_requests_channel", required: false },
     { type: "Channel", name: "logging_channel", required: false },
     { type: "Channel", name: "counting_channel", required: false },
@@ -50,6 +51,8 @@ export class SetCommand implements ICommand {
     const loggingChannel = i.options.getChannel("logging_channel", false);
     const modRole = i.options.getRole("moderator_role", false);
     const courseManagerRole = i.options.getRole("course_manager_role", false);
+    const verifiedRole = i.options.getRole("verified_role", false);
+
     if (!i.guildId || !i.guild || !i.guild?.ownerId) return;
 
     let errorResponse = "";
@@ -77,6 +80,7 @@ export class SetCommand implements ICommand {
     await prisma.guild.update({
       where: { guildId: i.guildId },
       data: {
+        verifiedRoleId: verifiedRole?.id ?? undefined,
         courseRequestsChannelId: courseRequestsChannel?.id ?? undefined,
         loggingChannelId: loggingChannel?.id ?? undefined,
         moderatorRoleId: modRole?.id ?? undefined,

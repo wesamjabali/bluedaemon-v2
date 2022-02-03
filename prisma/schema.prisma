@@ -21,6 +21,7 @@ model Guild {
   moderatorRoleId           String?
   courseManagerRoleId       String?
   communityPingRoleId       String?
+  verifiedRoleId            String?
   welcomeMessage            String?
 
   courses   Course[]

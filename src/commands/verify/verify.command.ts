@@ -1,7 +1,8 @@
-import { CommandInteraction } from "discord.js";
+import { CommandInteraction, GuildMember } from "discord.js";
 import { CommandOption, ICommand } from "@/commands/command.interface";
 import axios from "axios";
 import { logger } from "@/main";
+import { getGuildConfig } from "@/config/guilds.config";
 
 export class VerifyCommand implements ICommand {
   name = "verify";
@@ -48,6 +49,9 @@ export class VerifyCommand implements ICommand {
           userId: i.user.id,
           code: emailOrCode,
         });
+        await (i.member as GuildMember).roles.add(
+          getGuildConfig(i.guildId)?.verifiedRoleId as string
+        );
         i.reply({
           content: `You've been verified!`,
         });
