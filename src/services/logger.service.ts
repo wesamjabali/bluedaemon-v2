@@ -11,6 +11,9 @@ export class LoggerService {
       await prisma.log.create({
         data: { guildId: guild?.id, level: level, message: t },
       });
+      if (guild) {
+        this.logToChannel(guild, t);
+      }
     }
   };
 
