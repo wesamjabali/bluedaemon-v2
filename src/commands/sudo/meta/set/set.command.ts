@@ -21,6 +21,7 @@ export class SetCommand implements ICommand {
     { type: "Role", name: "moderator_role", required: false },
     { type: "Role", name: "course_manager_role", required: false },
     { type: "Role", name: "verified_role", required: false },
+    { type: "Role", name: "faculty_role", required: false },
     { type: "Channel", name: "course_requests_channel", required: false },
     { type: "Channel", name: "logging_channel", required: false },
     { type: "Channel", name: "counting_channel", required: false },
@@ -52,6 +53,7 @@ export class SetCommand implements ICommand {
     const modRole = i.options.getRole("moderator_role", false);
     const courseManagerRole = i.options.getRole("course_manager_role", false);
     const verifiedRole = i.options.getRole("verified_role", false);
+    const facultyRole = i.options.getRole("faculty_role", false);
 
     if (!i.guildId || !i.guild || !i.guild?.ownerId) return;
 
@@ -81,6 +83,7 @@ export class SetCommand implements ICommand {
       where: { guildId: i.guildId },
       data: {
         verifiedRoleId: verifiedRole?.id ?? undefined,
+        facultyRoleId: facultyRole?.id ?? undefined,
         courseRequestsChannelId: courseRequestsChannel?.id ?? undefined,
         loggingChannelId: loggingChannel?.id ?? undefined,
         moderatorRoleId: modRole?.id ?? undefined,
